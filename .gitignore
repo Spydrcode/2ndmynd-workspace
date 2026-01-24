@@ -33,9 +33,19 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# local seed inputs and artifacts
+/seed/
+*.jsonl
+
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local ML review files
+/ml_review/
+
+# ML artifacts
+/ml_artifacts/
