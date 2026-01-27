@@ -1,7 +1,9 @@
 import OpenAI from "openai";
 import { createClient } from "@supabase/supabase-js";
-
-require('dotenv').config();
+import fs from "node:fs";
+import dotenv from 'dotenv';
+import { DEFAULT_DECISION_MODEL_ID_V1, REWRITE_SYSTEM_PROMPT_V1 } from "./lib/decision_layer_v1";
+dotenv.config();
 
 async function main() {
   if (!process.env.OPENAI_API_KEY) {
@@ -14,12 +16,13 @@ async function main() {
   }
 
   const supabase = createClient(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { persistSession: false, autoRefreshToken: false } }
-  );
+  ) as any;
 
   const dataset = process.argv[2] || 'smoke_messy';
+  const badOutputArg = process.argv[4];
 
   const { data } = await supabase
     .schema('ml')
@@ -74,17 +77,30 @@ async function main() {
     additionalProperties: false,
   } as const;
 
-  const systemPrompt = `You must output a single JSON object that exactly matches the conclusion_v1 schema.\n- Output ONLY JSON. No markdown, no prose, no code fences.\n- Do not add wrapper keys like "raw_text".\n- If unsure, still fill the required fields with best-effort values. Never omit required keys.`;
+  const systemPrompt = REWRITE_SYSTEM_PROMPT_V1;
+
+  let badOutput: unknown = {};
+  if (badOutputArg) {
+    try {
+      if (fs.existsSync(badOutputArg)) {
+        badOutput = JSON.parse(fs.readFileSync(badOutputArg, "utf8"));
+      } else {
+        badOutput = JSON.parse(badOutputArg);
+      }
+    } catch {
+      badOutput = { raw_text: badOutputArg };
+    }
+  }
 
   const payload = {
-    model: process.env.TEST_MODEL || (process.argv[3] || ''),
+    model: process.env.TEST_MODEL || process.argv[3] || DEFAULT_DECISION_MODEL_ID_V1,
     temperature: 0,
     top_p: 0.1,
     presence_penalty: 0,
     frequency_penalty: 0,
     messages: [
       { role: 'system', content: systemPrompt },
-      { role: 'user', content: JSON.stringify(example.input_snapshot) },
+      { role: 'user', content: JSON.stringify({ snapshot: example.input_snapshot, bad_output: badOutput }) },
     ],
     response_format: {
       type: 'json_schema',

@@ -7,6 +7,70 @@ This workflow exports draft snapshots, allows you to write one decision + one bo
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 
+## Decision Layer v2 (Locked)
+
+This repo contains a **locked** "Decision Layer v2" for 2ndmynd / 2ndlook that turns normalized `snapshot_v2` signals into a single `conclusion_v2` JSON object.
+
+### What "locked" means
+- The **default fine-tuned model ID** is pinned.
+- The **system prompts** (primary + rewrite) are centralized and versioned.
+- Output is **strict JSON** (`conclusion_v2`) with **deterministic grounding**.
+- A **single rewrite attempt** is allowed only on schema/grounding failure.
+- If grounding still fails, the system returns a deterministic **insufficient-evidence fallback** (and logs the failure for future patching).
+
+This is intentional: the Decision Layer exists to reduce owner decision burden and return a finite, actionable conclusion - not to behave like a dashboard, KPI monitor, or analytics surface.
+
+### Default model
+The default model is pinned in `decision_layer_v2.ts`:
+
+- `DEFAULT_DECISION_MODEL_ID = ft:gpt-4.1-mini-2025-04-14:personal:decision-layer-v2-PLACEHOLDER`
+
+Override for experiments only:
+- Env: `TEST_MODEL`
+- CLI: `--model`
+
+### Evidence grounding contract (required)
+`evidence_signals` must contain **3-6** entries, each formatted exactly as:
+
+- `signals.<full.leaf.path>=<literal_value>`
+
+Rules:
+- Must start with `signals.`
+- Must reference a **leaf** field (number/string/bool/null)
+- Must match the literal snapshot value exactly
+- No objects/arrays (e.g. `signals.activity_signals.quotes=...` is invalid)
+
+This contract is enforced by a deterministic validator in code.
+
+### Guardrail behavior (one-shot rewrite)
+Decision flow:
+1. Primary model call -> validate schema + evidence grounding
+2. If failure: **one** rewrite call (same model, strict JSON schema, leaf-only evidence rules)
+3. If still failing: return **insufficient-evidence fallback** (schema-valid + grounded) and log failure
+
+### Logging + patch queue
+- Jobber CSV run logs: `ml_artifacts/jobber_csv_run.jsonl`
+- Rewrite diagnostics: `smoke_rewrites.jsonl` (if enabled)
+- Future misses: append to `patch_queue.jsonl`
+
+**Do not** retrain the model based on a single miss.
+Batch patches when `patch_queue.jsonl` contains ~10+ real-world failures with clear patterns.
+
+### Quick run: snapshot_v2 -> conclusion_v2
+```bash
+# PowerShell
+$env:OPENAI_API_KEY="sk-..."
+npx tsx scripts/ml/infer_decision_v2.ts --json "<snapshot_v2 JSON>"
+```
+
+Expected:
+
+Snapshot JSON is valid
+
+Model returns conclusion_v2 JSON
+
+Grounding reports { "ok": true }
+
 ## Step 1: Export draft examples
 ```bash
 npm run ml:export-drafts
@@ -111,3 +175,4 @@ This will:
 ## Notes
 - No PII is exported or printed to console.
 - The output is designed around one decision + one boundary.
+

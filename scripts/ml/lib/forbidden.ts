@@ -7,6 +7,7 @@ export const FORBIDDEN_TERMS = [
   "bi",
   "performance tracking",
   "reporting",
+  "optimize performance",
 ];
 
 export function normalize(value: string) {

@@ -10,6 +10,9 @@ type Args = {
   baseModel: string;
   suffix: string;
   dataset: string;
+  epochs?: number;
+  lrMultiplier?: number;
+  batchSize?: number;
 };
 
 const DEFAULTS: Args = {
@@ -41,6 +44,15 @@ function parseArgs(argv: string[]): Args {
         break;
       case "--dataset":
         args.dataset = value;
+        break;
+      case "--epochs":
+        args.epochs = Number(value);
+        break;
+      case "--lr_multiplier":
+        args.lrMultiplier = Number(value);
+        break;
+      case "--batch_size":
+        args.batchSize = Number(value);
         break;
       default:
         break;
@@ -188,10 +200,16 @@ async function main() {
       purpose: "fine-tune",
     });
 
+    const hyperparameters: Record<string, number> = {};
+    if (Number.isFinite(args.epochs ?? NaN)) hyperparameters.n_epochs = args.epochs as number;
+    if (Number.isFinite(args.lrMultiplier ?? NaN)) hyperparameters.learning_rate_multiplier = args.lrMultiplier as number;
+    if (Number.isFinite(args.batchSize ?? NaN)) hyperparameters.batch_size = args.batchSize as number;
+
     const job = await client.fineTuning.jobs.create({
       training_file: upload.id,
       model: args.baseModel,
       suffix: args.suffix,
+      ...(Object.keys(hyperparameters).length > 0 ? { hyperparameters } : {}),
     });
 
     jobId = job.id;

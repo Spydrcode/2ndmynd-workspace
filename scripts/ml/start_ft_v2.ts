@@ -25,8 +25,27 @@ async function main() {
     const upload = await client.files.create({ file: fs.createReadStream(filePath), purpose: 'fine-tune' });
     console.log('Uploaded:', upload.id);
 
-    console.log('Creating fine-tune job...');
-    const job = await client.fineTuning.jobs.create({ model: baseModel, training_file: upload.id, suffix });
+      // optionally upload validation file
+      let validationUpload: any = null;
+      const validationPath = process.env.FT_VALIDATION_FILE;
+      if (validationPath && fs.existsSync(validationPath)) {
+        console.log('Uploading validation file...', validationPath);
+        validationUpload = await client.files.create({ file: fs.createReadStream(validationPath), purpose: 'fine-tune' });
+        console.log('Validation uploaded:', validationUpload.id);
+      }
+
+      console.log('Creating fine-tune job...');
+      const createBody: any = { model: baseModel, training_file: upload.id, suffix };
+      if (validationUpload) createBody.validation_file = validationUpload.id;
+      const epochs = Number(process.env.FT_EPOCHS || process.env.FT_EPOCHS_OVERRIDE || 2);
+      const lr = Number(process.env.FT_LR_MULTIPLIER || process.env.FT_LR || 1.2);
+      const batch = Number(process.env.FT_BATCH_SIZE || 1);
+      createBody.hyperparameters = {};
+      if (Number.isFinite(epochs)) createBody.hyperparameters.n_epochs = epochs;
+      if (Number.isFinite(lr)) createBody.hyperparameters.learning_rate_multiplier = lr;
+      if (Number.isFinite(batch)) createBody.hyperparameters.batch_size = batch;
+
+      const job = await client.fineTuning.jobs.create(createBody);
     console.log('Job created:', job.id, 'status:', job.status);
 
     const TERMINAL = new Set(['succeeded','failed','cancelled']);

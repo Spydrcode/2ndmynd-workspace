@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { createClient } from "@supabase/supabase-js";
 
 import { scanObjectForForbidden } from "./lib/forbidden";
-import { validateConclusion, validateGrounding } from "./lib/conclusion_schema";
+import { validateConclusion, validateEvidenceSignalsAgainstSnapshot } from "./lib/conclusion_schema";
 
 require('dotenv').config();
 
@@ -126,7 +126,7 @@ export async function exportDatasetToJsonl(args: Args) {
         {
           role: "system",
           content:
-            "You are an internal 2ndmynd decision model. Output ONLY valid JSON with the required schema. Never use forbidden terms. evidence_signals must be 3-6 keys that exist in input_snapshot.signals.",
+            "You are an internal 2ndmynd decision model. Output ONLY valid JSON with the required schema. Never use forbidden terms. evidence_signals must be 3-6 strings formatted as \"signals.<full.path>=<literal_value>\" from input_snapshot.",
         },
         {
           role: "user",
@@ -212,20 +212,12 @@ function validateExample(example: { id: string; input_snapshot: any; target_outp
     }
 
     // Check evidence_signals
-    if (!output.evidence_signals || !Array.isArray(output.evidence_signals)) {
-      errors.push("evidence_signals missing or not array");
-    } else {
-      const len = output.evidence_signals.length;
-      if (len < 3 || len > 6) {
-        errors.push(`evidence_signals length ${len} not 3-6`);
-      }
-      for (const sig of output.evidence_signals) {
-        if (typeof sig !== "string") {
-          errors.push("evidence_signal not string");
-        } else if (!snapshot.signals || !(sig in snapshot.signals)) {
-          errors.push(`evidence_signal ${sig} not in input_snapshot.signals`);
-        }
-      }
+    const grounding = validateEvidenceSignalsAgainstSnapshot(
+      snapshot,
+      output.evidence_signals
+    );
+    if (!grounding.ok) {
+      errors.push(...grounding.errors);
     }
   }
 

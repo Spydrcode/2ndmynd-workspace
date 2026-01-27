@@ -75,23 +75,98 @@ function getSignalRoot(snapshot: any) {
   return null;
 }
 
-export function validateGrounding(conclusion: ConclusionV1, snapshot: unknown) {
+function getByPath(obj: any, path: string): unknown {
+  const parts = path.split(".");
+  let cur: any = obj;
+  for (const p of parts) {
+    if (cur == null || typeof cur !== "object" || !(p in cur)) {
+      if (p === "signals" && obj?.signals_flat && typeof obj.signals_flat === "object") {
+        const remainder = parts.slice(1).join(".");
+        if (remainder && remainder in obj.signals_flat) {
+          return (obj.signals_flat as Record<string, unknown>)[remainder];
+        }
+      }
+      return undefined;
+    }
+    cur = cur[p];
+  }
+  return cur;
+}
+
+function literalToString(v: unknown): string {
+  if (v === null) return "null";
+  if (typeof v === "string") return v;
+  if (typeof v === "number") return Number.isFinite(v) ? String(v) : String(v);
+  if (typeof v === "boolean") return v ? "true" : "false";
+  return JSON.stringify(v);
+}
+
+export function validateEvidenceSignalsAgainstSnapshot(
+  snapshot: any,
+  evidenceSignals: unknown
+) {
   const errors: string[] = [];
-  const signals = getSignalRoot(snapshot);
-  if (!signals) {
-    return { ok: false, errors: ["snapshot.signals is missing"] };
+  const missing: string[] = [];
+
+  if (!Array.isArray(evidenceSignals)) {
+    return { ok: false, errors: ["evidence_signals is not an array"], missing };
   }
 
-  const missing: string[] = [];
-  for (const key of conclusion.evidence_signals ?? []) {
-    if (!(key in signals)) {
-      missing.push(key);
+  if (evidenceSignals.length < 3 || evidenceSignals.length > 6) {
+    errors.push(`evidence_signals length must be 3..6, got ${evidenceSignals.length}`);
+  }
+
+  for (let i = 0; i < evidenceSignals.length; i += 1) {
+    const item = evidenceSignals[i];
+    if (typeof item !== "string") {
+      errors.push(`evidence_signals[${i}] is not a string`);
+      continue;
+    }
+
+    const eqIdx = item.indexOf("=");
+    if (eqIdx <= 0 || eqIdx !== item.lastIndexOf("=")) {
+      errors.push(`evidence_signals[${i}] must contain exactly one '=': "${item}"`);
+      continue;
+    }
+
+    const path = item.slice(0, eqIdx).trim();
+    const expected = item.slice(eqIdx + 1).trim();
+
+    if (!path.startsWith("signals.")) {
+      errors.push(`evidence_signals[${i}] path must start with 'signals.': "${path}"`);
+      continue;
+    }
+
+    const actual = getByPath(snapshot, path);
+    if (actual === undefined) {
+      missing.push(path);
+      errors.push(`evidence_signals[${i}] path not found in snapshot: "${path}"`);
+      continue;
+    }
+
+    if (actual !== null && typeof actual === "object") {
+      errors.push(
+        `evidence_signals[${i}] path resolves to non-literal (object/array): "${path}"`
+      );
+      continue;
+    }
+
+    const actualStr = literalToString(actual);
+    if (expected !== actualStr) {
+      errors.push(
+        `evidence_signals[${i}] value mismatch at "${path}": expected "${expected}", actual "${actualStr}"`
+      );
     }
   }
 
-  if (missing.length > 0) {
-    errors.push(`missing evidence keys: ${missing.join(", ")}`);
+  return { ok: errors.length === 0, errors, missing };
+}
+
+export function validateGrounding(conclusion: ConclusionV1, snapshot: unknown) {
+  const signals = getSignalRoot(snapshot);
+  if (!signals) {
+    return { ok: false, errors: ["snapshot.signals is missing"], missing: [] as string[] };
   }
 
-  return { ok: errors.length === 0, errors, missing };
+  return validateEvidenceSignalsAgainstSnapshot(snapshot, conclusion.evidence_signals);
 }

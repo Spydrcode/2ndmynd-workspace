@@ -173,7 +173,7 @@ async function main() {
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
   const system =
-    "You are an internal 2ndmynd decision model. Your job is to reduce owner decision burden by identifying one pattern, one decision, and one boundary. Avoid dashboards, KPIs, monitoring, or performance language.";
+    "You are an internal 2ndmynd decision model. Your job is to reduce owner decision burden by identifying one pattern, one decision, and one boundary. Avoid dashboards, KPIs, monitoring, or performance language. evidence_signals must be 3-6 strings formatted as \"signals.<full.path>=<literal_value>\" from the snapshot.";
 
   const attempt = async (extraSystem?: string) => {
     const messages = [
@@ -218,6 +218,45 @@ async function main() {
     return { parsedOutput, errors, forbidden, grounding };
   };
 
+  const attemptRepair = async (badOutput: unknown) => {
+    const repairSystem = `You are repairing a conclusion_v1 JSON object.
+
+HARD RULES (must follow exactly):
+- Output ONLY a single JSON object that matches the conclusion_v1 schema. No markdown. No prose.
+- Do not add any keys outside the schema. Do not wrap in "raw_text".
+- evidence_signals MUST be derived ONLY from the provided snapshot object.
+- evidence_signals MUST be an array of 3 to 6 strings.
+- Each evidence_signals item MUST be formatted exactly as:
+  "signals.<full.path.to.field>=<literal_value>"
+- Use fully-qualified paths that start with "signals." (not "quotes_count", not "approval_rate_band").
+- The value after "=" MUST exactly equal the literal value in the snapshot (no paraphrase).
+- Do NOT infer, summarize, or restate evidence. Only reference snapshot fields.
+- If you cannot find 3 valid evidence signals, choose different snapshot fields that exist.
+- Keep boundary as a trigger/condition string (not a date range) unless the schema explicitly requires a date range.
+
+You will receive:
+1) snapshot: JSON
+2) bad_output: JSON (may violate rules)
+
+Return a corrected conclusion_v1 JSON object that passes strict schema validation and grounding.`;
+
+    const completion = await client.chat.completions.create({
+      model,
+      messages: [
+        { role: "system", content: repairSystem },
+        { role: "user", content: JSON.stringify({ snapshot: inputSnapshot, bad_output: badOutput }) },
+      ],
+    });
+
+    const content = completion.choices?.[0]?.message?.content ?? "";
+    try {
+      const parsed = JSON.parse(content);
+      return { parsed, raw: content };
+    } catch {
+      return { parsed: null, raw: content };
+    }
+  };
+
   let result = await attempt();
   if (!result.parsed) {
     result = await attempt("Return ONLY valid JSON matching the schema; no commentary.");
@@ -236,9 +275,7 @@ async function main() {
   parsed = compliance.parsedOutput;
 
   if (errors.length > 0 || forbidden.terms.length > 0 || !grounding.ok) {
-    result = await attempt(
-      "Return ONLY valid JSON matching the schema. Hard rule: Do NOT use any of these terms anywhere in the JSON: dashboard, KPI, analytics, monitor/monitoring, BI, performance tracking, reporting. If you would have used them, rephrase without them. Pick 3-6 evidence_signals that exist in input_snapshot.signals keys; do not invent keys."
-    );
+    result = await attemptRepair(parsed);
 
     if (!result.parsed) {
       console.error("Model output is not valid JSON.");

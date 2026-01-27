@@ -1,10 +1,12 @@
 import OpenAI from "openai";
+import fs from "fs";
 import { createClient } from "@supabase/supabase-js";
 import { randomUUID } from "node:crypto";
 
 import { scanObjectForForbidden } from "./lib/forbidden";
 import { rewriteConclusion } from "./compliance_rewrite";
 import { validateConclusion, validateGrounding } from "./lib/conclusion_schema";
+import { DEFAULT_DECISION_MODEL_ID_V1 } from "./lib/decision_layer_v1";
 
 require('dotenv').config();
 
@@ -25,6 +27,20 @@ const DEFAULTS: Args = {
   rewrite: true,
   repeats: 3,
 };
+
+// promoted default fine-tuned model id
+const DEFAULT_FINE_TUNED_MODEL = process.env.DEFAULT_FT_MODEL || DEFAULT_DECISION_MODEL_ID_V1;
+
+const REWRITE_LOG = 'ml_artifacts/smoke_rewrites.jsonl';
+
+function appendRewriteLog(obj: unknown) {
+  try {
+    fs.mkdirSync('ml_artifacts', { recursive: true });
+    fs.appendFileSync(REWRITE_LOG, JSON.stringify(obj) + '\n');
+  } catch (e) {
+    console.error('Failed to append rewrite log', e);
+  }
+}
 
 const REQUIRED_KEYS = [
   "conclusion_version",
@@ -164,9 +180,10 @@ async function main() {
   }
 
   let runId = args.runId;
-  let model = args.model;
+  let model = args.model ?? process.env.TEST_MODEL ?? DEFAULT_FINE_TUNED_MODEL;
 
-  if (!runId || !model) {
+  // Ensure we have a run id for inserting results — fetch latest run id if missing
+  if (!runId) {
     const { data: latestRun, error: runError } = await supabase
       .schema("ml")
       .from("runs")
@@ -182,8 +199,9 @@ async function main() {
       process.exit(1);
     }
 
-    runId = runId ?? latestRun.id;
-    model = model ?? latestRun.result_model ?? undefined;
+    runId = latestRun.id;
+    // only set model from latestRun if not explicitly provided or via TEST_MODEL/env
+    model = model ?? latestRun.result_model ?? DEFAULT_FINE_TUNED_MODEL;
   }
 
   if (!model || !runId) {
@@ -234,7 +252,7 @@ async function main() {
           additionalProperties: false,
         } as const;
 
-        const systemPrompt = `You must output a single JSON object that exactly matches the conclusion_v1 schema.\n- Output ONLY JSON. No markdown, no prose, no code fences.\n- Do not add wrapper keys like "raw_text".\n- If unsure, still fill the required fields with best-effort values. Never omit required keys.`;
+        const systemPrompt = `You must output a single JSON object that exactly matches the conclusion_v1 schema.\n- Output ONLY JSON. No markdown, no prose, no code fences.\n- Do not add wrapper keys like "raw_text".\n- evidence_signals must be 3-6 strings formatted as "signals.<full.path>=<literal_value>" from the snapshot.\n- If unsure, still fill the required fields with best-effort values. Never omit required keys.`;
 
         const completion = await client.chat.completions.create({
           model,
@@ -350,6 +368,106 @@ async function main() {
         notes: args.strict ? "strict" : "loose",
       };
 
+      // If strict validation or grounding failed, run one repair pass with same model.
+      let repairApplied = false;
+      let repairOutput: any = null;
+      let repairScores: any = null;
+      if (args.strict && (!rawSchema.ok || !groundingRaw.ok || rawForbidden.terms.length > 0 || !rawRequiredKeys)) {
+        const repairSystem = `You are repairing a conclusion_v1 JSON object.
+
+HARD RULES (must follow exactly):
+- Output ONLY a single JSON object that matches the conclusion_v1 schema. No markdown. No prose.
+- Do not add any keys outside the schema. Do not wrap in "raw_text".
+- evidence_signals MUST be derived ONLY from the provided snapshot object.
+- evidence_signals MUST be an array of 3 to 6 strings.
+- Each evidence_signals item MUST be formatted exactly as:
+  "signals.<full.path.to.field>=<literal_value>"
+- Use fully-qualified paths that start with "signals." (not "quotes_count", not "approval_rate_band").
+- The value after "=" MUST exactly equal the literal value in the snapshot (no paraphrase).
+- Do NOT infer, summarize, or restate evidence. Only reference snapshot fields.
+- If you cannot find 3 valid evidence signals, choose different snapshot fields that exist.
+- Keep boundary as a trigger/condition string (not a date range) unless the schema explicitly requires a date range.
+
+You will receive:
+1) snapshot: JSON
+2) bad_output: JSON (may violate rules)
+
+Return a corrected conclusion_v1 JSON object that passes strict schema validation and grounding.`;
+        try {
+          const repair = await client.chat.completions.create({
+            model,
+            temperature: 0,
+            top_p: 0.1,
+            presence_penalty: 0,
+            frequency_penalty: 0,
+            messages: [
+              { role: 'system', content: repairSystem },
+              { role: 'user', content: JSON.stringify({ snapshot: example.input_snapshot, bad_output: parsed }) },
+            ],
+            response_format: {
+              type: 'json_schema',
+              json_schema: { name: 'conclusion_v1', strict: true, schema: CONCLUSION_V1_JSON_SCHEMA },
+            },
+          });
+
+          const repRaw = repair.choices?.[0]?.message?.content ?? '';
+          try {
+            repairOutput = JSON.parse(repRaw);
+          } catch {
+            repairOutput = { raw_text: repRaw };
+          }
+          repairScores = validateConclusion(repairOutput);
+          repairApplied = true;
+        } catch (e) {
+          appendRewriteLog({ ts: Date.now(), example_id: id, error: String(e) });
+        }
+
+        appendRewriteLog({
+          ts: Date.now(),
+          smoke_cycle_id: smokeCycleId,
+          example_id: id,
+          failed_rules: {
+            schema_ok: rawSchema.ok,
+            grounding_ok_raw: groundingRaw.ok,
+            forbidden_terms: rawForbidden.terms,
+            required_keys: rawRequiredKeys,
+          },
+          model_output: parsed,
+          repaired_output: repairOutput,
+          repair_scores: repairScores,
+          attempt_index: attempt,
+        });
+
+        if (repairApplied && repairScores && repairScores.ok) {
+          // adopt repaired output as rewritten
+          rewriteApplied = true;
+          rewrittenOutput = repairOutput;
+          rewrittenForbidden = scanObjectForForbidden(rewrittenOutput);
+          rewrittenDecision = safeString((rewrittenOutput as any)?.decision).trim();
+          rewrittenBoundary = safeString((rewrittenOutput as any)?.boundary).trim();
+          rewrittenRequiredKeys = REQUIRED_KEYS.every((key) => key in (rewrittenOutput ?? {}));
+          rewrittenSchema = validateConclusion(rewrittenOutput);
+          groundingRewritten = validateGrounding(rewrittenOutput, example.input_snapshot);
+        }
+
+        // recompute passRewritten after repair attempt
+        const newPassRewritten = args.strict
+          ? Boolean(rewriteApplied) && rewrittenRequiredKeys && rewrittenSchema.ok && groundingRewritten.ok && Boolean(rewrittenDecision) && Boolean(rewrittenBoundary) && rewrittenForbidden.terms.length === 0
+          : Boolean(rewrittenDecision) && Boolean(rewrittenBoundary) && rewrittenForbidden.terms.length === 0;
+        scores.schema_ok_rewritten = rewrittenSchema.ok;
+        scores.schema_errors_rewritten = rewrittenSchema.errors;
+        scores.grounding_ok_rewritten = groundingRewritten.ok;
+        scores.missing_evidence_keys_rewritten = groundingRewritten.missing;
+        scores.forbidden_terms_rewritten = rewrittenForbidden.terms;
+        scores.forbidden_fields_rewritten = rewrittenForbidden.fields;
+        scores.rewrite_applied = rewriteApplied;
+        scores.pass_raw = passRaw;
+        scores.pass_rewritten = newPassRewritten;
+
+        // use new passRewritten
+        
+      }
+
       const { error: insertError } = await supabase
         .schema("ml")
         .from("run_results")
@@ -362,7 +480,7 @@ async function main() {
             rewritten: rewriteApplied ? rewrittenOutput : null,
           },
           scores,
-          pass: passRewritten,
+          pass: scores.pass_rewritten ?? passRewritten,
           smoke_cycle_id: smokeCycleId,
           attempt_index: attempt,
         });
