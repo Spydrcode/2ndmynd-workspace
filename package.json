@@ -22,6 +22,7 @@
     "ml:smoke-report:example": "tsx scripts/ml/smoke_report.ts --latest --by-example",
     "ml:infer": "tsx scripts/ml/infer_decision.ts",
     "ml:infer:v2": "tsx scripts/ml/infer_decision_v2.ts",
+    "ml:pipeline:v2": "tsx scripts/ml/pipeline/run_pipeline_v2.ts",
     "ml:diag-datasets": "tsx scripts/ml/diag_list_datasets.ts",
     "ml:extract-offenders": "tsx scripts/ml/extract_offenders.ts --smoke_cycle_id e0c9d1cc-b831-45ab-80e8-989ec4c0b882 --out ./ml_artifacts/offenders_latest.json",
     "ml:set-active-model": "tsx scripts/ml/set_active_model.ts --name decision_model --status active",

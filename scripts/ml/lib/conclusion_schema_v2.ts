@@ -75,6 +75,7 @@ const REQUIRED_KEYS = [
   "confidence",
   "evidence_signals",
   "season_context",
+  "optional_next_steps",
 ];
 
 function isNonEmptyString(value: unknown) {
@@ -132,17 +133,15 @@ export function validateConclusionV2(obj: unknown) {
     }
   }
 
-  if (candidate.optional_next_steps !== undefined) {
-    if (!Array.isArray(candidate.optional_next_steps)) {
-      errors.push("optional_next_steps must be an array when provided");
-    } else if (candidate.optional_next_steps.length > 3) {
-      errors.push("optional_next_steps must have 0 to 3 items");
-    } else {
-      for (const item of candidate.optional_next_steps) {
-        if (!isNonEmptyString(item)) {
-          errors.push("optional_next_steps items must be non-empty strings");
-          break;
-        }
+  if (!Array.isArray(candidate.optional_next_steps)) {
+    errors.push("optional_next_steps must be an array");
+  } else if (candidate.optional_next_steps.length > 3) {
+    errors.push("optional_next_steps must have 0 to 3 items");
+  } else {
+    for (const item of candidate.optional_next_steps) {
+      if (!isNonEmptyString(item)) {
+        errors.push("optional_next_steps items must be non-empty strings");
+        break;
       }
     }
   }
