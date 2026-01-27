@@ -1,0 +1,30 @@
+{
+  "source": "jobber",
+  "type": "combined",
+  "window": {
+    "days": 90,
+    "quotes": 27,
+    "invoices": 26
+  },
+  "signals": {
+    "avg_quote_vs_avg_invoice": "unknown",
+    "throughput_mismatch": "selling_gt_billing",
+    "pricing_drift_risk": "unknown",
+    "capacity_pressure_signal": "low"
+  },
+  "evidence": [
+    "Avg quote vs invoice: unknown",
+    "Quotes in window: 27, invoices: 26",
+    "Pricing drift risk: unknown"
+  ],
+  "constraints": {
+    "tone": "quiet_founder",
+    "avoid": [
+      "dashboards",
+      "kpis",
+      "analytics",
+      "monitoring",
+      "bi"
+    ]
+  }
+}

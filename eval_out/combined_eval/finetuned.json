@@ -1,0 +1,40 @@
+{
+  "summary": "You're selling more quotes than you're billing, but the overall financial picture isn't clear yet. Watch for pricing shifts and the impact on your next few months. The pressure on capacity is low for now, giving you space to adjust your approach.",
+  "top_patterns": [
+    {
+      "pattern": "Selling more quotes than invoices.",
+      "why_it_matters": "This can lead to a backlog if not addressed."
+    },
+    {
+      "pattern": "Average impact of quotes vs invoices is unclear.",
+      "why_it_matters": "Understanding this relationship will clarify how much time to spend on quoting."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "Track how much time quoting takes compared to billing.",
+      "reason": "This will clarify if quoting is absorbing more resources than it should.",
+      "effort": "low"
+    },
+    {
+      "step": "Check for any patterns in quote follow-ups.",
+      "reason": "This can reveal if quotes are converting or stalling.",
+      "effort": "low"
+    },
+    {
+      "step": "Protect your next month against pricing shifts.",
+      "reason": "This ensures your rates align with any future adjustments.",
+      "effort": "med"
+    },
+    {
+      "step": "Consider a small price or service adjustment.",
+      "reason": "This could help clarify the next few months and reduce risk.",
+      "effort": "med"
+    }
+  ],
+  "questions_to_confirm": [
+    "What is the average impact of quotes and invoices?",
+    "Are quotes converting, or are they stalling?"
+  ],
+  "confidence": "low"
+}

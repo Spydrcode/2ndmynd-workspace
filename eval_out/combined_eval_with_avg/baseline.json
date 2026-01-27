@@ -1,0 +1,26 @@
+{
+  "summary": "You're experiencing a consistent flow of quotes and invoices, indicating demand stability. However, there's a notable difference in throughput, suggesting a focus on selling rather than billing that should be addressed.",
+  "top_patterns": [
+    {
+      "pattern": "Throughput mismatch: selling > billing",
+      "why_it_matters": "This discrepancy can lead to cash flow issues if not addressed."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "Evaluate your invoicing process for efficiency.",
+      "reason": "Ensuring timely billing can improve cash flow.",
+      "effort": "low"
+    },
+    {
+      "step": "Analyze the reasons behind any pricing drift.",
+      "reason": "Understanding pricing consistency helps maintain profitability.",
+      "effort": "med"
+    }
+  ],
+  "questions_to_confirm": [
+    "What is the average time between quotes and invoicing?",
+    "Are there specific services with higher throughput discrepancies?"
+  ],
+  "confidence": "med"
+}

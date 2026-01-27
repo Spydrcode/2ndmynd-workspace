@@ -1,0 +1,40 @@
+{
+  "summary": "Quotes and invoices are closely matched in the last 90 days, but the average quote and invoice amounts remain unclear. Watch for potential pricing drift and avoid the risk of unbilled work piling up.",
+  "top_patterns": [
+    {
+      "pattern": "Quotes slightly outpace invoicing.",
+      "why_it_matters": "Unbilled quotes can stretch cash flow."
+    },
+    {
+      "pattern": "Average quote and invoice amounts are unclear.",
+      "why_it_matters": "The next pricing move may not be obvious."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "Review and clarify your pricing model.",
+      "reason": "Average quote and invoice amounts are uncertain.",
+      "effort": "low"
+    },
+    {
+      "step": "Follow up on open quotes before creating more.",
+      "reason": "Quotes are slightly outpacing invoices.",
+      "effort": "low"
+    },
+    {
+      "step": "Track a few quotes and invoices to clarify patterns.",
+      "reason": "Quote and invoice behavior is unclear.",
+      "effort": "med"
+    },
+    {
+      "step": "Establish a pricing buffer before the next move.",
+      "reason": "Pricing drift risk is low but can grow.",
+      "effort": "med"
+    }
+  ],
+  "questions_to_confirm": [
+    "What is your average quote and invoice amount?",
+    "How many quotes are open right now?"
+  ],
+  "confidence": "low"
+}

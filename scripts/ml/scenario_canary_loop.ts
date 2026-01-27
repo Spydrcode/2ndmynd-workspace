@@ -119,8 +119,6 @@ function main() {
     "2",
     "--lr_multiplier",
     "1.0",
-    "--batch_size",
-    "1",
     "--max_wait_minutes",
     String(args.maxWaitMinutes),
   ]);

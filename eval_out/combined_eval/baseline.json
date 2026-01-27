@@ -1,0 +1,31 @@
+{
+  "summary": "Your business shows a discrepancy between quoting and invoicing, which may indicate issues in pricing consistency or service delivery. The current capacity is low, suggesting you can handle more work, but clarity on pricing and average values is needed for improvement.",
+  "top_patterns": [
+    {
+      "pattern": "Throughput mismatch: selling greater than billing",
+      "why_it_matters": "This indicates potential lost revenue opportunities and inconsistencies in service delivery versus client engagement."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "Assess existing quotes and invoices to identify disparities.",
+      "reason": "Understanding this gap will help in recognizing inefficiencies.",
+      "effort": "med"
+    },
+    {
+      "step": "Review pricing strategy to mitigate drift risks.",
+      "reason": "This will ensure competitive positioning while maximizing revenue.",
+      "effort": "high"
+    },
+    {
+      "step": "Engage existing customers for feedback on quotes versus services rendered.",
+      "reason": "Gaining insights directly from clients can clarify your value proposition.",
+      "effort": "low"
+    }
+  ],
+  "questions_to_confirm": [
+    "What are the reasons behind the unknown pricing drift risk?",
+    "How often do clients negotiate quotes before signing?"
+  ],
+  "confidence": "med"
+}

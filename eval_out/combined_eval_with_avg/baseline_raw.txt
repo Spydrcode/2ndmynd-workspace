@@ -1,0 +1,33 @@
+```json
+{
+  "summary": "Your service business can benefit from streamlining customer communication. Clear messaging enhances client satisfaction and fosters loyalty. Implementing simple tools can improve overall efficiency and responsiveness.",
+  "top_patterns": [
+    {
+      "pattern": "Inconsistent communication methods",
+      "why_it_matters": "Leads to confusion and missed opportunities with clients."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "Standardize communication channels",
+      "reason": "Provides clarity for clients and improves engagement.",
+      "effort": "low"
+    },
+    {
+      "step": "Set up regular check-ins with clients",
+      "reason": "Strengthens relationships and allows for feedback.",
+      "effort": "med"
+    },
+    {
+      "step": "Research tools for client management",
+      "reason": "Helps streamline operations and enhances client experience.",
+      "effort": "high"
+    }
+  ],
+  "questions_to_confirm": [
+    "What communication methods are currently in use?",
+    "How do clients prefer to be contacted?"
+  ],
+  "confidence": "med"
+}
+```

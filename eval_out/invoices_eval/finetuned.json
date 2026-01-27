@@ -1,0 +1,31 @@
+{
+  "summary": "Invoices are not being paid or aging properly. The smallest pattern is a low paid ratio, meaning more work is creating invoices than it's resolving. Until invoices are paid, they will take up more time and create friction. Clarifying why invoices are stuck will help resolve this first.",
+  "top_patterns": [
+    {
+      "pattern": "Low paid ratio means invoices are not resolving quickly.",
+      "why_it_matters": "Unpaid invoices create backlog and take time away from new work."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "Check in with clients about unpaid invoices.",
+      "reason": "Understanding why invoices are unpaid can help clear the backlog.",
+      "effort": "low"
+    },
+    {
+      "step": "Review and clarify your invoicing process.",
+      "reason": "A smooth, clear process can help prevent invoices from piling up.",
+      "effort": "med"
+    },
+    {
+      "step": "Protect time for client work while resolving invoice issues.",
+      "reason": "Balancing your calendar can prevent more invoices from stacking.",
+      "effort": "med"
+    }
+  ],
+  "questions_to_confirm": [
+    "How do you currently track unpaid invoices?",
+    "What feedback have you received about your invoicing process?"
+  ],
+  "confidence": "low"
+}

@@ -1,0 +1,30 @@
+{
+  "source": "jobber",
+  "type": "quotes",
+  "window": {
+    "days": 90,
+    "records": 27
+  },
+  "signals": {
+    "avg_quote_bucket": "unknown",
+    "quote_size_variance_bucket": "unknown",
+    "close_rate_bucket": "unknown",
+    "quote_to_close_latency_bucket": "unknown",
+    "discounting_pattern": "unknown"
+  },
+  "evidence": [
+    "Median quote: $0",
+    "Status not detected; close rate unknown",
+    "Quote->close latency unknown"
+  ],
+  "constraints": {
+    "tone": "quiet_founder",
+    "avoid": [
+      "dashboards",
+      "kpis",
+      "analytics",
+      "monitoring",
+      "bi"
+    ]
+  }
+}

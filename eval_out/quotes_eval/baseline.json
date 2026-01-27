@@ -1,0 +1,31 @@
+{
+  "summary": "You've generated 27 quotes in the last 90 days, but critical metrics like median quote size and close rate are undetermined. Understanding these aspects can help in refining your approach to quoting and improving conversion rates.",
+  "top_patterns": [
+    {
+      "pattern": "Undetermined metrics",
+      "why_it_matters": "Lack of clarity on key metrics may hinder your ability to strategize effectively."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "Review the quotes for trends in size and frequency.",
+      "reason": "Identifying patterns can inform better quoting practices.",
+      "effort": "low"
+    },
+    {
+      "step": "Communicate with clients to gather feedback on quotes.",
+      "reason": "Understanding client perceptions can guide improvements.",
+      "effort": "med"
+    },
+    {
+      "step": "Set up a method for tracking close rates and latencies.",
+      "reason": "This will help you monitor performance over time.",
+      "effort": "high"
+    }
+  ],
+  "questions_to_confirm": [
+    "What details are usually included in your quotes?",
+    "How often do you follow up with prospects after sending quotes?"
+  ],
+  "confidence": "low"
+}

@@ -209,20 +209,52 @@ async function main() {
     let rewrittenAllPass = true;
 
     for (let attempt = 0; attempt < args.repeats; attempt += 1) {
-      const completion = await client.chat.completions.create({
-        model,
-        messages: [
-          {
-            role: "system",
-            content:
-              "You are an internal 2ndmynd decision model. Your job is to reduce owner decision burden by identifying one pattern, one decision, and one boundary. Avoid dashboards, KPIs, monitoring, or performance language. Hard rule: Do NOT use these terms anywhere: dashboard, KPI, analytics, monitor/monitoring, BI, performance tracking, reporting. Rephrase if needed.",
+        const CONCLUSION_V1_JSON_SCHEMA = {
+          type: "object",
+          required: [
+            "conclusion_version",
+            "pattern_id",
+            "one_sentence_pattern",
+            "decision",
+            "boundary",
+            "why_this_now",
+            "confidence",
+            "evidence_signals",
+          ],
+          properties: {
+            conclusion_version: { type: "string", const: "conclusion_v1" },
+            pattern_id: { type: "string" },
+            one_sentence_pattern: { type: "string" },
+            decision: { type: "string" },
+            boundary: { type: "string" },
+            why_this_now: { type: "string" },
+            confidence: { type: "string", enum: ["low", "medium", "high"] },
+            evidence_signals: { type: "array", items: { type: "string" }, minItems: 3, maxItems: 6 },
           },
-          {
-            role: "user",
-            content: JSON.stringify(example.input_snapshot),
+          additionalProperties: false,
+        } as const;
+
+        const systemPrompt = `You must output a single JSON object that exactly matches the conclusion_v1 schema.\n- Output ONLY JSON. No markdown, no prose, no code fences.\n- Do not add wrapper keys like "raw_text".\n- If unsure, still fill the required fields with best-effort values. Never omit required keys.`;
+
+        const completion = await client.chat.completions.create({
+          model,
+          temperature: 0,
+          top_p: 0.1,
+          presence_penalty: 0,
+          frequency_penalty: 0,
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: JSON.stringify(example.input_snapshot) },
+          ],
+          response_format: {
+            type: "json_schema",
+            json_schema: {
+              name: "conclusion_v1",
+              strict: true,
+              schema: CONCLUSION_V1_JSON_SCHEMA,
+            },
           },
-        ],
-      });
+        });
 
       const content = completion.choices?.[0]?.message?.content ?? "";
       let parsed: any = null;

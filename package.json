@@ -52,12 +52,17 @@
     "ml:finetune:scenario": "tsx scripts/ml/openai_finetune_scenario.ts --train_dataset scenario_train_v1 --suffix 2ndmynd-scenario-v1",
     "ml:finetune:status": "tsx scripts/ml/openai_finetune_status.ts",
     "ml:finetune:events": "tsx scripts/ml/openai_finetune_events.ts",
-    "ml:finetune:canary": "tsx scripts/ml/openai_finetune_scenario.ts --train_dataset scenario_train_v1 --suffix 2ndmynd-scenario-canary-v2 --epochs 2 --lr_multiplier 1.0 --batch_size 1 --max_wait_minutes 240",
+    "ml:finetune:canary": "tsx scripts/ml/openai_finetune_scenario.ts --train_dataset scenario_train_v1 --suffix 2ndmynd-scenario-canary-v2 --epochs 2 --lr_multiplier 1.0 --max_wait_minutes 240",
     "ml:finetune:resume": "tsx scripts/ml/openai_finetune_scenario.ts --job_id",
     "ml:finetune:retry": "tsx scripts/ml/retry_scenario_finetune.ts",
     "ml:release-gate": "tsx scripts/ml/release_gate.ts --eval_dataset scenario_eval_v1 --activate true",
     "ml:scenarios:generate:canary": "tsx scripts/ml/generate_scenario_packs.ts --out_dir ./ml_scenarios --n_per_pattern 10 --include_negatives --hard_mode true --enable_fallback true --fallback_threshold 0.35 --only_patterns scheduling_window_pressure,quote_followup_drag,cash_timing_stretch,scope_instability_midjob --max_total_packs 80",
-    "ml:scenario:canary-loop": "tsx scripts/ml/scenario_canary_loop.ts --n_per_pattern 25 --max_total_packs 220 --suffix 2ndmynd-scenario-canary-v2"
+    "ml:scenario:canary-loop": "tsx scripts/ml/scenario_canary_loop.ts --n_per_pattern 25 --max_total_packs 220 --suffix 2ndmynd-scenario-canary-v2",
+    "ml:ft:create": "tsx scripts/ml/create_job_v2.ts",
+    "ml:ft:start": "tsx scripts/ml/start_ft_v2.ts",
+    "ml:ft:watchdog": "tsx scripts/ml/create_or_watchdog.ts",
+    "ml:ft:watchdog:mini": "cross-env FT_BASE_MODEL=gpt-4.1-mini tsx scripts/ml/create_or_watchdog.ts",
+    "ml:ft:watchdog:4o-mini": "cross-env FT_BASE_MODEL=gpt-4o-mini-2024-07-18 tsx scripts/ml/create_or_watchdog.ts"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
@@ -94,5 +99,6 @@
     "tsx": "^4.21.0",
     "tw-animate-css": "^1.4.0",
     "typescript": "^5"
+    ,"cross-env": "^7.0.3"
   }
 }

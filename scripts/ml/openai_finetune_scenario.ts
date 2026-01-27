@@ -19,7 +19,7 @@ type Args = {
   autoActivate: boolean;
   jobId?: string;
   epochs: number;
-  batchSize: number;
+  batchSize?: number;
   lrMultiplier: number;
   pollSeconds: number;
   maxWaitMinutes: number;
@@ -33,7 +33,6 @@ const DEFAULTS: Args = {
   registryName: "decision_model",
   autoActivate: false,
   epochs: 3,
-  batchSize: 1,
   lrMultiplier: 1.0,
   pollSeconds: 45,
   maxWaitMinutes: 240,
@@ -298,15 +297,19 @@ async function main() {
       purpose: "fine-tune",
     });
 
+    const hyperparameters: Record<string, number> = {
+      n_epochs: args.epochs,
+      learning_rate_multiplier: args.lrMultiplier,
+    };
+    if (args.batchSize !== undefined && Number.isFinite(args.batchSize)) {
+      hyperparameters.batch_size = args.batchSize;
+    }
+
     const job = await client.fineTuning.jobs.create({
       training_file: upload.id,
       model: args.baseModel,
       suffix: args.suffix,
-      hyperparameters: {
-        n_epochs: args.epochs,
-        batch_size: args.batchSize,
-        learning_rate_multiplier: args.lrMultiplier,
-      },
+      hyperparameters,
     });
 
     jobId = job.id;

@@ -1,0 +1,35 @@
+{
+  "summary": "Quotes are being created but few details are clear. A pattern has not yet formed around quote sizes or close rates.",
+  "top_patterns": [
+    {
+      "pattern": "Quotes mostly lack detail.",
+      "why_it_matters": "It's hard to understand why some quotes convert and others don’t."
+    },
+    {
+      "pattern": "No single quote size or close rate stands out.",
+      "why_it_matters": "This makes it difficult to identify and replicate a winning approach."
+    }
+  ],
+  "next_steps": [
+    {
+      "step": "Track the next few quotes more closely.",
+      "reason": "This will clarify how they convert and whether a pattern emerges.",
+      "effort": "low"
+    },
+    {
+      "step": "Explore why quotes are created but not closing.",
+      "reason": "Understanding this can help improve conversion rates.",
+      "effort": "med"
+    },
+    {
+      "step": "Consider a dedicated time to refine the quoting process.",
+      "reason": "A smoother process may help quotes convert more easily.",
+      "effort": "med"
+    }
+  ],
+  "questions_to_confirm": [
+    "How do quotes compare to past periods?",
+    "What are the reasons quotes don’t convert?"
+  ],
+  "confidence": "low"
+}

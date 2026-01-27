@@ -1,0 +1,29 @@
+{
+  "source": "jobber",
+  "type": "invoices",
+  "window": {
+    "days": 90,
+    "records": 26
+  },
+  "signals": {
+    "avg_invoice_bucket": "unknown",
+    "invoice_aging_bucket": "unknown",
+    "paid_ratio_bucket": "low",
+    "time_to_invoice_bucket": "unknown"
+  },
+  "evidence": [
+    "Median invoice: $0",
+    "Paid ratio: 0.0%",
+    "Invoice aging unknown"
+  ],
+  "constraints": {
+    "tone": "quiet_founder",
+    "avoid": [
+      "dashboards",
+      "kpis",
+      "analytics",
+      "monitoring",
+      "bi"
+    ]
+  }
+}
