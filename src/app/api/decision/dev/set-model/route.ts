@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-type SupabaseClientAny = ReturnType<typeof createClient<any>>;
-
 function ensureDevAccess(request: Request) {
   if (process.env.NODE_ENV === "production") {
     return { ok: false, status: 404, message: "Not found." };
@@ -30,7 +28,7 @@ export async function POST(request: Request) {
     );
   }
 
-  let payload: { model_id?: string };
+  let payload: unknown;
   try {
     payload = await request.json();
   } catch {
@@ -40,13 +38,21 @@ export async function POST(request: Request) {
     );
   }
 
-  const modelId = payload?.model_id?.trim();
-  if (!modelId) {
+  const isModelPayload = (
+    value: unknown
+  ): value is { model_id: string } => {
+    if (!value || typeof value !== "object") return false;
+    const candidate = value as { model_id?: unknown };
+    return typeof candidate.model_id === "string" && candidate.model_id.trim().length > 0;
+  };
+
+  if (!isModelPayload(payload)) {
     return NextResponse.json(
       { ok: false, code: "INVALID_INPUT", message: "model_id is required." },
       { status: 400 }
     );
   }
+  const modelId = payload.model_id.trim();
 
   if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return NextResponse.json(
@@ -55,7 +61,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = createClient<any>(
+  const supabase = createClient<unknown>(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY,
     { auth: { persistSession: false, autoRefreshToken: false } }

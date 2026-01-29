@@ -183,12 +183,19 @@ function rewriteConclusion(obj: unknown) {
   return { rewritten: rewritten.value, changed: rewritten.changed };
 }
 
-function getSignalRoot(snapshot: any) {
-  if (snapshot?.signals_flat && typeof snapshot.signals_flat === "object") {
-    return snapshot.signals_flat;
+type SnapshotSignalRoot = Record<string, unknown>;
+
+function getSignalRoot(snapshot: unknown): SnapshotSignalRoot | null {
+  if (!snapshot || typeof snapshot !== "object") return null;
+  const candidate = snapshot as {
+    signals_flat?: unknown;
+    signals?: unknown;
+  };
+  if (candidate.signals_flat && typeof candidate.signals_flat === "object") {
+    return candidate.signals_flat as SnapshotSignalRoot;
   }
-  if (snapshot?.signals && typeof snapshot.signals === "object") {
-    return snapshot.signals;
+  if (candidate.signals && typeof candidate.signals === "object") {
+    return candidate.signals as SnapshotSignalRoot;
   }
   return null;
 }
@@ -279,7 +286,7 @@ export async function getDecisionConclusion(inputSnapshot: unknown): Promise<
     return { ok: false, code: "OPENAI_ERROR", message: "missing Supabase env vars" };
   }
 
-  const supabase = createClient<any>(
+  const supabase = createClient<unknown>(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY,
     { auth: { persistSession: false, autoRefreshToken: false } }
@@ -398,4 +405,4 @@ export async function getDecisionConclusion(inputSnapshot: unknown): Promise<
 
   return { ok: true, conclusion: validated.conclusion, model: modelId };
 }
-type SupabaseClientAny = ReturnType<typeof createClient<any>>;
+type SupabaseClientAny = ReturnType<typeof createClient<unknown>>;

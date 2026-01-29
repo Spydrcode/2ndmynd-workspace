@@ -9,8 +9,8 @@ import {
   SeasonPhase,
   SeasonStrength,
   SeasonPredictability,
-} from "./lib/conclusion_schema_v2";
-import { PRIMARY_SYSTEM_PROMPT_V2 } from "./lib/decision_layer_v2";
+} from "../../lib/decision/v2/conclusion_schema_v2";
+import { PRIMARY_SYSTEM_PROMPT_V2 } from "../../lib/decision/v2/decision_layer_v2";
 
 type Args = {
   outTrain: string;

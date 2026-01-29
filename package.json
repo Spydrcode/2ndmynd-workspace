@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint src lib mcp --no-error-on-unmatched-pattern",
     "seed:jobber": "tsx scripts/seed/jobber_csv_to_ml_examples.ts --quotes ./seed/jobber/Quotes.csv --invoices ./seed/jobber/Invoices.csv",
     "ml:export-drafts": "tsx scripts/ml/export_drafts_for_review.ts --limit 20 --out ./ml_review/drafts.json",
     "ml:import-gold": "tsx scripts/ml/import_reviewed_gold.ts --in ./ml_review/drafts.json",
@@ -49,6 +49,11 @@
     "ml:eval:pattern": "tsx scripts/ml/eval_runner.ts --dataset scenario_eval_v1 --mode pattern_only",
     "ml:eval:compare": "tsx scripts/ml/eval_compare_models.ts --dataset scenario_eval_v1 --mode full",
     "ml:eval:decision:v2": "tsx scripts/ml/eval_decision_v2.ts",
+    "ml:run-dataset-v2": "tsx scripts/ml/run_dataset_v2.ts",
+    "ml:pack:jobber-v2": "tsx scripts/ml/convert_jobber_csv_to_pack_v2.ts",
+    "ml:pack:decision-v2": "tsx scripts/ml/convert_decision_v2_jsonl_to_pack.ts",
+    "ml:pack:kaggle": "tsx scripts/ml/convert_kaggle_snapshots_to_pack.ts",
+    "ml:run:mock_companies": "tsx scripts/ml/run_mock_company_csvs_v2.ts",
     "ml:backfill:meta": "tsx scripts/ml/backfill_examples_meta.ts",
     "ml:diag:eval-db": "tsx scripts/ml/diag_eval_db.ts",
     "ml:scenarios:rebuild-eval": "tsx scripts/ml/rebuild_scenario_eval_v1.ts --packs_dir ./ml_scenarios",
@@ -66,9 +71,11 @@
     "ml:ft:start": "tsx scripts/ml/start_ft_v2.ts",
     "ml:ft:watchdog": "tsx scripts/ml/create_or_watchdog.ts",
     "ml:ft:watchdog:mini": "cross-env FT_BASE_MODEL=gpt-4.1-mini tsx scripts/ml/create_or_watchdog.ts",
-    "ml:ft:watchdog:4o-mini": "cross-env FT_BASE_MODEL=gpt-4o-mini-2024-07-18 tsx scripts/ml/create_or_watchdog.ts"
+    "ml:ft:watchdog:4o-mini": "cross-env FT_BASE_MODEL=gpt-4o-mini-2024-07-18 tsx scripts/ml/create_or_watchdog.ts",
+    "mcp:server": "tsx mcp/server.ts"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-dropdown-menu": "^2.1.16",

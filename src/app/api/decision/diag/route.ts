@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-type SupabaseClientAny = ReturnType<typeof createClient<any>>;
+type SupabaseClientAny = ReturnType<typeof createClient<unknown>>;
 
 async function getRegistryModel(supabase: SupabaseClientAny) {
   const { data, error } = await supabase
@@ -50,7 +50,7 @@ export async function GET() {
     });
   }
 
-  const supabase = createClient<any>(
+  const supabase = createClient<unknown>(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY,
     { auth: { persistSession: false, autoRefreshToken: false } }

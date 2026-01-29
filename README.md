@@ -86,6 +86,51 @@ npm run ml:finetune:status -- --job_id <id>
 npm run ml:finetune:events -- --job_id <id> --tail 100
 ```
 
+## MCP server (Decision Layer v2 tools)
+
+Run the MCP server over stdio:
+
+```bash
+npm run mcp:server
+```
+
+Example MCP client config snippet:
+
+```json
+{
+  "mcpServers": {
+    "2ndmynd-decision-v2": {
+      "command": "npm",
+      "args": ["run", "mcp:server"],
+      "cwd": "."
+    }
+  }
+}
+```
+
+Example tool calls:
+
+```json
+{
+  "tool": "decision.infer_v2",
+  "arguments": {
+    "snapshot": { "snapshot_version": "snapshot_v2" }
+  }
+}
+```
+
+```json
+{
+  "tool": "datasets.run_mock_pack_v2",
+  "arguments": {
+    "zip_path": "C:/path/to/mock_company_datasets_3mo_plus_outlier.zip",
+    "debug": false
+  }
+}
+```
+
+Logs go to `ml_artifacts/mock_companies_3mo/run_results.jsonl` (and `debug_run_results.jsonl` when debug is true).
+
 ## Scenario data grounding
 
 Scenario packs add evidence grounding by requiring `evidence_signals` (3–6 keys that must exist in the snapshot). This is a short grounding list tied to the snapshot, not KPI or monitoring language.

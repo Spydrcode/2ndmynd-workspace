@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
-import { SnapshotV2 } from "./lib/conclusion_schema_v2";
-import { inferDecisionV2 } from "./lib/decision_infer_v2";
+import { SnapshotV2 } from "../../lib/decision/v2/conclusion_schema_v2";
+import { inferDecisionV2 } from "../../lib/decision/v2/decision_infer_v2";
 
 type Args = {
   model?: string;

@@ -6,12 +6,13 @@ import {
   SnapshotV2,
   validateConclusionV2,
   validateEvidenceSignalsAgainstSnapshotV2,
-} from "./lib/conclusion_schema_v2";
-import { inferDecisionV2 } from "./lib/decision_infer_v2";
-import { DEFAULT_DECISION_MODEL_ID } from "./lib/decision_layer_v2";
+} from "../../lib/decision/v2/conclusion_schema_v2";
+import { inferDecisionV2 } from "../../lib/decision/v2/decision_infer_v2";
+import { DEFAULT_DECISION_MODEL_ID } from "../../lib/decision/v2/decision_layer_v2";
 
 type Args = {
   input: string;
+  replay?: string;
   model?: string;
   limit?: number;
   out?: string;
@@ -41,6 +42,9 @@ function parseArgs(argv: string[]): Args {
     switch (key) {
       case "--in":
         args.input = value;
+        break;
+      case "--replay":
+        args.replay = value;
         break;
       case "--model":
         args.model = value;
@@ -106,7 +110,13 @@ function appendPatchQueue(pathStr: string, record: Record<string, unknown>) {
 }
 
 function decisionStartsWithVerb(decision: string) {
-  const first = decision.trim().split(/\s+/)[0]?.toLowerCase() ?? "";
+  let text = decision.trim();
+  text = text.replace(
+    /^within\s+\d+\s*(minutes?|hours?|days?|weeks?)\s*[:\-–]\s*/i,
+    ""
+  );
+  text = text.replace(/^within\s+\d+\s*(minutes?|hours?|days?|weeks?)\s+/i, "");
+  const first = text.split(/\s+/)[0]?.toLowerCase().replace(/[^a-z]/g, "") ?? "";
   const verbs = [
     "assign",
     "review",
@@ -151,9 +161,11 @@ function seasonContextOk(seasonContext: string) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  ensureEnv();
+  if (!args.replay) {
+    ensureEnv();
+  }
 
-  const inputPath = path.resolve(args.input);
+  const inputPath = path.resolve(args.replay ?? args.input);
   if (!fs.existsSync(inputPath)) {
     console.error(`Missing input: ${inputPath}`);
     process.exit(1);
@@ -162,8 +174,6 @@ async function main() {
   const lines = fs.readFileSync(inputPath, "utf8").split(/\r?\n/).filter(Boolean);
   const limit = args.limit ? Math.min(args.limit, lines.length) : lines.length;
   const model = args.model ?? process.env.TEST_MODEL ?? DEFAULT_DECISION_MODEL_ID;
-
-  const useMicroRewrite = Boolean(args.microRewriteDecision);
 
   let total = 0;
   let schemaFail = 0;
@@ -182,32 +192,53 @@ async function main() {
   let decisionRewriteFailed = 0;
   let decisionRewriteTriggered = 0;
   let decisionRewriteChangedText = 0;
+  let decisionPatchApplied = 0;
 
   const rows: any[] = [];
 
   for (let i = 0; i < limit; i += 1) {
-    const snapshot = extractSnapshotFromJsonl(lines[i]);
-    if (!snapshot) continue;
+    let snapshot: SnapshotV2 | null = null;
+    let parsed: any = null;
+    let decisionBefore = "";
+    let decisionAfter = "";
 
-  let parsed: any = null;
-  let raw = "";
-  let decisionBefore = "";
-  let decisionAfter = "";
+    if (args.replay) {
+      try {
+        const record = JSON.parse(lines[i]);
+        snapshot = (record.snapshot as SnapshotV2) ?? null;
+        parsed = record.conclusion ?? null;
+        decisionBefore = parsed?.decision ?? "";
+        decisionAfter = parsed?.decision ?? "";
+      } catch {
+        continue;
+      }
+    } else {
+      snapshot = extractSnapshotFromJsonl(lines[i]);
+      if (!snapshot) continue;
+    }
 
-    const result = await inferDecisionV2(snapshot, {
-      model,
-      micro_rewrite_decision: useMicroRewrite,
-      patch_queue_path: "",
-    });
-    parsed = result.conclusion;
-    decisionBefore = result.decision_before ?? parsed.decision;
-    decisionAfter = result.decision_after ?? parsed.decision;
-    if (result.micro_rewrite_triggered) decisionRewriteTriggered += 1;
-    if (result.micro_rewrite_attempted) decisionRewriteUsed += 1;
-    if (result.micro_rewrite_applied) decisionRewriteApplied += 1;
-    if (result.micro_rewrite_failed) decisionRewriteFailed += 1;
-    if (result.micro_rewrite_changed_text) decisionRewriteChangedText += 1;
+    let raw = "";
+
+    if (!args.replay && snapshot) {
+      const result = await inferDecisionV2(snapshot, {
+        model,
+        patch_queue_path: "",
+      });
+      parsed = result.conclusion;
+      decisionBefore = result.decision_before ?? parsed.decision;
+      decisionAfter = result.decision_after ?? parsed.decision;
+      if (result.micro_rewrite_triggered) decisionRewriteTriggered += 1;
+      if (result.micro_rewrite_attempted) decisionRewriteUsed += 1;
+      if (result.micro_rewrite_applied) decisionRewriteApplied += 1;
+      if (result.micro_rewrite_failed) decisionRewriteFailed += 1;
+      if (result.micro_rewrite_changed_text) decisionRewriteChangedText += 1;
+      if (result.decision_patch_applied) decisionPatchApplied += 1;
+    }
     total += 1;
+
+    if (!snapshot) {
+      continue;
+    }
 
     if (!parsed) {
       schemaFail += 1;
@@ -219,24 +250,26 @@ async function main() {
       seasonFail += 1;
       rewriteTriggerCount += 1;
       fallbackTriggerCount += 1;
-      appendPatchQueue(args.patchQueue!, {
-        ts: new Date().toISOString(),
-        model,
-        example_id: sha256(stableStringify(snapshot)),
-        snapshot,
-        output_raw: raw,
-        checks_failed: [
-          "schema",
-          "grounding",
-          "forbidden",
-          "decision_verb",
-          "decision_timebox",
-          "boundary_format",
-          "season_context",
-        ],
-        expected_decision_pattern: "<verb> ... within <timebox>",
-        expected_boundary_pattern: "If ...",
-      });
+      if (!args.replay) {
+        appendPatchQueue(args.patchQueue!, {
+          ts: new Date().toISOString(),
+          model,
+          example_id: sha256(stableStringify(snapshot)),
+          snapshot,
+          output_raw: raw,
+          checks_failed: [
+            "schema",
+            "grounding",
+            "forbidden",
+            "decision_verb",
+            "decision_timebox",
+            "boundary_format",
+            "season_context",
+          ],
+          expected_decision_pattern: "<verb> ... within <timebox>",
+          expected_boundary_pattern: "If ...",
+        });
+      }
       continue;
     }
 
@@ -300,11 +333,6 @@ async function main() {
 
   const passRate = (failCount: number) => (total ? (total - failCount) / total : 0);
   const failRate = (failCount: number) => (total ? failCount / total : 0);
-  if (!useMicroRewrite) {
-    decisionVerbFailAfter = decisionVerbFail;
-    decisionTimeFailAfter = decisionTimeFail;
-  }
-
   const summary = {
     total,
     schema_fail_rate: failRate(schemaFail),
@@ -343,9 +371,8 @@ async function main() {
     decision_rewrite_applied: `${decisionRewriteApplied} / ${total}`,
     decision_rewrite_failed: `${decisionRewriteFailed} / ${total}`,
     decision_rewrite_changed_text: `${decisionRewriteChangedText} / ${total}`,
-    notes: useMicroRewrite
-      ? "after = post micro-rewrite when enabled; rewrite/fallback executed inside inferDecisionV2"
-      : "micro-rewrite disabled; rewrite/fallback executed inside inferDecisionV2",
+    decision_patch_applied: `${decisionPatchApplied} / ${total}`,
+    notes: "after = post deterministic decision patch when verb/timebox fail; rewrite/fallback executed inside inferDecisionV2",
   };
 
   console.log("Decision Layer v2 eval summary:");
