@@ -42,6 +42,7 @@ export const CashLagBucketSchema = z.enum([
   "over_45_days",
   "unknown",
 ]);
+// Reserved for future cash-lag analysis (not used in v1 snapshot).
 export type CashLagBucket = z.infer<typeof CashLagBucketSchema>;
 export const CASH_LAG_BUCKETS = CashLagBucketSchema.options;
 
@@ -142,6 +143,8 @@ export const ArtifactSchema = z.object({
   title: z.string().min(1),
   created_at: IsoDateTimeSchema,
   cohort_id: z.string().min(1),
+  baseline_id: z.string().min(1).optional(),
+  envelope_id: z.string().min(1).optional(),
   sections: z.array(
     z.object({
       heading: z.string().min(1),

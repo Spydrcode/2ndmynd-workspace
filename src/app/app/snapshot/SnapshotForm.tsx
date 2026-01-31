@@ -10,9 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const DEMO_SHAPES = [
-  { id: "typical", label: "Typical", basePath: "/fixtures/snapshot", cohortId: "local_service_general" },
-  { id: "small_job_heavy", label: "Small-job heavy", basePath: "/fixtures/snapshot/demo_small_job_heavy", cohortId: "local_service_high_volume" },
-  { id: "high_concentration", label: "High concentration", basePath: "/fixtures/snapshot/demo_high_concentration", cohortId: "local_service_project_heavy" },
+  { id: "typical", label: "Typical", basePath: "/fixtures/snapshot" },
+  { id: "small_job_heavy", label: "Small-job heavy", basePath: "/fixtures/snapshot/demo_small_job_heavy" },
+  { id: "high_concentration", label: "High concentration", basePath: "/fixtures/snapshot/demo_high_concentration" },
 ] as const;
 type DemoShapeId = (typeof DEMO_SHAPES)[number]["id"];
 
@@ -23,7 +23,6 @@ export default function SnapshotForm() {
   const [demoShape, setDemoShape] = useState<DemoShapeId>("typical");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const defaultCohortId = "local_service_general";
 
   async function fetchDemoFiles(basePath: string) {
     const [quotesRes, invoicesRes] = await Promise.all([
@@ -48,7 +47,11 @@ export default function SnapshotForm() {
     try {
       const selected = DEMO_SHAPES.find((s) => s.id === demoShape) ?? DEMO_SHAPES[0];
       const demo = await fetchDemoFiles(selected.basePath);
-      await runSnapshot({ cohortId: selected.cohortId, quotesFile: demo.quotesFile, invoicesFile: demo.invoicesFile });
+      await runSnapshot({
+        demoShapeId: selected.id,
+        quotesFile: demo.quotesFile,
+        invoicesFile: demo.invoicesFile,
+      });
     } catch (e) {
       setError(
         e instanceof Error
@@ -63,10 +66,10 @@ export default function SnapshotForm() {
   async function runSnapshot(params: {
     quotesFile?: File;
     invoicesFile?: File;
-    cohortId: string;
+    demoShapeId?: string;
   }) {
     const formData = new FormData();
-    formData.set("cohort_id", params.cohortId);
+    if (params.demoShapeId) formData.set("demo_shape_id", params.demoShapeId);
     if (params.quotesFile) formData.set("quotes_csv", params.quotesFile);
     if (params.invoicesFile) formData.set("invoices_csv", params.invoicesFile);
 
@@ -94,7 +97,6 @@ export default function SnapshotForm() {
     setError(null);
     try {
       await runSnapshot({
-        cohortId: defaultCohortId,
         quotesFile: quotesFile ?? undefined,
         invoicesFile: invoicesFile ?? undefined,
       });

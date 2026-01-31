@@ -1,0 +1,26 @@
+{
+  "envelope_id": "local_service_stable_v1",
+  "run_id": "90e0f3f5-840a-47ff-b37d-afbf1b982631",
+  "computed_at": "2026-01-31T14:47:29.769Z",
+  "results": {
+    "job_mix": "outside_range",
+    "decision_lag": "outside_range",
+    "concentration": "within_range"
+  },
+  "outside_keys": [
+    "job_value.micro",
+    "job_value.small",
+    "job_value.medium",
+    "job_value.large",
+    "decision_lag.same_day",
+    "decision_lag.1_3_days",
+    "decision_lag.4_7_days",
+    "decision_lag.8_14_days",
+    "decision_lag.unknown"
+  ],
+  "health_notes": [
+    "This check compares the snapshot to a low-pressure operating range, not an ideal target.",
+    "Decision timing is outside the stable range, which can quietly add pressure through follow-up loops and re-planning.",
+    "Job mix is outside the stable range, which often shows up as context switching and scattered attention."
+  ]
+}

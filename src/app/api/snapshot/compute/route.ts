@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { loadBaseline } from "@/lib/snapshot/baseline";
-import { loadCalibrationDefaults } from "@/lib/snapshot/calibration";
+import { loadCalibrationDefaults, resolveBorderlineMargin, resolveConcentrationRiskDeltas } from "@/lib/snapshot/calibration";
 import { COHORTS } from "@/lib/snapshot/cohorts";
 import { compareToBaseline } from "@/lib/snapshot/deviation";
 import { compareToHealthyEnvelope, loadHealthyEnvelope } from "@/lib/snapshot/healthy";
@@ -40,96 +40,126 @@ export async function POST(request: Request) {
     );
   }
 
-  let input: { cohort_id?: string; quotes?: unknown; invoices?: unknown } | null = null;
   try {
-    input = await readJSON(runId, "input.json");
-  } catch {
-    // If input.json is gone, assume this run was already computed.
+    let input: { cohort_id?: string; quotes?: unknown; invoices?: unknown } | null = null;
+    try {
+      input = await readJSON(runId, "input.json");
+    } catch {
+      // If input.json is gone, assume this run was already computed (artifact exists).
+      try {
+        await readJSON(runId, "artifact.json");
+        return NextResponse.json({ runId, resultUrl: `/app/snapshot/result/${runId}` });
+      } catch {
+        return NextResponse.json(
+          {
+            ok: false,
+            code: "MISSING_INPUT",
+            message: "Snapshot input not found. Generate a new snapshot.",
+          },
+          { status: 400 }
+        );
+      }
+    }
+
+    const cohortId =
+      typeof input?.cohort_id === "string" && input.cohort_id.trim()
+        ? input.cohort_id.trim()
+        : "local_service_general";
+
+    const quotesCandidate = Array.isArray(input?.quotes) ? input.quotes : [];
+    const invoicesCandidate = Array.isArray(input?.invoices) ? input.invoices : [];
+
+    const quotesParsed = QuoteRecordSchema.array().safeParse(quotesCandidate);
+    const invoicesParsed = InvoiceRecordSchema.array().safeParse(invoicesCandidate);
+
+    const quotes = quotesParsed.success ? quotesParsed.data : [];
+    const invoices = invoicesParsed.success ? invoicesParsed.data : [];
+
+    const config = COHORTS[cohortId];
+    if (!config) {
+      return NextResponse.json(
+        {
+          ok: false,
+          code: "UNKNOWN_COHORT",
+          message: "Unknown cohort configuration. This run cannot be computed.",
+        },
+        { status: 400 }
+      );
+    }
+
+    const meta = (await readJSON(runId, "meta.json").catch(() => ({}))) as Record<string, unknown>;
+    await writeJSON(runId, "meta.json", {
+      ...meta,
+      cohort_id: meta.cohort_id ?? cohortId,
+      baseline_id: config.baseline_id,
+      envelope_id: config.envelope_id,
+      calibration_id: config.calibration_id ?? "defaults_v1",
+    });
+
+    if (quotes.length === 0 && invoices.length === 0) {
+      return NextResponse.json(
+        {
+          ok: false,
+          code: "EMPTY_INPUT",
+          message:
+            "No usable rows were found in your exports. Try re-exporting quotes/invoices and generate a fresh snapshot.",
+        },
+        { status: 400 }
+      );
+    }
+
+    const companyProfile = computeCompanyProfile({
+      runId,
+      quotes,
+      invoices,
+    });
+
+    const [baseline, envelope, calibration] = await Promise.all([
+      loadBaseline(config.baseline_id),
+      loadHealthyEnvelope(config.envelope_id),
+      loadCalibrationDefaults(config.calibration_id ?? "defaults_v1"),
+    ]);
+
+    const concentrationRiskDeltas = resolveConcentrationRiskDeltas(calibration);
+    const deviation = compareToBaseline(companyProfile, baseline, {
+      ...calibration.recommended_delta_thresholds,
+      concentration: concentrationRiskDeltas,
+    });
+    const healthComparison = compareToHealthyEnvelope(companyProfile, envelope, {
+      borderline_margin: resolveBorderlineMargin(calibration),
+    });
+
+    const narrative = generateNarrative({
+      company: companyProfile,
+      baseline,
+      envelope,
+      deviation,
+      health: healthComparison,
+    });
+
+    const deviationWithNarrative = {
+      ...deviation,
+      deviation_notes: narrative.insights,
+      recommended_decision: narrative.recommended_decision,
+    };
+
+    const artifact = buildArtifact({
+      company: companyProfile,
+      baseline,
+      deviation: deviationWithNarrative,
+      envelope,
+      health: healthComparison,
+      narrative,
+    });
+
+    await writeJSON(runId, "companyProfile.json", companyProfile);
+    await writeJSON(runId, "deviationSummary.json", deviationWithNarrative);
+    await writeJSON(runId, "healthComparison.json", healthComparison);
+    await writeJSON(runId, "artifact.json", artifact);
+
     return NextResponse.json({ runId, resultUrl: `/app/snapshot/result/${runId}` });
+  } finally {
+    // Privacy guarantee: raw input is deleted after any compute attempt (success or error).
+    await deleteFile(runId, "input.json");
   }
-
-  const cohortId =
-    typeof input?.cohort_id === "string" && input.cohort_id.trim()
-      ? input.cohort_id.trim()
-      : "local_service_general";
-
-  const quotesCandidate = Array.isArray(input?.quotes) ? input.quotes : [];
-  const invoicesCandidate = Array.isArray(input?.invoices) ? input.invoices : [];
-
-  const quotesParsed = QuoteRecordSchema.array().safeParse(quotesCandidate);
-  const invoicesParsed = InvoiceRecordSchema.array().safeParse(invoicesCandidate);
-
-  const quotes = quotesParsed.success ? quotesParsed.data : [];
-  const invoices = invoicesParsed.success ? invoicesParsed.data : [];
-
-  if (quotes.length === 0 && invoices.length === 0) {
-    return NextResponse.json(
-      {
-        ok: false,
-        code: "EMPTY_INPUT",
-        message:
-          "No usable rows were found in your exports. Try re-exporting quotes/invoices and generate a fresh snapshot.",
-      },
-      { status: 400 }
-    );
-  }
-
-  const companyProfile = computeCompanyProfile({
-    runId,
-    quotes,
-    invoices,
-  });
-
-  const config = COHORTS[cohortId];
-  if (!config) {
-    return NextResponse.json(
-      {
-        ok: false,
-        code: "UNKNOWN_COHORT",
-        message: "Unknown cohort configuration. This run cannot be computed.",
-      },
-      { status: 400 }
-    );
-  }
-
-  const [baseline, envelope, calibration] = await Promise.all([
-    loadBaseline(config.baseline_id),
-    loadHealthyEnvelope(config.envelope_id),
-    loadCalibrationDefaults(config.calibration_id ?? "defaults_v1"),
-  ]);
-
-  const deviation = compareToBaseline(companyProfile, baseline, calibration.recommended_delta_thresholds);
-  const healthComparison = compareToHealthyEnvelope(companyProfile, envelope);
-
-  const narrative = generateNarrative({
-    company: companyProfile,
-    baseline,
-    envelope,
-    deviation,
-    health: healthComparison,
-  });
-
-  const deviationWithNarrative = {
-    ...deviation,
-    deviation_notes: narrative.insights,
-    recommended_decision: narrative.recommended_decision,
-  };
-
-  const artifact = buildArtifact({
-    company: companyProfile,
-    baseline,
-    deviation: deviationWithNarrative,
-    envelope,
-    health: healthComparison,
-    narrative,
-  });
-
-  await writeJSON(runId, "companyProfile.json", companyProfile);
-  await writeJSON(runId, "deviationSummary.json", deviationWithNarrative);
-  await writeJSON(runId, "healthComparison.json", healthComparison);
-  await writeJSON(runId, "artifact.json", artifact);
-
-  await deleteFile(runId, "input.json");
-
-  return NextResponse.json({ runId, resultUrl: `/app/snapshot/result/${runId}` });
 }

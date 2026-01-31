@@ -10,26 +10,29 @@ import type {
   HealthyEnvelope,
 } from "./schema";
 import { HealthComparisonSchema, HealthyEnvelopeSchema } from "./schema";
+import { BORDERLINE_MARGIN as DEFAULT_BORDERLINE_MARGIN } from "./calibration";
 
 const ENVELOPES_DIR = path.join(process.cwd(), "fixtures", "healthy_envelopes");
 
-const BORDERLINE_MARGIN = 0.03;
-
-function classifyRange(value: number, range: { min: number; max: number }): HealthBand {
-  if (value < range.min - BORDERLINE_MARGIN || value > range.max + BORDERLINE_MARGIN) {
+function classifyRange(
+  value: number,
+  range: { min: number; max: number },
+  borderlineMargin: number
+): HealthBand {
+  if (value < range.min - borderlineMargin || value > range.max + borderlineMargin) {
     return "outside_range";
   }
   if (value < range.min || value > range.max) return "borderline";
-  if (Math.abs(value - range.min) <= BORDERLINE_MARGIN || Math.abs(value - range.max) <= BORDERLINE_MARGIN) {
+  if (Math.abs(value - range.min) <= borderlineMargin || Math.abs(value - range.max) <= borderlineMargin) {
     return "borderline";
   }
   return "within_range";
 }
 
-function classifyMax(value: number, max: number): HealthBand {
-  if (value > max + BORDERLINE_MARGIN) return "outside_range";
+function classifyMax(value: number, max: number, borderlineMargin: number): HealthBand {
+  if (value > max + borderlineMargin) return "outside_range";
   if (value > max) return "borderline";
-  if (max - value <= BORDERLINE_MARGIN) return "borderline";
+  if (max - value <= borderlineMargin) return "borderline";
   return "within_range";
 }
 
@@ -49,18 +52,20 @@ export async function loadHealthyEnvelope(envelopeId: string): Promise<HealthyEn
 
 export function compareToHealthyEnvelope(
   company: CompanyProfile,
-  envelope: HealthyEnvelope
+  envelope: HealthyEnvelope,
+  options?: { borderline_margin?: number }
 ): HealthComparison {
+  const borderlineMargin = options?.borderline_margin ?? DEFAULT_BORDERLINE_MARGIN;
   const jobBands: Array<{ key: string; band: HealthBand }> = [];
   for (const [bucket, range] of Object.entries(envelope.job_value_ranges)) {
     const value = (company.job_value_distribution as Record<string, number>)[bucket] ?? 0;
-    jobBands.push({ key: `job_value.${bucket}`, band: classifyRange(value, range) });
+    jobBands.push({ key: `job_value.${bucket}`, band: classifyRange(value, range, borderlineMargin) });
   }
 
   const lagBands: Array<{ key: string; band: HealthBand }> = [];
   for (const [bucket, range] of Object.entries(envelope.decision_lag_ranges)) {
     const value = (company.decision_lag_distribution as Record<string, number>)[bucket] ?? 0;
-    lagBands.push({ key: `decision_lag.${bucket}`, band: classifyRange(value, range) });
+    lagBands.push({ key: `decision_lag.${bucket}`, band: classifyRange(value, range, borderlineMargin) });
   }
 
   const concentrationBands: Array<{ key: string; band: HealthBand }> = [
@@ -68,14 +73,16 @@ export function compareToHealthyEnvelope(
       key: "concentration.top_10_percent_jobs_share",
       band: classifyMax(
         company.revenue_concentration.top_10_percent_jobs_share,
-        envelope.revenue_concentration_ranges.top_10_percent_jobs_share.max
+        envelope.revenue_concentration_ranges.top_10_percent_jobs_share.max,
+        borderlineMargin
       ),
     },
     {
       key: "concentration.top_25_percent_jobs_share",
       band: classifyMax(
         company.revenue_concentration.top_25_percent_jobs_share,
-        envelope.revenue_concentration_ranges.top_25_percent_jobs_share.max
+        envelope.revenue_concentration_ranges.top_25_percent_jobs_share.max,
+        borderlineMargin
       ),
     },
   ];
@@ -163,4 +170,3 @@ export function chooseRecommendedDecision(params: {
 
   return params.deviation.recommended_decision;
 }
-

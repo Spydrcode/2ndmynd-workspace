@@ -1,0 +1,33 @@
+{
+  "run_id": "90e0f3f5-840a-47ff-b37d-afbf1b982631",
+  "computed_at": "2026-01-31T14:47:29.768Z",
+  "sample_size": {
+    "quotes": 34,
+    "invoices": 34
+  },
+  "job_value_distribution": {
+    "micro": 0.4117647058823529,
+    "small": 0.5588235294117647,
+    "medium": 0.029411764705882353,
+    "large": 0,
+    "jumbo": 0
+  },
+  "decision_lag_distribution": {
+    "same_day": 0.029411764705882353,
+    "1_3_days": 0.058823529411764705,
+    "4_7_days": 0.029411764705882353,
+    "8_14_days": 0,
+    "15_30_days": 0,
+    "over_30_days": 0,
+    "unknown": 0.8823529411764706
+  },
+  "revenue_concentration": {
+    "top_10_percent_jobs_share": 0.24632499006754072,
+    "top_25_percent_jobs_share": 0.4862932061978546
+  },
+  "quote_to_invoice_flow": {
+    "approved": 0.11764705882352941,
+    "stalled": 0.8235294117647058,
+    "dropped": 0.058823529411764705
+  }
+}

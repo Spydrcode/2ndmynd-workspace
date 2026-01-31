@@ -34,6 +34,8 @@ export function buildArtifact(params: {
     title: "Operational Pattern Snapshot",
     created_at: createdAt,
     cohort_id: params.baseline.cohort_id,
+    baseline_id: params.baseline.cohort_id,
+    envelope_id: params.envelope.envelope_id,
     sections: narrative.sections,
     charts: [
       { id: "jobValue", title: "Job value distribution" },

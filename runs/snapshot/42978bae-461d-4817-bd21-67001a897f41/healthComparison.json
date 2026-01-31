@@ -1,0 +1,23 @@
+{
+  "envelope_id": "local_service_stable_v1",
+  "run_id": "42978bae-461d-4817-bd21-67001a897f41",
+  "computed_at": "2026-01-31T14:47:29.679Z",
+  "results": {
+    "job_mix": "outside_range",
+    "decision_lag": "outside_range",
+    "concentration": "outside_range"
+  },
+  "outside_keys": [
+    "job_value.medium",
+    "decision_lag.1_3_days",
+    "decision_lag.4_7_days",
+    "decision_lag.unknown",
+    "concentration.top_25_percent_jobs_share"
+  ],
+  "health_notes": [
+    "This check compares the snapshot to a low-pressure operating range, not an ideal target.",
+    "Decision timing is outside the stable range, which can quietly add pressure through follow-up loops and re-planning.",
+    "Job mix is outside the stable range, which often shows up as context switching and scattered attention.",
+    "Revenue concentration is outside the stable range, so a few jobs can carry outsized pressure when they move."
+  ]
+}

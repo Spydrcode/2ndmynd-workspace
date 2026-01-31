@@ -1,5 +1,6 @@
 import type { BaselineProfile, CompanyProfile, DeviationSummary } from "./schema";
 import { DECISION_LAG_BUCKETS, MONEY_BUCKETS } from "./schema";
+import { CONCENTRATION_HIGH_DELTA, CONCENTRATION_MEDIUM_DELTA } from "./calibration";
 
 function biggestByAbsDelta(candidates: Array<{ key: string; delta: number }>) {
   let best: { key: string; delta: number } | null = null;
@@ -12,7 +13,15 @@ function biggestByAbsDelta(candidates: Array<{ key: string; delta: number }>) {
 export function compareToBaseline(
   company: CompanyProfile,
   baseline: BaselineProfile,
-  thresholds?: { job_value?: number; decision_lag?: number; flow?: number }
+  thresholds?: {
+    job_value?: number;
+    decision_lag?: number;
+    flow?: number;
+    concentration?: {
+      medium?: { top_10_percent_jobs_share: number; top_25_percent_jobs_share: number };
+      high?: { top_10_percent_jobs_share: number; top_25_percent_jobs_share: number };
+    };
+  }
 ): DeviationSummary {
   const over: string[] = [];
   const under: string[] = [];
@@ -20,6 +29,8 @@ export function compareToBaseline(
   const jobValueThreshold = thresholds?.job_value ?? 0.12;
   const decisionLagThreshold = thresholds?.decision_lag ?? 0.12;
   const flowThreshold = thresholds?.flow ?? 0.12;
+  const concentrationMedium = thresholds?.concentration?.medium ?? CONCENTRATION_MEDIUM_DELTA;
+  const concentrationHigh = thresholds?.concentration?.high ?? CONCENTRATION_HIGH_DELTA;
 
   for (const bucket of MONEY_BUCKETS) {
     const delta = company.job_value_distribution[bucket] - baseline.job_value_distribution[bucket];
@@ -49,9 +60,15 @@ export function compareToBaseline(
   const bTop25 = baseline.revenue_concentration.top_25_percent_jobs_share;
 
   let concentrationRisk: "low" | "medium" | "high" = "low";
-  if (cTop10 >= bTop10 + 0.15 || cTop25 >= bTop25 + 0.2) {
+  if (
+    cTop10 >= bTop10 + concentrationHigh.top_10_percent_jobs_share ||
+    cTop25 >= bTop25 + concentrationHigh.top_25_percent_jobs_share
+  ) {
     concentrationRisk = "high";
-  } else if (cTop10 >= bTop10 + 0.08 || cTop25 >= bTop25 + 0.12) {
+  } else if (
+    cTop10 >= bTop10 + concentrationMedium.top_10_percent_jobs_share ||
+    cTop25 >= bTop25 + concentrationMedium.top_25_percent_jobs_share
+  ) {
     concentrationRisk = "medium";
   }
 

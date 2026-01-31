@@ -1,0 +1,24 @@
+{
+  "cohort_id": "local_service_general_v1",
+  "run_id": "42978bae-461d-4817-bd21-67001a897f41",
+  "computed_at": "2026-01-31T14:47:29.678Z",
+  "significant_overindex": [
+    "decision_lag.unknown",
+    "flow.stalled"
+  ],
+  "significant_underindex": [
+    "decision_lag.4_7_days",
+    "decision_lag.8_14_days",
+    "flow.approved"
+  ],
+  "concentration_risk": "low",
+  "deviation_notes": [
+    "This snapshot is an outside perspective on the operational shape in your exports, compared to a typical baseline.",
+    "Decisions appear to take longer than the baseline in a meaningful way, which can quietly add pressure through follow-up and rescheduling.",
+    "If this feels heavy, it may be due to a few small shape differences compounding at once, even if none are extreme alone.",
+    "This check compares the snapshot to a low-pressure operating range, not an ideal target.",
+    "Decision timing is outside the stable range, which can quietly add pressure through follow-up loops and re-planning.",
+    "Job mix is outside the stable range, which often shows up as context switching and scattered attention."
+  ],
+  "recommended_decision": "Protect time for follow-up on medium/large quotes so decisions don’t stall."
+}

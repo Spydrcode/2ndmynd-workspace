@@ -48,6 +48,7 @@ export function bucketCashLag(
   createdAtISO: string,
   paidAtISO?: string | null
 ): CashLagBucket {
+  // Reserved for future cash-lag analysis (not used in v1 snapshot).
   if (!paidAtISO) return "unknown";
   const createdAt = safeDateFromIso(createdAtISO);
   const paidAt = safeDateFromIso(paidAtISO);
@@ -116,4 +117,3 @@ export function normalizeStatus(raw: string, kind: "quote" | "invoice") {
   if (["sent", "open", "issued"].includes(token)) return "sent" satisfies InvoiceStatus;
   return "unknown" satisfies InvoiceStatus;
 }
-

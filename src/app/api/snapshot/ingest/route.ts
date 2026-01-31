@@ -10,6 +10,12 @@ import { writeJSON } from "@/lib/snapshot/storage";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+const DEMO_SHAPE_TO_COHORT: Record<string, string> = {
+  typical: "local_service_general",
+  small_job_heavy: "local_service_high_volume",
+  high_concentration: "local_service_project_heavy",
+};
+
 function normalizeHeader(raw: string) {
   return (raw ?? "")
     .trim()
@@ -57,11 +63,16 @@ async function fileToText(value: FormDataEntryValue) {
 export async function POST(request: Request) {
   const formData = await request.formData();
 
+  const demoShapeRaw = formData.get("demo_shape_id");
+  const demoShapeId = typeof demoShapeRaw === "string" ? demoShapeRaw.trim() : "";
+  const mappedCohortId = demoShapeId ? DEMO_SHAPE_TO_COHORT[demoShapeId] : undefined;
+
   const cohortIdRaw = formData.get("cohort_id");
   const cohortId =
-    typeof cohortIdRaw === "string" && cohortIdRaw.trim()
+    mappedCohortId ??
+    (typeof cohortIdRaw === "string" && cohortIdRaw.trim()
       ? cohortIdRaw.trim()
-      : "local_service_general";
+      : "local_service_general");
 
   const quotesFile = formData.get("quotes_csv");
   const invoicesFile = formData.get("invoices_csv");

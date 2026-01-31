@@ -28,14 +28,14 @@ export default async function SnapshotResultPage(props: {
 
   let artifact: Artifact;
   let company: CompanyProfile;
-  let cohortId: string;
+  let baselineId: string;
   let health: HealthComparison | null = null;
 
   try {
     artifact = (await readJSON(runId, "artifact.json")) as Artifact;
     company = (await readJSON(runId, "companyProfile.json")) as CompanyProfile;
-    const meta = (await readJSON(runId, "meta.json")) as { cohort_id?: string };
-    cohortId = typeof meta?.cohort_id === "string" ? meta.cohort_id : artifact.cohort_id;
+    const meta = (await readJSON(runId, "meta.json")) as { baseline_id?: string };
+    baselineId = artifact.baseline_id ?? meta?.baseline_id ?? artifact.cohort_id;
     try {
       health = (await readJSON(runId, "healthComparison.json")) as HealthComparison;
     } catch {
@@ -45,7 +45,7 @@ export default async function SnapshotResultPage(props: {
     notFound();
   }
 
-  const baseline = await loadBaseline(cohortId);
+  const baseline = await loadBaseline(baselineId);
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6 py-8">
