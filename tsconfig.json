@@ -19,6 +19,7 @@
       }
     ],
     "paths": {
+      "@/lib/snapshot/*": ["./src/lib/snapshot/*"],
       "@/*": ["./*"]
     }
   },

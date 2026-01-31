@@ -1,0 +1,26 @@
+{
+  "envelope_id": "local_service_stable_v1",
+  "version": "0.1",
+  "created_at": "2026-01-01T00:00:00.000Z",
+  "job_value_ranges": {
+    "micro": { "min": 0.0, "max": 0.15 },
+    "small": { "min": 0.25, "max": 0.4 },
+    "medium": { "min": 0.3, "max": 0.45 },
+    "large": { "min": 0.1, "max": 0.25 },
+    "jumbo": { "min": 0.0, "max": 0.1 }
+  },
+  "decision_lag_ranges": {
+    "same_day": { "min": 0.1, "max": 0.3 },
+    "1_3_days": { "min": 0.2, "max": 0.35 },
+    "4_7_days": { "min": 0.15, "max": 0.3 },
+    "8_14_days": { "min": 0.05, "max": 0.2 },
+    "15_30_days": { "min": 0.0, "max": 0.15 },
+    "over_30_days": { "min": 0.0, "max": 0.05 },
+    "unknown": { "min": 0.0, "max": 0.1 }
+  },
+  "revenue_concentration_ranges": {
+    "top_10_percent_jobs_share": { "max": 0.45 },
+    "top_25_percent_jobs_share": { "max": 0.65 }
+  }
+}
+

@@ -1,0 +1,18 @@
+{
+  "version": "0.1",
+  "generated_at": "2026-01-01T00:00:00.000Z",
+  "recommended_delta_thresholds": {
+    "job_value": 0.12,
+    "decision_lag": 0.12,
+    "flow": 0.12
+  },
+  "recommended_concentration_max": {
+    "top_10_percent_jobs_share": 0.45,
+    "top_25_percent_jobs_share": 0.65
+  },
+  "notes": [
+    "Starter defaults committed for determinism. Use `npm run calib:hf` offline to regenerate and review.",
+    "HF datasets are used only to stress-test heavy tails and timing patterns; they are never a runtime dependency."
+  ]
+}
+
