@@ -2,15 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  FileText,
-  Home,
-  Inbox,
-  Link2,
-  Lightbulb,
-  Shield,
-  Video,
-} from "lucide-react";
+import { FileText, Home, Inbox, UploadCloud, Video } from "lucide-react";
 
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { SheetClose } from "@/components/ui/sheet";
@@ -18,12 +10,10 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { title: "Home", href: "/app", icon: Home },
-  { title: "Insights", href: "/app/insights", icon: Lightbulb },
-  { title: "Analysis", href: "/app/analysis", icon: FileText },
-  { title: "Requests", href: "/app/requests", icon: Inbox },
-  { title: "Connections", href: "/app/connections", icon: Link2 },
-  { title: "Zoom Portal", href: "/app/zoom", icon: Video },
-  { title: "Remote Access", href: "/app/remote", icon: Shield },
+  { title: "Connect", href: "/app/connect", icon: Inbox },
+  { title: "Upload exports", href: "/app/upload", icon: UploadCloud },
+  { title: "Runs", href: "/app/runs", icon: FileText },
+  { title: "Remote Assist", href: "/app/remote-assist", icon: Video },
 ];
 
 type SidebarNavProps = {

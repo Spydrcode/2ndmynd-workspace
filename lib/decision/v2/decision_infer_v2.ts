@@ -1,6 +1,8 @@
 import crypto from "node:crypto";
 import OpenAI from "openai";
 
+import { getIntelligenceConfig } from "../../intelligence/intelligence_config";
+import { RunLogger } from "../../intelligence/run_logger";
 import { scanObjectForForbidden } from "../forbidden";
 import {
   SnapshotV2,
@@ -54,6 +56,14 @@ type CallResult = {
   parsed: ConclusionV2 | null;
 };
 
+type InferDecisionV2Options = {
+  model?: string;
+  micro_rewrite_decision?: boolean;
+  patch_queue_path?: string;
+  run_id?: string;
+  logger?: RunLogger;
+};
+
 function stableStringify(value: unknown): string {
   if (value === null || typeof value !== "object") {
     return JSON.stringify(value);
@@ -92,16 +102,38 @@ function insufficientEvidenceFallback(snapshot: SnapshotV2): ConclusionV2 {
   };
 }
 
+function buildMockConclusion(snapshot: SnapshotV2, seed: number): ConclusionV2 {
+  const seedPayload = `${seed}:${stableStringify(snapshot)}`;
+  const patternHash = sha256(seedPayload).slice(0, 12);
+
+  return {
+    conclusion_version: "conclusion_v2",
+    pattern_id: `mock_${patternHash}`,
+    one_sentence_pattern: "Quote follow-up timing is drifting relative to recent invoice activity.",
+    decision: "Within 7 days: Review quote follow-up timing and assign a follow-up owner.",
+    why_this_now: `Recent signals show ${snapshot.activity_signals.quotes.quotes_count} quotes and ${snapshot.activity_signals.invoices.invoices_count} invoices with ${snapshot.volatility_band} volatility.`,
+    boundary:
+      "If approval rates remain below target or decision lag stays elevated, confirm mappings before taking action.",
+    confidence: snapshot.window?.sample_confidence ?? "medium",
+    evidence_signals: deterministicEvidencePatch(snapshot),
+    season_context: `Season phase is ${snapshot.season.phase} with ${snapshot.season.strength} strength and ${snapshot.season.predictability} predictability.`,
+    optional_next_steps: ["verify input data", "review follow-up cadence"],
+  };
+}
+
 async function callModel(
   client: OpenAI,
   model: string,
   systemPrompt: string,
-  userPayload: unknown
+  userPayload: unknown,
+  options?: { temperature?: number; top_p?: number }
 ): Promise<CallResult> {
+  const temperature = typeof options?.temperature === "number" ? options.temperature : 0;
+  const top_p = typeof options?.top_p === "number" ? options.top_p : 0.1;
   const resp = await client.responses.create({
     model,
-    temperature: 0,
-    top_p: 0.1,
+    temperature,
+    top_p,
     presence_penalty: 0,
     frequency_penalty: 0,
     input: [
@@ -376,16 +408,125 @@ function shouldApplyEvidencePatch(snapshot: SnapshotV2) {
 
 export async function inferDecisionV2(
   snapshot: SnapshotV2,
-  options?: { model?: string; micro_rewrite_decision?: boolean; patch_queue_path?: string }
+  options?: InferDecisionV2Options
 ): Promise<InferDecisionV2Result> {
+  const config = getIntelligenceConfig();
+  const logger = options?.logger ?? (options?.run_id ? new RunLogger(options.run_id) : undefined);
+  const startedAt = Date.now();
+  logger?.logEvent("infer.start", { mode: config.mode });
+
+  const model = options?.model ?? process.env.TEST_MODEL ?? DEFAULT_DECISION_MODEL_ID;
+
+  if (config.mode === "mock") {
+    let output = buildMockConclusion(snapshot, config.seed);
+    let schema = validateConclusionV2(output);
+    let grounding = validateEvidenceSignalsAgainstSnapshotV2(snapshot, output.evidence_signals);
+    let forbidden = scanObjectForForbidden(output);
+
+    if (!grounding.ok) {
+      output = {
+        ...output,
+        evidence_signals: deterministicEvidencePatch(snapshot),
+      };
+      grounding = validateEvidenceSignalsAgainstSnapshotV2(snapshot, output.evidence_signals);
+      forbidden = scanObjectForForbidden(output);
+    }
+
+    if (!schema.ok) {
+      output = insufficientEvidenceFallback(snapshot);
+      schema = validateConclusionV2(output);
+      grounding = validateEvidenceSignalsAgainstSnapshotV2(snapshot, output.evidence_signals);
+      forbidden = scanObjectForForbidden(output);
+    }
+
+    const seasonAdjusted = applySeasonConfidence(output, snapshot);
+    output = seasonAdjusted.output;
+
+    const checks: DecisionChecks = {
+      schema_ok: schema.ok,
+      grounding_ok: grounding.ok,
+      forbidden_ok: forbidden.terms.length === 0,
+      boundary_ok: boundaryStartsWithIf(output.boundary),
+      season_context_ok: seasonContextOk(output.season_context),
+      decision_verb_ok: decisionStartsWithVerb(output.decision),
+      decision_timebox_ok: decisionTimeBoxed(output.decision),
+    };
+
+    const decisionPatchEligible = !checks.decision_verb_ok && !checks.decision_timebox_ok;
+    const decisionPatchReason: "verb" | "timebox" | "both" | null = decisionPatchEligible ? "both" : null;
+
+    const decisionOriginal = output.decision;
+    let decisionPatchApplied = false;
+    const decisionBefore: string | undefined = output.decision;
+    let decisionAfter: string | undefined = output.decision;
+
+    if (decisionPatchEligible) {
+      const patched = deterministicDecisionPatch(output.decision);
+      if (patched !== output.decision) {
+        output = {
+          ...output,
+          decision: patched,
+        };
+        decisionPatchApplied = true;
+        decisionAfter = output.decision;
+      }
+    }
+
+    const decisionAfterChecks = {
+      decision_verb_ok: decisionStartsWithVerb(output.decision),
+      decision_timebox_ok: decisionTimeBoxed(output.decision),
+    };
+
+    const result: InferDecisionV2Result = {
+      conclusion: output,
+      model_id: model,
+      primary_ok: true,
+      rewrite_used: false,
+      fallback_used: false,
+      decision_rewrite_used: false,
+      decision_rewrite_applied: false,
+      decision_rewrite_failed: false,
+      decision_patch_applied: decisionPatchApplied,
+      decision_patch_reason: decisionPatchReason,
+      decision_original: decisionPatchApplied ? decisionOriginal : undefined,
+      primary_raw: undefined,
+      rewrite_raw: undefined,
+      micro_rewrite_attempted: false,
+      micro_rewrite_applied: false,
+      micro_rewrite_failed: false,
+      micro_rewrite_reason: null,
+      micro_rewrite_triggered: false,
+      micro_rewrite_changed_text: false,
+      micro_rewrite_raw_json: undefined,
+      micro_rewrite_triggered_reason: null,
+      decision_before: decisionBefore,
+      decision_after: decisionAfter,
+      decision_after_checks: decisionAfterChecks,
+      schema_errors: schema.ok ? [] : schema.errors,
+      grounding_errors: grounding.ok ? [] : grounding.errors,
+      grounding_errors_raw: grounding.errors,
+      forbidden_terms: forbidden.terms,
+      season_warnings: seasonAdjusted.warnings,
+    };
+
+    logger?.logDuration("infer.complete", startedAt, {
+      mode: "mock",
+      primary_ok: result.primary_ok,
+    });
+
+    return result;
+  }
+
   if (!process.env.OPENAI_API_KEY) {
     throw new Error("Missing OPENAI_API_KEY environment variable.");
   }
 
-  const model = options?.model ?? process.env.TEST_MODEL ?? DEFAULT_DECISION_MODEL_ID;
   const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-  const primary = await callModel(client, model, PRIMARY_SYSTEM_PROMPT_V2, snapshot);
+  const primary = await callModel(client, model, PRIMARY_SYSTEM_PROMPT_V2, snapshot, {
+    temperature: config.temperature,
+    top_p: config.top_p,
+  });
 
   let output = primary.parsed;
   let schema = output ? validateConclusionV2(output) : { ok: false, errors: ["parse_failed"] };
@@ -407,7 +548,8 @@ export async function inferDecisionV2(
       client,
       model,
       REWRITE_SYSTEM_PROMPT_V2,
-      { snapshot, bad_output: output ?? primary.raw }
+      { snapshot, bad_output: output ?? primary.raw },
+      { temperature: config.temperature, top_p: config.top_p }
     );
     rewriteRaw = repaired.raw;
     output = repaired.parsed;
@@ -494,7 +636,7 @@ export async function inferDecisionV2(
     decision_timebox_ok: decisionTimeBoxed(output.decision),
   };
 
-  return {
+  const result: InferDecisionV2Result = {
     conclusion: output,
     model_id: model,
     primary_ok: Boolean(primary.parsed && schema.ok && grounding.ok && forbidden.terms.length === 0),
@@ -525,4 +667,11 @@ export async function inferDecisionV2(
     forbidden_terms: forbidden.terms,
     season_warnings: seasonAdjusted.warnings,
   };
+
+  logger?.logDuration("infer.complete", startedAt, {
+    mode: "live",
+    primary_ok: result.primary_ok,
+  });
+
+  return result;
 }

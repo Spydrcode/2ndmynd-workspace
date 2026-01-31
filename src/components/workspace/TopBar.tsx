@@ -46,13 +46,13 @@ export function TopBar() {
           {businessName}
         </Link>
         <Badge variant="secondary" className="rounded-full text-xs">
-          UI v0
+          Quiet mode
         </Badge>
       </div>
 
       <div className="flex items-center gap-2">
         <Button asChild className="hidden sm:inline-flex">
-          <Link href="/app/analysis">Open latest artifact</Link>
+          <Link href="/app/runs">Latest snapshot</Link>
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -63,9 +63,9 @@ export function TopBar() {
           <DropdownMenuContent align="end" className="w-48">
             <DropdownMenuLabel>Workspace</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Summary (soon)</DropdownMenuItem>
-            <DropdownMenuItem>Request history</DropdownMenuItem>
-            <DropdownMenuItem>Guidelines</DropdownMenuItem>
+            <DropdownMenuItem>Workspace settings</DropdownMenuItem>
+            <DropdownMenuItem>Export history</DropdownMenuItem>
+            <DropdownMenuItem>Runbook</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

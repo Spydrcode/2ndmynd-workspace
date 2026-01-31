@@ -1,130 +1,121 @@
 import Link from "next/link";
-import { ArrowRight, MessagesSquare, Sparkles } from "lucide-react";
+import { ArrowRight, UploadCloud, Video } from "lucide-react";
 
-import { ArtifactPreview } from "@/src/components/workspace/ArtifactPreview";
-import { InsightCard } from "@/src/components/workspace/InsightCard";
 import { PageHeader } from "@/src/components/workspace/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { latestArtifact } from "@/src/lib/demo/demoData";
+import { createSupabaseServerClient } from "@/src/lib/supabase/server";
+import { getStore } from "@/src/lib/intelligence/store";
 
-export default function AppHomePage() {
+export default async function AppHomePage() {
+  const supabase = createSupabaseServerClient();
+  const { data } = await supabase.auth.getUser();
+  const user = data.user;
+
+  const store = getStore();
+  const workspace = user ? await store.ensureWorkspaceForUser(user.id, user.email) : null;
+  const runs = workspace ? await store.listRuns(workspace.id) : [];
+  const latest = runs[0];
+
   return (
     <div className="space-y-8">
       <PageHeader
-        title="Decision room overview"
-        subtitle="A calm workspace for finite artifacts: one conclusion, a clear boundary, and suggested next steps with messaging in mind."
+        title="Latest snapshot"
+        subtitle="Finite decision artifacts: one conclusion, a boundary, and the next step to take."
         actions={
-          <>
-            <Button asChild variant="outline">
-              <Link href="/app/connections">View connections</Link>
-            </Button>
-            <Button asChild>
-              <Link href="/app/requests">
-                Start a request
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </>
+          <Button asChild>
+            <Link href="/app/upload">
+              Upload exports
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
         }
       />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <ArtifactPreview
-            title={latestArtifact.title}
-            date={latestArtifact.date}
-            decision={latestArtifact.decision}
-            boundary={latestArtifact.boundary}
-            why={latestArtifact.why}
-          />
-        </div>
-        <div className="space-y-6">
-          <Card className="rounded-2xl border border-border/60 bg-background/80">
-            <CardHeader>
-              <CardTitle className="text-base font-semibold">
-                Suggested next steps
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground">
-              {latestArtifact.nextSteps.map((step, index) => (
-                <div key={step} className="space-y-2">
-                  <div className="flex items-start gap-3">
-                    <span className="mt-1 flex h-6 w-6 items-center justify-center rounded-full bg-muted text-xs text-foreground">
-                      {index + 1}
-                    </span>
-                    <p>{step}</p>
-                  </div>
-                  {index < latestArtifact.nextSteps.length - 1 ? (
-                    <Separator />
-                  ) : null}
-                </div>
-              ))}
-            </CardContent>
-          </Card>
+        <Card className="lg:col-span-2 rounded-2xl border border-border/60 bg-background/90">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">Most recent run</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 text-sm text-muted-foreground">
+            {latest ? (
+              <>
+                <p>
+                  Run ID:{" "}
+                  <span className="font-mono text-foreground">{latest.run_id}</span>
+                </p>
+                <p>Status: {latest.status}</p>
+                <Button asChild variant="outline" size="sm">
+                  <Link href={`/app/results/${latest.run_id}`}>Open results</Link>
+                </Button>
+              </>
+            ) : (
+              <p>No runs yet. Upload exports to generate your first snapshot.</p>
+            )}
+          </CardContent>
+        </Card>
 
-          <InsightCard
-            title="Insights"
-            bullets={latestArtifact.insights}
-            icon={Sparkles}
-          />
-        </div>
+        <Card className="rounded-2xl border border-border/60 bg-background/90">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">
+              Quick actions
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
+            <Button asChild className="w-full justify-start" variant="outline">
+              <Link href="/app/connect">
+                <UploadCloud className="mr-2 h-4 w-4" />
+                Connect & Upload
+              </Link>
+            </Button>
+            <Button asChild className="w-full justify-start" variant="outline">
+              <Link href="/app/remote-assist">
+                <Video className="mr-2 h-4 w-4" />
+                Remote Assist
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
+
+      <Separator />
 
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="rounded-2xl border border-border/60 bg-background/90">
           <CardHeader>
             <CardTitle className="text-base font-semibold">
-              Request an outside perspective
+              What you get
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-muted-foreground">
-            <p>
-              Bring a question, boundary, and draft conclusion. We will respond
-              with one clear next step.
-            </p>
-            <Button asChild size="sm">
-              <Link href="/app/requests">
-                Open request composer
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
+          <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <p>1. Business summary from your site.</p>
+            <p>2. One-sentence pattern.</p>
+            <p>3. Clear next step with boundary.</p>
           </CardContent>
         </Card>
 
         <Card className="rounded-2xl border border-border/60 bg-background/90">
           <CardHeader>
             <CardTitle className="text-base font-semibold">
-              Messaging alignment
+              No dashboards
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-muted-foreground">
-            <p>
-              Capture the message tied to the conclusion so the team moves in one
-              direction.
-            </p>
-            <Button asChild variant="outline" size="sm">
-              <Link href="/app/analysis">Review the artifact</Link>
-            </Button>
+          <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <p>We only surface the latest snapshot.</p>
+            <p>Re-run when you want a fresh read.</p>
           </CardContent>
         </Card>
 
         <Card className="rounded-2xl border border-border/60 bg-background/90">
-          <CardHeader className="flex flex-row items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-muted text-foreground">
-              <MessagesSquare className="h-4 w-4" />
-            </div>
-            <CardTitle className="text-base font-semibold">Connections</CardTitle>
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">
+              Quiet, practical tone
+            </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-sm text-muted-foreground">
-            <p>
-              Connect scheduling, video, or request-only access to support the
-              decision room.
-            </p>
-            <Button asChild variant="outline" size="sm">
-              <Link href="/app/connections">Browse connections</Link>
-            </Button>
+          <CardContent className="space-y-2 text-sm text-muted-foreground">
+            <p>Finite artifacts, not monitoring.</p>
+            <p>Clarity over volume.</p>
           </CardContent>
         </Card>
       </div>

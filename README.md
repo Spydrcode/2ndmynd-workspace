@@ -131,9 +131,53 @@ Example tool calls:
 
 Logs go to `ml_artifacts/mock_companies_3mo/run_results.jsonl` (and `debug_run_results.jsonl` when debug is true).
 
+## Connect & Upload (Client Workflow)
+
+This workflow avoids OAuth connectors. Clients upload exports and receive a single finite snapshot: a conclusion, boundary, and next steps.
+
+### Required env vars (local)
+
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `INTELLIGENCE_MODE=mock` (default)
+
+### Routes
+
+- `/login` - email magic link
+- `/app/connect` - choose Upload Exports or Remote Assist
+- `/app/upload` - guided export upload
+- `/app/runs` - list of snapshot runs
+- `/app/results/[run_id]` - finite artifact view
+
+### Local quickstart
+
+```bash
+npm run dev
+```
+
+Open `/login`, request a magic link, and then upload exports at `/app/upload`.
+
+Artifacts and run logs are written to `runs/<run_id>.jsonl`.
+
+## Intelligence Layer: How to Run
+
+These harnesses default to mock mode (no `OPENAI_API_KEY` required). To run live inference, set `INTELLIGENCE_MODE=live` and provide `OPENAI_API_KEY`.
+
+```bash
+npm run mcp:selftest
+npm run intelligence:smoke
+npm run intelligence:eval
+npm run intelligence:green
+```
+
+Outputs:
+- `runs/<run_id>.jsonl` for per-run logs
+- `runs/summary.json` for eval summary
+
 ## Scenario data grounding
 
-Scenario packs add evidence grounding by requiring `evidence_signals` (3–6 keys that must exist in the snapshot). This is a short grounding list tied to the snapshot, not KPI or monitoring language.
+Scenario packs add evidence grounding by requiring `evidence_signals` (3-6 keys that must exist in the snapshot). This is a short grounding list tied to the snapshot, not KPI or monitoring language.
 
 ### Kaggle shape sources (signals only)
 

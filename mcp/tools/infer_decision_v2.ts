@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 
 import { inferDecisionV2 } from "../../lib/decision/v2/decision_infer_v2";
 import { SnapshotV2 } from "../../lib/decision/v2/conclusion_schema_v2";
+import { RunLogger } from "../../lib/intelligence/run_logger";
 
 export const tool = {
   name: "decision.infer_v2",
@@ -15,6 +16,7 @@ export const tool = {
       model_id: { type: "string" },
       micro_rewrite_decision: { type: "boolean" },
       debug: { type: "boolean" },
+      run_id: { type: "string" },
     },
   },
 } as const;
@@ -24,17 +26,22 @@ export type InferDecisionV2Args = {
   model_id?: string;
   micro_rewrite_decision?: boolean;
   debug?: boolean;
+  run_id?: string;
 };
 
 export async function handler(args: InferDecisionV2Args) {
+  const run_id = args.run_id ?? crypto.randomUUID();
+  const logger = new RunLogger(run_id);
   const result = await inferDecisionV2(args.snapshot, {
     model: args.model_id,
     micro_rewrite_decision: args.micro_rewrite_decision,
     patch_queue_path: process.env.PATCH_QUEUE_PATH ?? "ml_artifacts/patch_queue.jsonl",
+    run_id,
+    logger,
   });
 
   const meta = {
-    run_id: crypto.randomUUID(),
+    run_id,
     model_id: result.model_id,
     rewrite_used: result.rewrite_used,
     fallback_used: result.fallback_used,

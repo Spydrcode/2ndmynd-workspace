@@ -21,7 +21,7 @@ export default function Home() {
             and suggested next steps.
           </p>
           <Button asChild>
-            <Link href="/app">Launch Workspace</Link>
+            <Link href="/login">Enter workspace</Link>
           </Button>
         </CardContent>
       </Card>

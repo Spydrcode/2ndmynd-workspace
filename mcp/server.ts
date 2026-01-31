@@ -5,19 +5,7 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 
-import * as inferDecisionV2Tool from "./tools/infer_decision_v2";
-import * as validateConclusionV2Tool from "./tools/validate_conclusion_v2";
-import * as runMockPackV2Tool from "./tools/run_mock_pack_v2";
-import * as runPipelineV2Tool from "./tools/run_pipeline_v2";
-
-type ToolHandler = (args: Record<string, unknown>) => Promise<unknown> | unknown;
-
-const toolRegistry = [
-  { tool: inferDecisionV2Tool.tool, handler: inferDecisionV2Tool.handler as ToolHandler },
-  { tool: validateConclusionV2Tool.tool, handler: validateConclusionV2Tool.handler as ToolHandler },
-  { tool: runMockPackV2Tool.tool, handler: runMockPackV2Tool.handler as ToolHandler },
-  { tool: runPipelineV2Tool.tool, handler: runPipelineV2Tool.handler as ToolHandler },
-];
+import { listTools, callTool, compileSchemasSelfTest } from "./tool_registry";
 
 function shouldSelfTest(argv: string[]) {
   if (process.env.MCP_SELFTEST === "1") return true;
@@ -30,18 +18,12 @@ const server = new Server(
 );
 
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: toolRegistry.map((entry) => entry.tool),
+  tools: listTools(),
 }));
 
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const toolName = request.params.name;
-  const entry = toolRegistry.find((item) => item.tool.name === toolName);
-  if (!entry) {
-    throw new Error(`Unknown tool: ${toolName}`);
-  }
-
   const args = (request.params.arguments ?? {}) as Record<string, unknown>;
-  const result = await entry.handler(args);
+  const result = await callTool(request.params.name, args);
   return {
     content: [
       {
@@ -54,10 +36,17 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 
 async function main() {
   if (shouldSelfTest(process.argv.slice(2))) {
-    toolRegistry.forEach((entry) => {
-      console.log(entry.tool.name);
-    });
-    return;
+    try {
+      compileSchemasSelfTest();
+      listTools().forEach((tool) => {
+        console.log(tool.name);
+      });
+      return;
+    } catch (error) {
+      console.error("MCP selftest failed.");
+      console.error(error instanceof Error ? error.message : String(error));
+      process.exit(1);
+    }
   }
   const transport = new StdioServerTransport();
   await server.connect(transport);

@@ -1,0 +1,3 @@
+Invoice ID,Issued At,Paid At,Status,Total
+INV-2001,2025-11-02,2025-11-10,Paid,875.25
+INV-2002,2025-11-07,,Open,640.00
