@@ -19,11 +19,11 @@ function formatDate(iso: string) {
 }
 
 export default async function SnapshotResultPage(props: {
-  params: { runId: string };
-  searchParams?: Record<string, string | string[] | undefined>;
+  params: Promise<{ runId: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const { runId } = props.params;
-  const searchParams = props.searchParams ?? {};
+  const { runId } = await props.params;
+  const searchParams = (await props.searchParams) ?? {};
   const print = searchParams.print === "1";
 
   let artifact: Artifact;

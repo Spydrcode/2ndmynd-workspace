@@ -26,6 +26,16 @@ function parseDate(value?: string) {
   const cleaned = value.toString().trim();
   if (!cleaned) return undefined;
   const date = new Date(cleaned);
+  if (Number.isNaN(date.getTime())) {
+    // Common export format: "YYYY-MM-DD HH:MM:SS"
+    const isoLike = cleaned.match(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)
+      ? `${cleaned.replace(" ", "T")}Z`
+      : null;
+    if (isoLike) {
+      const retry = new Date(isoLike);
+      return Number.isNaN(retry.getTime()) ? undefined : retry.toISOString();
+    }
+  }
   return Number.isNaN(date.getTime()) ? undefined : date.toISOString();
 }
 
@@ -39,6 +49,7 @@ function mapStatus(value?: string, type?: "quote" | "invoice" | "job" | "custome
     if (raw.includes("draft")) return "draft";
   }
   if (type === "invoice") {
+    if (raw.includes("unpaid")) return "open";
     if (raw.includes("paid")) return "paid";
     if (raw.includes("overdue")) return "overdue";
     if (raw.includes("void")) return "void";
@@ -106,11 +117,14 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
     jobs: 0,
     customers: 0,
     warnings: [],
+    file_categories: {},
   };
 
   parsed.forEach((file) => {
     const headers = file.rows[0] ? Object.keys(file.rows[0]) : [];
     const category = detectCategory(headers);
+    stats.file_categories = stats.file_categories ?? {};
+    stats.file_categories[category] = (stats.file_categories[category] ?? 0) + 1;
     if (category === "unknown") {
       stats.warnings.push(`Could not classify ${file.filename}`);
       return;
@@ -133,11 +147,37 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
 
       if (category === "invoices") {
         pack.invoices?.push({
-          id: cleanText(pickValue(row, ["invoiceid", "number", "id"])),
+          id: cleanText(
+            pickValue(row, ["invoiceid", "invoice#", "invoicenumber", "number", "id", "invoice"])
+          ),
           status: mapStatus(pickValue(row, ["status", "state"]), "invoice"),
-          issued_at: parseDate(pickValue(row, ["issuedat", "date", "invoicedate"])),
-          paid_at: parseDate(pickValue(row, ["paidat", "paymentdate", "closedat"])),
-          total: parseNumber(pickValue(row, ["total", "amount", "balance"])),
+          issued_at: parseDate(
+            pickValue(row, [
+              "issuedat",
+              "issueddate",
+              "invoicedate",
+              "createdat",
+              "createddate",
+              "date",
+              "dateissued",
+            ])
+          ),
+          paid_at: parseDate(
+            pickValue(row, ["paidat", "paiddate", "markedpaiddate", "paymentdate", "closedat"])
+          ),
+          total: parseNumber(
+            pickValue(row, [
+              "total",
+              "total$",
+              "totalamount",
+              "amount",
+              "balance",
+              "balance$",
+              "pretaxtotal$",
+              "subtotal",
+              "subtotal$",
+            ])
+          ),
         });
         stats.invoices += 1;
         continue;

@@ -15,8 +15,8 @@ function buildBaseUrl(request: NextRequest) {
   return "http://localhost:3000";
 }
 
-export async function GET(request: NextRequest, context: { params: { runId: string } }) {
-  const { runId } = context.params;
+export async function GET(request: NextRequest, context: { params: Promise<{ runId: string }> }) {
+  const { runId } = await context.params;
 
   try {
     const cached = await readBuffer(runId, "artifact.pdf");

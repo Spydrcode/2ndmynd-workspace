@@ -1,8 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useActionState, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useFormState } from "react-dom";
 import { ArrowRight, UploadCloud } from "lucide-react";
 
 import { runUploadAction } from "./actions";
@@ -37,7 +36,7 @@ export default function UploadPage() {
   const [step, setStep] = useState<Step>(1);
   const [tool, setTool] = useState<string>("Jobber");
   const [website, setWebsite] = useState<string>(searchParams.get("website") ?? "");
-  const [formState, formAction] = useFormState(runUploadAction, {});
+  const [formState, formAction] = useActionState(runUploadAction, {});
 
   const checklist = useMemo(() => EXPORT_CHECKLIST[tool] ?? EXPORT_CHECKLIST.Other, [tool]);
   const progress = (step / 4) * 100;

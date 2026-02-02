@@ -6,19 +6,22 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/src/lib/supabase/server";
 import { getStore } from "@/src/lib/intelligence/store";
 import { runAnalysisFromPack } from "@/src/lib/intelligence/run_analysis";
+import type { DataPackStats, DataPackV0 } from "@/src/lib/intelligence/data_pack_v0";
 import { RunLogger } from "@/lib/intelligence/run_logger";
 
 export async function rerunSnapshot(formData: FormData) {
   const packId = String(formData.get("pack_id") ?? "");
   if (!packId) return;
 
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
   const user = data.user;
-  if (!user) return;
+  const actor = user
+    ? { id: user.id, email: user.email }
+    : { id: "local-dev-user", email: null };
 
   const store = getStore();
-  const workspace = await store.ensureWorkspaceForUser(user.id, user.email);
+  const workspace = await store.ensureWorkspaceForUser(actor.id, actor.email);
   const runCount = await store.countRunsToday(workspace.id);
   if (runCount >= 5) {
     return;
@@ -41,7 +44,8 @@ export async function rerunSnapshot(formData: FormData) {
   try {
     const result = await runAnalysisFromPack({
       run_id,
-      pack: pack.normalized_json as any,
+      pack: pack.normalized_json as DataPackV0,
+      pack_stats: pack.stats_json as DataPackStats,
     });
     await store.updateRun(run_id, {
       status: result.validation.ok ? "succeeded" : "failed",
@@ -51,6 +55,9 @@ export async function rerunSnapshot(formData: FormData) {
         snapshot: result.snapshot,
         conclusion: result.conclusion,
         validation: result.validation,
+        meta: result.pipeline_meta ?? null,
+        input_recognition: result.input_recognition ?? null,
+        data_warnings: result.data_warnings ?? [],
       },
       business_profile_json: result.business_profile,
       error: result.validation.ok ? null : result.validation.errors.join("; "),

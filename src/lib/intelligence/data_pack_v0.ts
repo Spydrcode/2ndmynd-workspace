@@ -58,6 +58,7 @@ export type DataPackStats = {
   jobs: number;
   customers: number;
   warnings: string[];
+  file_categories?: Record<string, number>;
 };
 
 const ajv = new Ajv({ allErrors: true, allowUnionTypes: true });

@@ -22,16 +22,16 @@ type UploadState = {
 };
 
 export async function runUploadAction(_: UploadState, formData: FormData): Promise<UploadState> {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
   const user = data.user;
 
-  if (!user) {
-    return { error: "Please log in to continue." };
-  }
+  const actor = user
+    ? { id: user.id, email: user.email }
+    : { id: "local-dev-user", email: null };
 
   const store = getStore();
-  const workspace = await store.ensureWorkspaceForUser(user.id, user.email);
+  const workspace = await store.ensureWorkspaceForUser(actor.id, actor.email);
   const runCount = await store.countRunsToday(workspace.id);
   if (runCount >= DAILY_RUN_LIMIT) {
     return { error: "Daily run limit reached. Please try again tomorrow." };
@@ -110,7 +110,12 @@ export async function runUploadAction(_: UploadState, formData: FormData): Promi
   });
 
   try {
-  const result = await runAnalysisFromPack({ run_id, pack, website_url: websiteUrl });
+    const result = await runAnalysisFromPack({
+      run_id,
+      pack,
+      pack_stats: stats,
+      website_url: websiteUrl,
+    });
     await store.updateRun(run_id, {
       status: result.validation.ok ? "succeeded" : "failed",
       input_hash: result.input_hash,
@@ -119,6 +124,9 @@ export async function runUploadAction(_: UploadState, formData: FormData): Promi
         snapshot: result.snapshot,
         conclusion: result.conclusion,
         validation: result.validation,
+        meta: result.pipeline_meta ?? null,
+        input_recognition: result.input_recognition ?? null,
+        data_warnings: result.data_warnings ?? [],
       },
       business_profile_json: result.business_profile,
       error: result.validation.ok ? null : result.validation.errors.join("; "),

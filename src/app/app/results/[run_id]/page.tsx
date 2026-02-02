@@ -2,20 +2,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Download, RefreshCw } from "lucide-react";
 
-import {
-  buildResultsArtifact,
-  getRun,
-  listRuns,
-  InputHealth,
-  Run,
-} from "@/src/lib/intelligence/run_adapter";
+import { presentArtifact } from "@/lib/decision/v2/present";
+import { buildResultsArtifact, getRun, InputHealth } from "@/src/lib/intelligence/run_adapter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { rerunSnapshot } from "./actions";
 
 function formatTimestamp(value?: string | null) {
@@ -45,9 +39,7 @@ function renderInputHealth(inputHealth?: InputHealth | null) {
       </div>
       <div className="flex items-center justify-between">
         <span>Records</span>
-        <span className="text-foreground">
-          {inputHealth.records_count ?? "Unknown"}
-        </span>
+        <span className="text-foreground">{inputHealth.records_count ?? "Unknown"}</span>
       </div>
       {inputHealth.coverage_warnings?.length ? (
         <ul className="list-disc pl-5">
@@ -78,7 +70,7 @@ function SnapshotSkeleton() {
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="rounded-2xl border border-border/60 bg-background/90">
           <CardHeader>
-            <CardTitle className="text-base font-semibold">Outside perspective</CardTitle>
+            <CardTitle className="text-base font-semibold">One clear takeaway</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <Skeleton className="h-4 w-5/6" />
@@ -87,7 +79,7 @@ function SnapshotSkeleton() {
         </Card>
         <Card className="rounded-2xl border border-border/60 bg-background/90">
           <CardHeader>
-            <CardTitle className="text-base font-semibold">Inputs</CardTitle>
+            <CardTitle className="text-base font-semibold">What to do next</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <Skeleton className="h-4 w-1/2" />
@@ -99,295 +91,248 @@ function SnapshotSkeleton() {
   );
 }
 
-export default async function ResultsPage({ params }: { params: { run_id: string } }) {
-  const run = await getRun(params.run_id);
+export default async function ResultsPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ run_id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const { run_id } = await params;
+  const sp = searchParams ? await searchParams : {};
+  const quiet = String(sp?.quiet ?? "") === "1";
+
+  const run = await getRun(run_id);
   if (!run) {
     notFound();
   }
 
-  const history = await listRuns();
-  const conclusion = run.results_json?.conclusion ?? null;
-  const validation = run.validation_json ?? run.results_json?.validation ?? null;
-  const profile = run.business_profile_json ?? null;
-  const confidence = titleCase(conclusion?.confidence ?? "unknown");
   const artifact = buildResultsArtifact(run);
+  const presented = presentArtifact({
+    run_id: artifact.run_id,
+    created_at: artifact.created_at,
+    mode: run.mode ?? null,
+    artifact,
+  });
+
+  const conclusion = artifact.conclusion;
+  const validation = artifact.validation;
+  const profile = artifact.business_profile;
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h1 className="text-2xl font-semibold">
-              {profile?.name_guess ?? "Business snapshot"}
-            </h1>
-            <Badge variant="outline">Snapshot</Badge>
+            <h1 className="text-2xl font-semibold tracking-tight">{presented.header.title}</h1>
+            <Badge variant="outline">{titleCase(presented.header.confidence)} confidence</Badge>
+            <Badge variant="secondary">{titleCase(presented.header.source)}</Badge>
           </div>
-          <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-            <span>{formatTimestamp(run.created_at)}</span>
-            <Separator orientation="vertical" className="h-3" />
-            <span className="font-mono">{run.run_id}</span>
-          </div>
+          <p className="text-sm text-muted-foreground">
+            Run {run.run_id} · {formatTimestamp(run.created_at)}
+          </p>
         </div>
+
         <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary">{confidence} confidence</Badge>
-          {run.mode ? <Badge variant="outline">{run.mode}</Badge> : null}
+          <Button asChild variant="outline">
+            <Link href={`/app/results/${run.run_id}/download`}>
+              <Download className="mr-2 h-4 w-4" />
+              Download snapshot
+            </Link>
+          </Button>
+
+          {run.pack_id ? (
+            <form
+              action={rerunSnapshot}
+              className="inline-flex"
+              aria-label="Rerun snapshot"
+            >
+              <input type="hidden" name="pack_id" value={run.pack_id} />
+              <Button type="submit" variant="default">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Re-run
+              </Button>
+            </form>
+          ) : null}
         </div>
       </div>
 
-      {run.status && run.status !== "succeeded" ? (
-        <Alert variant={run.status === "failed" ? "destructive" : "default"}>
-          <AlertTitle>
-            {run.status === "failed" ? "Snapshot failed" : "Snapshot running"}
-          </AlertTitle>
+      {presented.data_warnings.length ? (
+        <Alert>
+          <AlertTitle>Data note</AlertTitle>
           <AlertDescription>
-            {run.status === "failed"
-              ? run.error ?? "We hit an error while preparing this snapshot."
-              : "We are still assembling your outside perspective. Refresh in a moment."}
+            <ul className="mt-2 list-disc space-y-1 pl-5">
+              {presented.data_warnings.map((warning) => (
+                <li key={warning}>{warning}</li>
+              ))}
+            </ul>
           </AlertDescription>
         </Alert>
       ) : null}
 
-      <Card className="rounded-2xl border border-border/60 bg-background/90">
-        <CardHeader>
-          <CardTitle className="text-base font-semibold">Business profile</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm text-muted-foreground">
-          <p>{profile?.summary ?? "Profile unavailable."}</p>
-          {profile?.services?.length ? (
-            <div className="flex flex-wrap gap-2">
-              {profile.services.map((service) => (
-                <Badge key={service} variant="secondary">
-                  {service}
-                </Badge>
-              ))}
-            </div>
-          ) : null}
-        </CardContent>
-      </Card>
+      {profile?.summary ? (
+        <Card className="rounded-2xl border border-border/60 bg-background/90">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">Business context</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
+            <p>{profile.summary}</p>
+            {profile.services?.length ? (
+              <div className="flex flex-wrap gap-2">
+                {profile.services.map((service) => (
+                  <Badge key={service} variant="outline">
+                    {service}
+                  </Badge>
+                ))}
+              </div>
+            ) : null}
+          </CardContent>
+        </Card>
+      ) : null}
 
-      <Tabs defaultValue="snapshot" className="space-y-6">
-        <TabsList className="flex flex-wrap">
-          <TabsTrigger value="snapshot">Snapshot</TabsTrigger>
-          <TabsTrigger value="signals">Signals</TabsTrigger>
-          <TabsTrigger value="inputs">Inputs</TabsTrigger>
-          <TabsTrigger value="history">History</TabsTrigger>
-        </TabsList>
+      {!conclusion ? (
+        <SnapshotSkeleton />
+      ) : (
+        <div className="space-y-6">
+          <Card className="rounded-2xl border border-border/60 bg-background/90">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold">One clear takeaway</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-foreground">{presented.takeaway}</CardContent>
+          </Card>
 
-        <TabsContent value="snapshot" className="space-y-6">
-          {!conclusion ? (
-            <SnapshotSkeleton />
-          ) : (
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-              <div className="space-y-6">
-                <Card className="rounded-2xl border border-border/60 bg-background/90">
-                  <CardHeader>
-                    <CardTitle className="text-base font-semibold">Outside perspective</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4 text-sm text-muted-foreground">
-                    <div>
-                      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                        What's going on
-                      </p>
-                      <p className="mt-2 text-foreground">
-                        {conclusion.one_sentence_pattern ?? "No pattern available."}
-                      </p>
-                    </div>
-                    <Separator />
-                    <div>
-                      <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                        What to do next
-                      </p>
-                      <p className="mt-2 text-foreground">
-                        {conclusion.decision ?? "Decision pending."}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
+          <Card className="rounded-2xl border border-border/60 bg-background/90">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold">What to do next (7 days)</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm text-muted-foreground">
+              <p className="text-foreground">{presented.next_action}</p>
+              {presented.micro_steps.length ? (
+                <ul className="list-disc space-y-1 pl-5">
+                  {presented.micro_steps.map((step) => (
+                    <li key={step}>{step}</li>
+                  ))}
+                </ul>
+              ) : null}
+              {typeof conclusion.boundary === "string" && conclusion.boundary.trim().length ? (
+                <>
+                  <Separator />
+                  <p className="text-xs text-muted-foreground">Boundary: {conclusion.boundary}</p>
+                </>
+              ) : null}
+            </CardContent>
+          </Card>
 
-                <div className="grid gap-6 lg:grid-cols-2">
-                  <Card className="rounded-2xl border border-border/60 bg-background/90">
-                    <CardHeader>
-                      <CardTitle className="text-base font-semibold">Why this now</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      {conclusion.why_this_now ?? "Waiting on supporting context."}
-                    </CardContent>
-                  </Card>
-                  <Card className="rounded-2xl border border-border/60 bg-background/90">
-                    <CardHeader>
-                      <CardTitle className="text-base font-semibold">Boundary</CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-sm text-muted-foreground">
-                      {conclusion.boundary ?? "No boundary set yet."}
-                    </CardContent>
-                  </Card>
-                </div>
+          <Card className="rounded-2xl border border-border/60 bg-background/90">
+            <CardHeader>
+              <CardTitle className="text-base font-semibold">Why it likely feels heavy</CardTitle>
+            </CardHeader>
+            <CardContent className="text-sm text-muted-foreground">{presented.why_heavy}</CardContent>
+          </Card>
 
-                <Card className="rounded-2xl border border-border/60 bg-background/90">
-                  <CardHeader>
-                    <CardTitle className="text-base font-semibold">Evidence signals</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex flex-wrap gap-2">
-                    {(conclusion.evidence_signals ?? []).length ? (
-                      conclusion.evidence_signals?.map((signal) => (
-                        <Badge key={signal} variant="outline">
-                          {signal}
-                        </Badge>
+          {!quiet ? (
+            <Card className="rounded-2xl border border-border/60 bg-background/90">
+              <CardHeader>
+                <CardTitle className="text-base font-semibold">Evidence (optional)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm text-muted-foreground">
+                <details>
+                  <summary className="cursor-pointer select-none text-sm text-foreground">
+                    Show evidence
+                  </summary>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {presented.evidence_chips.length ? (
+                      presented.evidence_chips.map((chip) => (
+                        <details key={`${chip.label}:${chip.value}`} className="group">
+                          <summary className="cursor-pointer list-none">
+                            <Badge variant="outline">
+                              {chip.label}: {chip.value}
+                            </Badge>
+                          </summary>
+                          <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+                            {chip.explanation}
+                          </p>
+                        </details>
                       ))
                     ) : (
-                      <p className="text-sm text-muted-foreground">Signals pending.</p>
+                      <p className="text-sm text-muted-foreground">Evidence is still loading.</p>
                     )}
-                  </CardContent>
-                </Card>
+                  </div>
 
-                <Card className="rounded-2xl border border-border/60 bg-background/90">
-                  <CardHeader>
-                    <CardTitle className="text-base font-semibold">Data health</CardTitle>
-                  </CardHeader>
-                  <CardContent>{renderInputHealth(run.input_health_json)}</CardContent>
-                </Card>
-
-                {validation && !validation.ok ? (
-                  <Alert variant="destructive">
-                    <AlertTitle>Validation issues</AlertTitle>
-                    <AlertDescription>
-                      {validation.errors?.join("; ") ?? "Validation failed."}
-                    </AlertDescription>
-                  </Alert>
-                ) : null}
-              </div>
-
-              <div className="space-y-6">
-                <Card className="rounded-2xl border border-border/60 bg-background/90">
-                  <CardHeader>
-                    <CardTitle className="text-base font-semibold">Next steps</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-muted-foreground">
-                    {conclusion.optional_next_steps?.length ? (
-                      <ul className="space-y-2">
-                        {conclusion.optional_next_steps.map((step) => (
-                          <li key={step} className="flex items-start gap-2">
-                            <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-primary" />
-                            <span>{step}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No optional steps were suggested.</p>
-                    )}
-                  </CardContent>
-                </Card>
-
-                <Card className="rounded-2xl border border-border/60 bg-background/90">
-                  <CardHeader>
-                    <CardTitle className="text-base font-semibold">Decision artifact</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3 text-sm text-muted-foreground">
-                    <p>Download the single snapshot artifact for sharing.</p>
-                    <Button asChild className="w-full">
-                      <Link href={`/app/results/${artifact.run_id}/download`}>
-                        <Download className="mr-2 h-4 w-4" />
-                        Download artifact
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <form action={rerunSnapshot}>
-                  <input type="hidden" name="pack_id" value={run.pack_id ?? ""} />
-                  <Button type="submit" variant="secondary" className="w-full">
-                    <RefreshCw className="mr-2 h-4 w-4" />
-                    Re-run snapshot
-                  </Button>
-                </form>
-              </div>
-            </div>
-          )}
-        </TabsContent>
-
-        <TabsContent value="signals">
-          <Card className="rounded-2xl border border-border/60 bg-background/90">
-            <CardHeader>
-              <CardTitle className="text-base font-semibold">Signals behind the decision</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground">
-              {(conclusion?.evidence_signals ?? []).length ? (
-                <div className="flex flex-wrap gap-2">
-                  {conclusion?.evidence_signals?.map((signal) => (
-                    <Badge key={signal} variant="secondary">
-                      {signal}
-                    </Badge>
-                  ))}
-                </div>
-              ) : (
-                <p>No signals are available yet.</p>
-              )}
-              <p className="text-xs text-muted-foreground">
-                Signals summarize the most relevant inputs that informed this snapshot.
-              </p>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="inputs" className="space-y-6">
-          <Card className="rounded-2xl border border-border/60 bg-background/90">
-            <CardHeader>
-              <CardTitle className="text-base font-semibold">Inputs used</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-sm text-muted-foreground">
-              {run.input_sources?.length ? (
-                <div className="flex flex-wrap gap-2">
-                  {run.input_sources.map((source) => (
-                    <Badge key={source.label} variant="outline">
-                      {source.label} {source.count ?? 0}
-                    </Badge>
-                  ))}
-                </div>
-              ) : (
-                <p>Sources not yet detected.</p>
-              )}
-              {renderInputHealth(run.input_health_json)}
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="history">
-          <Card className="rounded-2xl border border-border/60 bg-background/90">
-            <CardHeader>
-              <CardTitle className="text-base font-semibold">Recent snapshots</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground">
-              {history.length === 0 ? (
-                <p>No snapshots yet.</p>
-              ) : (
-                <div className="space-y-3">
-                  {history.slice(0, 6).map((item: Run) => (
-                    <div
-                      key={item.run_id}
-                      className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-background/80 px-4 py-3"
-                    >
-                      <div>
-                        <p className="font-mono text-xs text-muted-foreground">{item.run_id}</p>
-                        <p className="text-foreground">
-                          {formatTimestamp(item.created_at)}
-                        </p>
-                      </div>
-                      <div className="flex flex-wrap items-center gap-2">
-                        {item.status ? (
-                          <Badge variant="secondary">{item.status}</Badge>
-                        ) : null}
-                        <Button asChild size="sm" variant="outline">
-                          <Link href={`/app/results/${item.run_id}`}>View</Link>
-                        </Button>
-                      </div>
+                  <details className="mt-4">
+                    <summary className="cursor-pointer select-none text-xs text-muted-foreground">
+                      Show technical details
+                    </summary>
+                    <div className="mt-2 space-y-2">
+                      {presented.technical_signals.map((s) => (
+                        <pre
+                          key={`${s.key}=${s.value}`}
+                          className="overflow-x-auto rounded-lg border border-border/60 bg-muted/20 p-3 font-mono text-xs text-foreground"
+                        >
+                          {s.key}={s.value}
+                        </pre>
+                      ))}
                     </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
+                  </details>
+                </details>
+              </CardContent>
+            </Card>
+          ) : null}
+
+          {!quiet ? (
+            <Card className="rounded-2xl border border-border/60 bg-background/90">
+              <CardHeader>
+                <CardTitle className="text-base font-semibold">Data health (optional)</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm text-muted-foreground">
+                <details>
+                  <summary className="cursor-pointer select-none text-sm text-foreground">
+                    Show data health
+                  </summary>
+                  <div className="mt-3 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span>Quotes detected</span>
+                      <span className="text-foreground">{presented.data_health.quotes_count ?? "?"}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Invoices detected</span>
+                      <span className="text-foreground">{presented.data_health.invoices_count ?? "?"}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Date range</span>
+                      <span className="text-foreground">{presented.data_health.date_range ?? "Unknown"}</span>
+                    </div>
+                    <Separator />
+                    <p>{presented.data_health.coverage_text}</p>
+                    <Separator />
+                    {renderInputHealth(artifact.input_health)}
+                    {artifact.input_recognition ? (
+                      <>
+                        <Separator />
+                        <p className="text-xs text-muted-foreground">
+                          Recognition: {artifact.input_recognition.quotes_detected_count ?? "?"} quotes,{" "}
+                          {artifact.input_recognition.invoices_detected_count ?? "?"} invoices,{" "}
+                          {artifact.input_recognition.invoices_paid_detected_count ?? "?"} paid invoices detected.
+                        </p>
+                      </>
+                    ) : null}
+                  </div>
+                </details>
+              </CardContent>
+            </Card>
+          ) : null}
+
+          {validation && !validation.ok ? (
+            <Alert variant="destructive">
+              <AlertTitle>Validation issues</AlertTitle>
+              <AlertDescription>
+                {validation.errors?.join("; ") ?? "Validation failed."}
+              </AlertDescription>
+            </Alert>
+          ) : null}
+        </div>
+      )}
     </div>
   );
 }
+

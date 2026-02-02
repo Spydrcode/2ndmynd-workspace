@@ -34,6 +34,7 @@ export type ConclusionV2 = {
 };
 
 export type RunResults = {
+  snapshot?: unknown;
   conclusion?: ConclusionV2 | null;
   validation?: { ok: boolean; errors?: string[] } | null;
   meta?: {
@@ -41,6 +42,13 @@ export type RunResults = {
     model_id?: string;
     primary_ok?: boolean;
   } | null;
+  input_recognition?: {
+    quotes_detected_count?: number;
+    invoices_detected_count?: number;
+    invoices_paid_detected_count?: number;
+    reasons_dropped?: string[];
+  } | null;
+  data_warnings?: string[];
   artifacts?: {
     log_path?: string | null;
   } | null;
@@ -70,6 +78,9 @@ export type ResultsArtifact = {
   conclusion: ConclusionV2 | null;
   validation: { ok: boolean; errors?: string[] } | null;
   input_health: InputHealth | null;
+  snapshot: unknown | null;
+  input_recognition: RunResults["input_recognition"] | null;
+  data_warnings: string[];
 };
 
 function toDate(value?: string | null) {
@@ -77,6 +88,11 @@ function toDate(value?: string | null) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return null;
   return date;
+}
+
+function asRecord(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== "object") return {};
+  return value as Record<string, unknown>;
 }
 
 function deriveDateRange(pack: DataPackV0 | null): string | null {
@@ -124,10 +140,13 @@ function buildInputSources(pack: DataPackV0 | null): InputSource[] {
   return sources;
 }
 
-function deriveInputHealth(pack: DataPackV0 | null, stats: any | null): InputHealth {
+function deriveInputHealth(pack: DataPackV0 | null, stats: unknown | null): InputHealth {
   const date_range = deriveDateRange(pack);
-  const records_count = typeof stats?.rows === "number" ? stats.rows : null;
-  const coverage_warnings = Array.isArray(stats?.warnings) ? stats.warnings : [];
+  const statsRecord = asRecord(stats);
+  const records_count = typeof statsRecord.rows === "number" ? (statsRecord.rows as number) : null;
+  const coverage_warnings = Array.isArray(statsRecord.warnings)
+    ? (statsRecord.warnings.filter((w) => typeof w === "string") as string[])
+    : [];
   if (!date_range && records_count === null && coverage_warnings.length === 0) {
     return {
       date_range: null,
@@ -138,34 +157,43 @@ function deriveInputHealth(pack: DataPackV0 | null, stats: any | null): InputHea
   return { date_range, records_count, coverage_warnings };
 }
 
-function normalizeRun(run: any): Run {
-  const results = (run?.results_json ?? null) as RunResults | null;
-  const validation = (run?.validation_json ?? results?.validation ?? null) as
+function normalizeRun(run: unknown): Run {
+  const record = asRecord(run);
+  const results = (record.results_json ?? null) as RunResults | null;
+  const validation = (record.validation_json ?? results?.validation ?? null) as
     | { ok: boolean; errors?: string[] }
     | null;
   return {
-    ...run,
+    ...(record as unknown as Run),
     results_json: results,
     validation_json: validation,
-    created_at: run?.created_at ?? null,
+    created_at: (record.created_at as string | null | undefined) ?? null,
   } as Run;
 }
 
 export async function getRun(run_id: string): Promise<Run | null> {
-  const supabase = createSupabaseServerClient();
+  const authDisabled = process.env.AUTH_DISABLED !== "0";
+  const supabase = await createSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
-  if (!data.user) return null;
+  const user = data.user;
+  const actor = user
+    ? { id: user.id, email: user.email }
+    : { id: "local-dev-user", email: null };
 
   const store = getStore();
-  const workspace = await store.ensureWorkspaceForUser(data.user.id, data.user.email);
+  const workspace = await store.ensureWorkspaceForUser(actor.id, actor.email);
   const run = await store.getRun(run_id);
-  if (!run || run.workspace_id !== workspace.id) return null;
+  if (!run) return null;
+  if (!authDisabled && run.workspace_id !== workspace.id) return null;
 
   const pack = run.pack_id ? await store.getDataPack(run.pack_id) : null;
   const packData = (pack?.normalized_json ?? null) as DataPackV0 | null;
   const stats = pack?.stats_json ?? null;
 
-  const input_health_json = (run as any).input_health_json ?? deriveInputHealth(packData, stats);
+  const runRecord = asRecord(run);
+  const inputHealthFromRun = runRecord.input_health_json;
+  const input_health_json =
+    (inputHealthFromRun as InputHealth | null | undefined) ?? deriveInputHealth(packData, stats);
   const input_sources = buildInputSources(packData);
 
   return {
@@ -176,12 +204,15 @@ export async function getRun(run_id: string): Promise<Run | null> {
 }
 
 export async function listRuns(): Promise<Run[]> {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
-  if (!data.user) return [];
+  const user = data.user;
+  const actor = user
+    ? { id: user.id, email: user.email }
+    : { id: "local-dev-user", email: null };
 
   const store = getStore();
-  const workspace = await store.ensureWorkspaceForUser(data.user.id, data.user.email);
+  const workspace = await store.ensureWorkspaceForUser(actor.id, actor.email);
   const runs = await store.listRuns(workspace.id);
   return runs.map((run) => normalizeRun(run));
 }
@@ -194,5 +225,8 @@ export function buildResultsArtifact(run: Run): ResultsArtifact {
     conclusion: run.results_json?.conclusion ?? null,
     validation: run.validation_json ?? run.results_json?.validation ?? null,
     input_health: run.input_health_json ?? null,
+    snapshot: run.results_json?.snapshot ?? null,
+    input_recognition: run.results_json?.input_recognition ?? null,
+    data_warnings: Array.isArray(run.results_json?.data_warnings) ? (run.results_json?.data_warnings as string[]) : [],
   };
 }

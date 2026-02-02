@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 
 import { getStore } from "@/src/lib/intelligence/store";
 
-export async function GET(_: Request, { params }: { params: { run_id: string } }) {
+export async function GET(_: Request, context: { params: Promise<{ run_id: string }> }) {
+  const { run_id } = await context.params;
   const store = getStore();
-  const run = await store.getRun(params.run_id);
+  const run = await store.getRun(run_id);
   if (!run) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }

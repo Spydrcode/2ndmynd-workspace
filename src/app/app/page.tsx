@@ -9,13 +9,16 @@ import { createSupabaseServerClient } from "@/src/lib/supabase/server";
 import { getStore } from "@/src/lib/intelligence/store";
 
 export default async function AppHomePage() {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
   const user = data.user;
 
   const store = getStore();
-  const workspace = user ? await store.ensureWorkspaceForUser(user.id, user.email) : null;
-  const runs = workspace ? await store.listRuns(workspace.id) : [];
+  const actor = user
+    ? { id: user.id, email: user.email }
+    : { id: "local-dev-user", email: null };
+  const workspace = await store.ensureWorkspaceForUser(actor.id, actor.email);
+  const runs = await store.listRuns(workspace.id);
   const latest = runs[0];
 
   return (

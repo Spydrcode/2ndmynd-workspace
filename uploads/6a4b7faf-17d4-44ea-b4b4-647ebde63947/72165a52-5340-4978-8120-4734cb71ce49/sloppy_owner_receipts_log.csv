@@ -1,0 +1,261 @@
+When,Vendor/Where,What for,Paid,Amt,Job/Quote,Keep?,Note
+2025-05-16,Ferguson,tools,,46.26,INV 7823,y,reimb
+2025-08-04,Supply House,tools,,39.36,Q? 4990,,
+2025-04-22,Amazon,filters,,18.93,,y,forgot receipt
+2025-11-04,AutoZone,lunch,zelle,33.16,,n,forgot receipt
+2025-03-28,Grainger,filters,,4.44,,y,
+2025-08-29,Home Depot,permit,,25.33,INV 8463,n,
+2025-09-30,AutoZone,line set,zelle,72.89,,n,client paid back
+2025-03-05,Ferguson,tools,,33.85,INV 6496,n,
+2025-07-03,Walmart,line set,venmo,19.52,Q? 9716,n,
+2026-01-21,Supply House,capacitor,venmo,62.83,,Y,reimb
+2025-08-14,Circle K,misc parts,,36.69,Q? 5233,,reimb
+2025-07-05,Walmart,capacitor,card,20.21,INV 4599,,
+2025-08-19,Circle K,tools,zelle,43.63,Q? 3834,Y,client paid back
+2025-04-18,AutoZone,gas,zelle,30.83,Q? 6144,,
+2025-12-16,Amazon,filters,venmo,7.81,Q? 4295,,client paid back
+2025-06-03,Walmart,lunch,,46.15,,y,
+2026-01-25,AutoZone,filters,card,25.53,,y,
+2025-06-07,Circle K,line set,,36.23,Q? 9728,Y,client paid back
+2026-01-22,Walmart,capacitor,cash,117.12,,y,
+2025-02-03,Grainger,capacitor,cash,19.29,INV 5566,y,reimb
+2025-04-10,Circle K,filters,zelle,21.90,INV 1965,Y,client paid back
+2025-04-08,Circle K,gas,,20.33,,,reimb
+2025-03-18,Ferguson,filters,venmo,20.21,Q? 9363,n,forgot receipt
+2025-03-19,Grainger,tools,,(14.03),INV 8561,y,forgot receipt
+2025-11-10,Walmart,permit,cash,(13.96),,,reimb
+2025-09-26,AutoZone,permit,cash,21.26,Q? 8730,Y,reimb
+2025-11-15,Grainger,filters,venmo,51.94,,n,forgot receipt
+2025-12-22,Ferguson,misc parts,,38.23,INV 5958,Y,
+2025-10-19,AutoZone,gas,venmo,8.85,,,forgot receipt
+2025-04-30,Grainger,gas,,46.04,Q? 3823,n,reimb
+2025-02-24,Supply House,permit,venmo,28.39,Q? 3439,y,reimb
+2025-05-17,Ferguson,lunch,zelle,53.20,,Y,forgot receipt
+2025-03-18,Grainger,thermostat,,(44.26),Q? 4565,y,reimb
+2025-04-20,Walmart,line set,,15.11,INV 3582,Y,client paid back
+2025-02-20,Grainger,capacitor,zelle,9.79,Q? 1827,Y,
+2025-10-13,Grainger,filters,,12.54,,n,forgot receipt
+2025-08-22,Ferguson,permit,card,31.84,,n,
+2025-12-06,Circle K,capacitor,cash,24.17,,n,forgot receipt
+2025-03-19,Supply House,tools,venmo,18.31,,,
+2025-02-27,Circle K,filters,cash,9.85,Q? 7657,y,
+2025-11-04,Ferguson,thermostat,zelle,15.52,INV 2308,,
+2025-12-28,Circle K,gas,cash,(44.31),INV 3145,,reimb
+2025-08-21,Supply House,capacitor,venmo,34.57,,n,
+2025-10-04,Walmart,line set,cash,11.24,INV 2294,y,client paid back
+2025-10-20,AutoZone,line set,card,9.86,,n,reimb
+2025-02-09,Supply House,line set,card,7.69,INV 8601,,forgot receipt
+2025-07-03,Supply House,tools,,23.33,,,forgot receipt
+2025-11-25,Amazon,line set,zelle,23.51,INV 8355,Y,reimb
+2025-02-08,Amazon,misc parts,cash,30.64,,Y,client paid back
+2025-08-27,Ferguson,line set,zelle,14.86,,y,
+2025-07-07,Amazon,lunch,card,17.13,,n,
+2025-04-17,Home Depot,permit,venmo,37.41,,y,
+2025-08-07,Ferguson,line set,card,29.72,,Y,client paid back
+2026-01-08,Supply House,lunch,venmo,16.46,,y,
+2025-11-24,Supply House,filters,zelle,41.48,,,
+2025-12-05,Ferguson,filters,,22.22,,y,client paid back
+2025-09-05,Walmart,filters,zelle,11.45,,y,
+2025-05-08,Ferguson,misc parts,card,40.56,INV 9335,n,client paid back
+2025-02-25,Amazon,tools,,20.63,Q? 8620,Y,
+2026-01-29,Home Depot,line set,venmo,34.13,INV 6904,y,reimb
+2025-02-03,AutoZone,line set,venmo,26.41,,y,forgot receipt
+2025-02-16,Ferguson,permit,,(57.62),INV 4206,y,client paid back
+2025-10-01,Supply House,thermostat,,46.20,Q? 4078,y,client paid back
+2025-10-13,Circle K,capacitor,card,46.62,Q? 4942,n,client paid back
+2025-10-06,Circle K,lunch,venmo,17.14,Q? 6119,y,reimb
+2026-01-16,AutoZone,thermostat,cash,54.60,,y,reimb
+2025-07-27,Ferguson,misc parts,venmo,18.62,INV 2345,Y,forgot receipt
+2025-10-13,Supply House,tools,,8.79,,,
+2025-11-19,Ferguson,permit,venmo,23.76,,,forgot receipt
+2025-08-30,Grainger,tools,,24.23,,n,
+2025-09-05,Grainger,capacitor,zelle,14.08,,Y,
+2025-11-27,Walmart,permit,cash,41.81,INV 2474,y,forgot receipt
+2025-11-10,Amazon,misc parts,card,31.22,,y,client paid back
+2025-10-04,Amazon,filters,,34.48,,,forgot receipt
+2025-08-22,Walmart,line set,zelle,19.38,Q? 3871,Y,reimb
+2025-10-01,Circle K,misc parts,cash,33.37,,y,reimb
+2025-11-17,Home Depot,gas,,18.65,,y,
+2025-05-26,Supply House,thermostat,card,30.06,Q? 7777,y,
+2026-01-07,Walmart,filters,,17.60,,y,
+2025-07-27,Supply House,tools,cash,31.95,,y,
+2025-11-23,Circle K,lunch,venmo,25.49,INV 7201,y,forgot receipt
+2025-03-10,Supply House,line set,,48.74,,y,forgot receipt
+2025-04-22,Grainger,lunch,,26.96,,y,forgot receipt
+2025-10-14,Amazon,capacitor,zelle,19.94,,,reimb
+2025-07-12,Circle K,permit,card,32.10,INV 1860,n,
+2025-08-12,Supply House,capacitor,,11.72,,n,
+2025-03-17,Amazon,capacitor,cash,(28.19),Q? 6249,y,reimb
+2025-09-10,Ferguson,permit,cash,39.03,Q? 9663,y,reimb
+2025-06-17,Supply House,misc parts,cash,16.26,INV 3866,n,
+2025-05-21,Circle K,capacitor,card,27.16,,y,
+2025-09-20,Grainger,gas,,36.07,,y,
+2025-02-20,Circle K,thermostat,cash,105.91,Q? 8982,Y,client paid back
+2025-05-29,Home Depot,capacitor,venmo,18.48,,y,client paid back
+2025-04-24,AutoZone,gas,venmo,33.57,,n,client paid back
+2025-05-07,AutoZone,gas,zelle,27.73,Q? 7094,y,
+2025-12-12,Amazon,capacitor,venmo,69.13,INV 2608,,
+2025-02-28,Grainger,line set,venmo,29.81,Q? 7585,Y,
+2025-09-09,Home Depot,line set,,17.21,Q? 2367,,
+2025-04-17,Supply House,lunch,card,41.63,INV 7502,Y,reimb
+2025-02-08,Supply House,misc parts,,14.46,Q? 9711,,
+2026-01-15,Amazon,filters,card,14.85,INV 8155,,client paid back
+2026-01-31,Circle K,filters,,29.43,,y,
+2025-07-09,Supply House,filters,,46.82,,Y,
+2025-05-05,AutoZone,thermostat,,26.41,,,client paid back
+2025-06-26,Grainger,thermostat,card,77.22,INV 3556,,
+2025-10-22,Walmart,lunch,,41.46,Q? 5714,Y,client paid back
+2025-05-30,Home Depot,permit,card,42.50,,n,reimb
+2025-12-28,Home Depot,lunch,,20.28,,Y,client paid back
+2025-07-03,Supply House,misc parts,zelle,72.32,INV 8099,,
+2025-02-22,Amazon,thermostat,card,35.31,INV 7776,y,forgot receipt
+2025-12-05,Ferguson,thermostat,zelle,38.59,INV 6398,,client paid back
+2025-09-01,Circle K,capacitor,,70.68,,Y,
+2025-03-31,Grainger,tools,cash,26.06,,y,forgot receipt
+2025-09-10,Home Depot,line set,cash,50.32,,Y,
+2025-04-04,Amazon,misc parts,card,11.11,,Y,
+2025-11-06,Circle K,misc parts,card,(36.16),INV 5574,,reimb
+2025-02-11,Circle K,gas,cash,20.70,Q? 8426,y,forgot receipt
+2025-06-27,Grainger,tools,venmo,19.68,Q? 6940,y,
+2025-12-15,Ferguson,misc parts,card,24.82,,n,client paid back
+2025-02-14,Ferguson,filters,cash,22.16,INV 8826,,
+2025-06-19,Home Depot,capacitor,zelle,14.76,INV 7361,,reimb
+2025-07-25,Ferguson,lunch,card,18.08,INV 4573,,
+2025-06-05,Amazon,gas,,36.91,,y,reimb
+2025-05-01,Ferguson,filters,,10.27,,n,client paid back
+2026-01-21,Ferguson,gas,cash,29.17,,n,
+2025-04-26,Grainger,filters,venmo,17.53,INV 7774,,client paid back
+2025-05-12,Walmart,filters,card,6.17,Q? 4641,n,reimb
+2025-03-31,Amazon,misc parts,card,42.83,,y,client paid back
+2025-12-30,Walmart,line set,venmo,10.72,Q? 6607,,client paid back
+2025-10-12,Circle K,lunch,venmo,14.10,,n,forgot receipt
+2025-12-10,Amazon,thermostat,cash,18.64,INV 9172,Y,reimb
+2026-01-17,Grainger,tools,cash,20.08,Q? 5045,y,reimb
+2025-07-07,Circle K,misc parts,,6.17,Q? 7118,Y,forgot receipt
+2025-11-30,Circle K,tools,card,75.35,,n,client paid back
+2025-07-07,AutoZone,thermostat,zelle,26.74,Q? 3858,,reimb
+2025-03-02,Walmart,lunch,card,64.85,,Y,client paid back
+2025-08-05,Circle K,lunch,cash,(26.07),,,reimb
+2025-06-24,Grainger,misc parts,cash,49.10,INV 4120,n,
+2025-02-10,Home Depot,filters,,14.87,INV 8726,n,client paid back
+2025-05-30,Home Depot,tools,,62.66,Q? 3909,n,
+2025-06-15,Grainger,line set,zelle,8.39,,y,forgot receipt
+2025-05-18,Amazon,filters,card,14.33,,n,reimb
+2025-07-19,Ferguson,tools,cash,44.32,INV 1457,Y,forgot receipt
+2025-07-07,Home Depot,permit,,22.31,,,
+2025-08-22,Home Depot,permit,cash,25.56,Q? 9076,Y,
+2025-10-18,AutoZone,thermostat,,25.87,,Y,
+2025-09-15,Walmart,line set,zelle,11.53,Q? 9763,y,reimb
+2025-03-22,Grainger,misc parts,cash,31.00,,y,forgot receipt
+2025-02-21,Grainger,lunch,,28.06,INV 7684,Y,reimb
+2025-09-11,Circle K,lunch,cash,15.26,Q? 1695,n,
+2025-02-14,Circle K,line set,card,21.64,Q? 6476,y,client paid back
+2025-08-16,Circle K,permit,zelle,50.65,INV 3113,,forgot receipt
+2025-02-27,Ferguson,thermostat,zelle,(22.07),,Y,forgot receipt
+2025-08-01,Amazon,line set,,10.21,,,forgot receipt
+2025-08-14,Grainger,misc parts,card,15.84,Q? 4918,y,client paid back
+2025-11-24,Walmart,capacitor,cash,73.51,INV 8345,,forgot receipt
+2025-10-02,Ferguson,gas,venmo,29.56,,Y,
+2025-11-12,Ferguson,line set,,28.80,,y,
+2025-03-21,Ferguson,thermostat,card,61.38,INV 8201,Y,
+2025-11-10,Grainger,lunch,zelle,27.80,INV 9485,y,client paid back
+2026-01-05,Home Depot,line set,venmo,22.84,INV 3870,y,forgot receipt
+2025-10-24,Ferguson,gas,venmo,24.23,INV 3438,n,
+2025-05-13,Circle K,gas,venmo,19.19,Q? 5292,y,reimb
+2025-06-10,Circle K,gas,cash,26.70,,n,forgot receipt
+2025-09-20,Supply House,gas,venmo,19.58,INV 7971,Y,
+2025-03-25,Ferguson,permit,venmo,15.46,INV 3105,,
+2025-12-23,Ferguson,gas,cash,35.78,INV 9902,y,forgot receipt
+2025-08-09,Amazon,line set,cash,51.80,,n,
+2026-01-23,Amazon,filters,venmo,41.47,,y,reimb
+2025-03-04,Grainger,permit,cash,13.24,INV 9008,,
+2025-09-15,Amazon,filters,card,21.04,INV 6839,y,reimb
+2026-01-28,Walmart,filters,venmo,32.62,Q? 5464,y,
+2025-10-07,Walmart,gas,,50.66,Q? 6565,Y,
+2026-01-29,AutoZone,line set,zelle,50.12,Q? 3852,n,
+2025-04-24,AutoZone,thermostat,,23.71,,n,
+2025-12-02,Walmart,gas,card,(14.09),Q? 1983,n,client paid back
+2025-05-12,Grainger,thermostat,cash,41.37,INV 3544,n,reimb
+2025-10-11,AutoZone,lunch,,55.20,INV 3079,,reimb
+2025-03-28,Ferguson,permit,venmo,40.38,INV 9671,y,forgot receipt
+2025-03-24,Grainger,thermostat,zelle,33.04,,Y,client paid back
+2026-01-17,Supply House,capacitor,zelle,22.80,Q? 2603,,client paid back
+2026-01-15,AutoZone,filters,card,29.45,INV 6692,Y,forgot receipt
+2026-01-09,Home Depot,misc parts,venmo,29.93,,n,
+2026-01-18,Supply House,misc parts,zelle,17.95,INV 8363,Y,
+2025-11-28,Amazon,line set,cash,21.03,,y,client paid back
+2025-08-25,AutoZone,permit,zelle,13.28,Q? 9822,Y,
+2025-06-16,Circle K,capacitor,cash,15.12,,Y,reimb
+2025-02-03,AutoZone,gas,zelle,21.39,INV 8846,y,reimb
+2025-05-23,Amazon,thermostat,,70.80,,Y,
+2026-01-15,Walmart,capacitor,,8.77,INV 1146,,forgot receipt
+2025-03-05,Home Depot,lunch,card,41.37,,y,
+2025-11-29,Ferguson,filters,,19.77,,y,client paid back
+2025-03-13,Walmart,lunch,cash,16.94,,y,
+2026-01-12,AutoZone,thermostat,,28.75,Q? 4417,Y,reimb
+2025-05-06,Supply House,filters,venmo,16.54,,n,
+2025-08-06,Amazon,gas,,101.74,INV 8600,,
+2025-04-20,Walmart,gas,zelle,10.85,Q? 1452,Y,client paid back
+2025-09-13,Grainger,misc parts,card,14.45,,y,
+2025-07-05,Walmart,misc parts,venmo,43.29,Q? 6002,y,
+2025-10-02,Grainger,lunch,zelle,101.42,,y,client paid back
+2026-01-23,Supply House,thermostat,venmo,102.75,,y,
+2025-09-13,Walmart,line set,zelle,68.96,,n,forgot receipt
+2025-08-19,Amazon,filters,card,(10.06),,Y,
+2025-08-15,Circle K,line set,zelle,17.97,INV 2171,n,
+2025-05-01,Grainger,lunch,,39.24,INV 3926,y,client paid back
+2025-11-20,Circle K,filters,,29.78,,y,
+2025-11-15,Home Depot,gas,,29.81,,,
+2025-03-18,Ferguson,capacitor,card,10.78,Q? 9925,n,forgot receipt
+2025-03-09,AutoZone,capacitor,card,24.82,,y,forgot receipt
+2025-10-13,Ferguson,line set,,15.77,Q? 4429,y,reimb
+2025-07-18,Circle K,line set,venmo,25.19,,Y,forgot receipt
+2025-02-26,AutoZone,misc parts,,12.67,,y,forgot receipt
+2025-10-25,Circle K,line set,card,51.09,Q? 4939,y,
+2025-09-22,Supply House,lunch,,28.68,,,reimb
+2025-03-27,Amazon,thermostat,card,23.47,INV 6383,Y,
+2025-02-18,Ferguson,tools,,15.65,,,
+2025-12-03,AutoZone,tools,cash,7.42,,y,client paid back
+2025-11-09,AutoZone,lunch,,27.29,,y,
+2025-04-20,Ferguson,capacitor,zelle,61.16,INV 4314,,client paid back
+2025-03-10,Walmart,tools,zelle,190.53,,Y,client paid back
+2025-11-20,Home Depot,capacitor,venmo,13.84,,,
+2025-07-08,Circle K,misc parts,card,35.79,,Y,forgot receipt
+2025-05-24,Amazon,thermostat,,27.38,INV 5709,n,
+2026-01-11,Grainger,lunch,card,(32.66),,,
+2025-11-07,Grainger,filters,card,16.54,Q? 7380,,reimb
+2025-12-07,Walmart,capacitor,zelle,44.95,,y,reimb
+2025-06-03,Ferguson,gas,venmo,33.97,,n,forgot receipt
+2025-08-05,Circle K,tools,venmo,40.74,Q? 9521,n,forgot receipt
+2025-04-04,Circle K,tools,venmo,66.33,,y,reimb
+2025-10-09,Supply House,line set,card,54.92,INV 2732,y,
+2025-02-25,Grainger,capacitor,cash,30.91,Q? 1602,y,
+2025-12-09,Ferguson,filters,venmo,9.50,,Y,forgot receipt
+2025-04-26,Circle K,capacitor,venmo,28.43,Q? 4570,,client paid back
+2025-06-26,Walmart,capacitor,zelle,18.72,,Y,reimb
+2025-03-23,AutoZone,lunch,cash,16.94,INV 9883,n,forgot receipt
+2025-02-07,Circle K,capacitor,venmo,11.68,Q? 4993,,client paid back
+2025-10-12,Walmart,gas,card,7.22,,y,reimb
+2025-12-14,Circle K,lunch,cash,16.98,,y,forgot receipt
+2026-01-19,Grainger,capacitor,venmo,7.84,Q? 4018,y,
+2025-09-09,Grainger,capacitor,cash,19.08,,Y,forgot receipt
+2025-06-29,Ferguson,permit,venmo,20.20,,y,
+2025-03-19,Ferguson,filters,,35.16,,y,reimb
+2025-02-06,Amazon,gas,cash,28.76,,y,reimb
+2025-09-01,AutoZone,gas,,35.26,INV 8683,n,
+2026-01-11,Grainger,thermostat,card,60.23,,y,client paid back
+2025-03-30,Supply House,thermostat,venmo,41.05,,y,
+2025-05-16,AutoZone,thermostat,card,47.49,Q? 5901,Y,
+2025-05-14,Ferguson,permit,,30.90,,,forgot receipt
+2025-07-16,Amazon,permit,venmo,13.60,,,client paid back
+2025-08-29,Circle K,gas,zelle,13.33,,,forgot receipt
+2026-01-02,AutoZone,lunch,,(25.35),INV 8832,y,client paid back
+2025-02-09,AutoZone,lunch,card,31.06,INV 7007,Y,client paid back
+2025-05-12,Walmart,permit,,35.03,Q? 1085,Y,client paid back
+2025-03-26,Walmart,permit,cash,27.95,,y,
+2025-11-30,Ferguson,misc parts,card,27.61,,n,client paid back
+2025-12-06,Circle K,filters,,40.50,Q? 9269,n,
+2025-10-04,Ferguson,lunch,venmo,39.13,,Y,forgot receipt
+2025-11-06,Grainger,permit,zelle,30.65,,y,client paid back
+2025-06-30,Ferguson,lunch,card,30.42,INV 7037,Y,forgot receipt
+2025-05-08,AutoZone,tools,zelle,23.24,Q? 9148,,client paid back

@@ -12,12 +12,12 @@ export async function createRemoteAssistRequest(
   _: RemoteAssistState,
   formData: FormData
 ): Promise<RemoteAssistState> {
-  const supabase = createSupabaseServerClient();
+  const supabase = await createSupabaseServerClient();
   const { data } = await supabase.auth.getUser();
   const user = data.user;
-  if (!user) {
-    return { error: "Please log in to request remote assist." };
-  }
+  const actor = user
+    ? { id: user.id, email: user.email }
+    : { id: "local-dev-user", email: null };
 
   const tool = String(formData.get("tool") ?? "");
   const notes = String(formData.get("notes") ?? "");
@@ -29,7 +29,7 @@ export async function createRemoteAssistRequest(
     : notes;
 
   const store = getStore();
-  const workspace = await store.ensureWorkspaceForUser(user.id, user.email);
+  const workspace = await store.ensureWorkspaceForUser(actor.id, actor.email);
   await store.createRemoteAssistRequest({
     workspace_id: workspace.id,
     tool,
