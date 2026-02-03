@@ -122,6 +122,7 @@ export async function runUploadAction(_: UploadState, formData: FormData): Promi
       website_url: websiteUrl,
       workspace_id: workspace.id,
       lock_id: lockResult.lock_id,
+      ctx: { learning_source: "real" },
     });
     await store.updateRun(run_id, {
       status: result.validation.ok ? "succeeded" : "failed",

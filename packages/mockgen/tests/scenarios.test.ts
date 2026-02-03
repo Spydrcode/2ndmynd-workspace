@@ -2,6 +2,7 @@
  * Test scenario flags produce expected signal patterns
  */
 
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars */
 import { describe, it, expect } from "vitest";
 import { generateDataset } from "../src/generate/generator";
 
@@ -121,7 +122,6 @@ describe("Scenarios", () => {
   });
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
 function _calculateCustomerRevenueConcentration(dataset: any): number {
   // Build map of customer ID -> total revenue
   const customerRevenue = new Map<string, number>();

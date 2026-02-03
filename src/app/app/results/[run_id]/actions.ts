@@ -57,6 +57,7 @@ export async function rerunSnapshot(formData: FormData) {
       pack_stats: pack.stats_json as DataPackStats,
       workspace_id: workspace.id,
       lock_id: lockResult.lock_id,
+      ctx: { learning_source: "real" },
     });
     await store.updateRun(run_id, {
       status: result.validation.ok ? "succeeded" : "failed",

@@ -21,7 +21,9 @@ describe("runAnalysisFromPack", () => {
     const result = await runAnalysisFromPack({
       run_id: "test-run-id",
       pack,
+      workspace_id: "test-workspace",
       website_url: null,
+      ctx: { learning_source: "mock" },
     });
 
     expect(result.run_id).toBe("test-run-id");

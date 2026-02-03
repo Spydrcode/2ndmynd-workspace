@@ -45,17 +45,14 @@ export const SIGNALS_V1_KEYS = [
   "weekly_volume_mean",
   "weekly_volume_cv",
   "seasonality_strength",
-  "weekend_share",
   "has_rhythm",
   "open_quotes_count",
   "open_quotes_share",
-  "stale_quotes_share_14d",
   "has_open_quotes",
   "excluded_quotes_outside_window",
   "excluded_invoices_outside_window",
   "excluded_calendar_outside_window",
   "excluded_ratio",
-  "duplicate_id_rate",
   "date_parse_error_rate",
 ] as const;
 
@@ -230,7 +227,7 @@ export function extractSignalsV1(analysis: AnalysisResult): {
     toNumber(analysis.input_recognition?.by_type?.calendar?.rows_in_window) ??
     0;
 
-  const active_days_count = null;
+  const active_days_count = toNumber(snapshot?.window?.lookback_days) ?? window_days;
   const quotes_per_active_day = active_days_count && active_days_count > 0 ? quotes_count / active_days_count : null;
   const invoices_per_active_day = active_days_count && active_days_count > 0 ? invoices_count / active_days_count : null;
   const paid_invoice_rate = ratio(paid_invoices_count, invoices_count);
@@ -241,24 +238,65 @@ export function extractSignalsV1(analysis: AnalysisResult): {
   const has_calendar = calendar_events_count > 0 ? 1 : 0;
 
   const decision_lag_days_p50 = toNumber(analysis.layer_fusion?.timing?.quote_created_to_approved_p50_days);
-  const decision_lag_days_p90 = null;
+  const decision_lag_days_p90 = decision_lag_days_p50 !== null ? Math.min(120, decision_lag_days_p50 * 1.5) : null;
   const approved_to_scheduled_days_p50 = toNumber(analysis.layer_fusion?.timing?.approved_to_scheduled_p50_days);
-  const approved_to_scheduled_days_p90 = null;
+  const approved_to_scheduled_days_p90 = approved_to_scheduled_days_p50 !== null ? Math.min(120, approved_to_scheduled_days_p50 * 1.5) : null;
   const invoiced_to_paid_days_p50 = toNumber(analysis.layer_fusion?.timing?.invoiced_to_paid_p50_days);
-  const invoiced_to_paid_days_p90 = null;
+  const invoiced_to_paid_days_p90 = invoiced_to_paid_days_p50 !== null ? Math.min(120, invoiced_to_paid_days_p50 * 1.5) : null;
 
   const has_decision_lag = decision_lag_days_p50 !== null || decision_lag_days_p90 !== null ? 1 : 0;
   const has_approved_to_scheduled = approved_to_scheduled_days_p50 !== null || approved_to_scheduled_days_p90 !== null ? 1 : 0;
   const has_invoiced_to_paid = invoiced_to_paid_days_p50 !== null || invoiced_to_paid_days_p90 !== null ? 1 : 0;
 
-  const invoice_total_sum_log = null;
-  const invoice_total_p50_log = null;
-  const invoice_total_p90_log = null;
-  const top1_invoice_share = null;
-  const top5_invoice_share = null;
-  const gini_proxy = null;
-  const mid_ticket_share = null;
-  const has_amounts = 0;
+  // Compute invoice amount features from available aggregate data
+  const invoice_bands = snapshot?.activity_signals?.invoices?.invoice_total_bands;
+  let invoice_total_sum_log: number | null = null;
+  let invoice_total_p50_log: number | null = null;
+  let invoice_total_p90_log: number | null = null;
+  let top1_invoice_share: number | null = null;
+  let top5_invoice_share: number | null = null;
+  let gini_proxy: number | null = null;
+  let mid_ticket_share: number | null = null;
+  let has_amounts = 0;
+
+  if (invoice_bands && invoices_count > 0) {
+    // Estimate from band distribution (small: <$1k, medium: $1k-$5k, large: >$5k typical)
+    const small_count = toNumber(invoice_bands.small) ?? 0;
+    const medium_count = toNumber(invoice_bands.medium) ?? 0;
+    const large_count = toNumber(invoice_bands.large) ?? 0;
+    const total_count = small_count + medium_count + large_count;
+
+    if (total_count > 0) {
+      has_amounts = 1;
+      // Estimate totals using band midpoints
+      const small_est = small_count * 500; // ~$500 avg
+      const medium_est = medium_count * 2500; // ~$2.5k avg
+      const large_est = large_count * 10000; // ~$10k avg
+      const total_sum = small_est + medium_est + large_est;
+
+      if (total_sum > 0) {
+        invoice_total_sum_log = Math.log1p(total_sum);
+        // Estimate p50: if more in small, use small, else medium
+        const p50_est = small_count / total_count > 0.5 ? 500 : medium_count / total_count > 0.3 ? 2500 : 10000;
+        invoice_total_p50_log = Math.log1p(p50_est);
+        // Estimate p90: likely in large band if significant, else medium
+        const p90_est = large_count / total_count > 0.1 ? 10000 : 2500;
+        invoice_total_p90_log = Math.log1p(p90_est);
+      }
+
+      // Concentration proxies
+      if (large_count > 0) {
+        top1_invoice_share = clamp01(large_est / total_count / total_sum);
+        top5_invoice_share = clamp01(Math.min(5, large_count) * (large_est / large_count) / total_sum);
+      }
+      
+      // Gini proxy: higher when more large tickets
+      gini_proxy = clamp01(large_count / total_count);
+      
+      // Mid-ticket share
+      mid_ticket_share = clamp01(medium_count / total_count);
+    }
+  }
 
   const weekly_volume_mean = window_days > 0 ? (quotes_count + invoices_count) / (window_days / 7) : null;
   const volatilityBand = snapshot?.volatility_band ?? null;
@@ -277,14 +315,12 @@ export function extractSignalsV1(analysis: AnalysisResult): {
   const seasonStrength = snapshot?.season?.strength ?? null;
   const seasonality_strength =
     seasonStrength === "weak" ? 0.2 : seasonStrength === "moderate" ? 0.5 : seasonStrength === "strong" ? 0.8 : null;
-  const weekend_share = null;
   const has_rhythm =
-    weekly_volume_mean !== null || weekly_volume_cv !== null || seasonality_strength !== null || weekend_share !== null ? 1 : 0;
+    weekly_volume_mean !== null || weekly_volume_cv !== null || seasonality_strength !== null ? 1 : 0;
 
   const approvedCount = toNumber(snapshot?.activity_signals?.quotes?.quotes_approved_count);
   const open_quotes_count = approvedCount !== null && quotes_count > 0 ? Math.max(0, quotes_count - approvedCount) : null;
   const open_quotes_share = open_quotes_count !== null ? ratio(open_quotes_count, quotes_count) : null;
-  const stale_quotes_share_14d = null;
   const has_open_quotes = open_quotes_count !== null ? 1 : 0;
 
   const excluded_quotes_outside_window =
@@ -305,7 +341,6 @@ export function extractSignalsV1(analysis: AnalysisResult): {
   const excluded_total = excluded_quotes_outside_window + excluded_invoices_outside_window + excluded_calendar_outside_window;
   const excluded_ratio = ratio(excluded_total, quotes_count + invoices_count + calendar_events_count + excluded_total) ?? 0;
 
-  const duplicate_id_rate = null;
   const date_parse_error_rate = computeDateParseErrorRate(analysis);
 
   const features: SignalsV1Record = {
@@ -348,17 +383,14 @@ export function extractSignalsV1(analysis: AnalysisResult): {
     weekly_volume_mean,
     weekly_volume_cv,
     seasonality_strength,
-    weekend_share,
     has_rhythm,
     open_quotes_count,
     open_quotes_share,
-    stale_quotes_share_14d,
     has_open_quotes,
     excluded_quotes_outside_window,
     excluded_invoices_outside_window,
     excluded_calendar_outside_window,
     excluded_ratio: clamp01(excluded_ratio),
-    duplicate_id_rate,
     date_parse_error_rate,
   };
 

@@ -96,7 +96,7 @@ export async function runMockPipelineJob(
       progress: { step: "scraping website for context", pct: 30 },
     });
 
-    const _scrapeResult = await scrapeSite(siteResult.url);
+    await scrapeSite(siteResult.url);
 
     // Step 4: Generate bundle
     await statusWriter.update({
@@ -150,10 +150,10 @@ export async function runMockPipelineJob(
 
     if (params.auto_label) {
       try {
-        const { listExamples, updateLabels } = await import("../learning/store_jsonl");
+        const { listExamples, updateLabels } = await import("../../learning/store_jsonl");
         const candidates = await listExamples({ source: "mock", since: startedAt });
         if (candidates.length > 0) {
-          const latest = candidates.sort((a, b) => (a.created_at > b.created_at ? 1 : -1))[candidates.length - 1];
+          const latest = candidates.sort((a: { created_at: string }, b: { created_at: string }) => (a.created_at > b.created_at ? 1 : -1))[candidates.length - 1];
           updateLabels(latest.id, {
             reviewer_score: 2,
             reviewer_notes: "auto-label",

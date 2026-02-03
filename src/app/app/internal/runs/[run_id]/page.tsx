@@ -132,7 +132,7 @@ export default function InternalRunPage({ params }: { params: { run_id: string }
       if (!response.ok) throw new Error("Failed to find similar runs");
       const data = await response.json();
       setSimilarResults(data.results ?? []);
-    } catch (_err) {
+    } catch (__err) {
       setSimilarResults([]);
     } finally {
       setIsSearching(false);

@@ -196,6 +196,7 @@ export default function TestingPage() {
     poll();
     const interval = setInterval(poll, 2000);
     return () => clearInterval(interval);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [learningJobId, isPollingLearning, internalToken]);
 
   // Fetch dataset stats
@@ -506,7 +507,7 @@ export default function TestingPage() {
                     {status.bundle_zip && (
                       <div>
                         <Label>Bundle</Label>
-                        <p className="text-sm text-muted-foreground break-all font-mono text-xs">
+                        <p className="text-xs text-muted-foreground break-all font-mono">
                           {status.bundle_zip}
                         </p>
                       </div>

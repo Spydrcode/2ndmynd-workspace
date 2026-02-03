@@ -160,6 +160,30 @@ Open `/login`, request a magic link, and then upload exports at `/app/upload`.
 
 Artifacts and run logs are written to `runs/<run_id>.jsonl`.
 
+## Wiring Verified: Mock vs Real Learning Source
+
+**Learning data provenance is now explicit:**
+- Mock pipeline (`packages/mockgen`) passes `ctx: { learning_source: "mock" }` to analysis
+- Real app uploads should pass `ctx: { learning_source: "real" }` 
+- Fallback inference with warning logs if `ctx.learning_source` not provided
+
+**Why this matters:**
+- Prevents mock data contamination in production training sets
+- Enables separate evaluation of synthetic vs real data quality
+- No more implicit INTELLIGENCE_MODE-based inference defaults
+
+**Mock pipeline end-to-end path:**
+1. Generate CSV bundle → Extract to DataPackV0 via `pack_from_csv_bundle.ts`
+2. Call `runAnalysisFromPack(pack, { ctx: { learning_source: "mock" } })`
+3. Learning capture stores examples with `source: "mock"` explicitly
+4. Training examples written to `./runs/learning/examples.jsonl`
+
+**Vector backfill runner:**
+- Script: `npm run learning:backfill:vectors`
+- Docs: See `packages/learning/README.md`
+- Idempotent upsert to Supabase with checkpoint resume
+- Requires: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`
+
 ## Intelligence Layer: How to Run
 
 These harnesses default to mock mode (no `OPENAI_API_KEY` required). To run live inference, set `INTELLIGENCE_MODE=live` and provide `OPENAI_API_KEY`.

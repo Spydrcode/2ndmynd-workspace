@@ -116,17 +116,24 @@ export async function runPipeline(options: PipelineOptions): Promise<PipelineRes
   if (options.runAnalysis) {
     console.log(`[mockgen] Running analysis pipeline...`);
     try {
-      // Import analysis function dynamically to avoid Next.js imports
-      // User's existing analysis function should be in lib/intelligence/run_analysis.ts
-      // We'll invoke it via Node.js dynamic import
-      const { runAnalysisFromPack } = await import("../../../src/lib/intelligence/run_analysis");
+      // Build DataPackV0 from CSV bundle
+      const { packFromCSVBundle } = await import("./pack_from_csv_bundle");
+      const pack = packFromCSVBundle(bundleDir);
+      
+      console.log(`[mockgen] Built DataPackV0 from CSV bundle:`);
+      console.log(`  - quotes: ${pack.quotes?.length ?? 0}`);
+      console.log(`  - invoices: ${pack.invoices?.length ?? 0}`);
+      console.log(`  - jobs: ${pack.jobs?.length ?? 0}`);
+      console.log(`  - customers: ${pack.customers?.length ?? 0}`);
+      
+      // Import analysis function and run with explicit mock context
+      const { runAnalysisFromPack } = await import("../../../../src/lib/intelligence/run_analysis");
       
       const result = await runAnalysisFromPack({
-        quotesPath: path.join(bundleDir, "quotes_export.csv"),
-        invoicesPath: path.join(bundleDir, "invoices_export.csv"),
-        calendarPath: path.join(bundleDir, "calendar_export.csv"),
-        startDate: options.startDate,
-        endDate: options.endDate,
+        run_id: `mock_${Date.now()}`,
+        pack,
+        workspace_id: "mock_workspace",
+        ctx: { learning_source: "mock" },
       });
       
       analysisResult = result;
@@ -137,12 +144,16 @@ export async function runPipeline(options: PipelineOptions): Promise<PipelineRes
         JSON.stringify(result, null, 2)
       );
       
-      console.log(`[mockgen] Analysis complete. Signals:`);
-      if (result.signals) {
-        for (const [key, value] of Object.entries(result.signals)) {
-          console.log(`  - ${key}: ${JSON.stringify(value)}`);
-        }
+      if (result.decision_artifact) {
+        fs.writeFileSync(
+          path.join(bundleDir, "decision_artifact.json"),
+          JSON.stringify(result.decision_artifact, null, 2)
+        );
       }
+      
+      console.log(`[mockgen] Analysis complete.`);
+      console.log(`  - validation: ${result.validation?.ok ? "OK" : "FAILED"}`);
+      console.log(`  - readiness: ${result.readiness_level ?? "unknown"}`);
     } catch (err) {
       error = String(err);
       console.error(`[mockgen] Analysis failed: ${error}`);

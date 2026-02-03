@@ -26,6 +26,7 @@ import type { LayerFusionResult } from "./layer_fusion/types";
 import type { BenchmarkResult } from "../benchmarks/types";
 import type { DecisionArtifactV1 } from "../types/decision_artifact";
 import { buildDecisionArtifact } from "../present/build_decision_artifact";
+import type { RunContext } from "./run_context";
 
 export type AnalysisResult = {
   run_id: string;
@@ -48,6 +49,7 @@ export type AnalysisResult = {
   benchmarks?: BenchmarkResult;
   mapping_confidence?: "low" | "medium" | "high";
   decision_artifact?: DecisionArtifactV1;
+  ctx?: RunContext;
 };
 
 export async function runAnalysisFromPack(params: {
@@ -57,6 +59,7 @@ export async function runAnalysisFromPack(params: {
   website_url?: string | null;
   workspace_id: string;
   lock_id?: string;
+  ctx?: RunContext;
 }) {
   const logger = new RunLogger(params.run_id);
   logger.logEvent("upload_received", { run_id: params.run_id });
@@ -314,13 +317,23 @@ export async function runAnalysisFromPack(params: {
     benchmarks,
     mapping_confidence,
     decision_artifact,
+    ctx: params.ctx,
   } satisfies AnalysisResult;
 
   // Capture learning example if enabled
   if (process.env.LEARNING_CAPTURE === "true") {
     try {
       const { captureTrainingExample, inferRunSource } = await import("../learning/capture");
-      const source = inferRunSource(manifest);
+      
+      // Use explicit learning_source from ctx if provided
+      let source = params.ctx?.learning_source;
+      
+      if (!source) {
+        // Fallback to inference with warning
+        console.warn("[LEARNING] learning_source not provided in ctx; falling back to manifest inference");
+        source = inferRunSource(manifest);
+      }
+      
       await captureTrainingExample({
         analysis_result: analysisResult,
         source,

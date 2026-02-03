@@ -38,17 +38,14 @@ FEATURE_KEYS = [
     "weekly_volume_mean",
     "weekly_volume_cv",
     "seasonality_strength",
-    "weekend_share",
     "has_rhythm",
     "open_quotes_count",
     "open_quotes_share",
-    "stale_quotes_share_14d",
     "has_open_quotes",
     "excluded_quotes_outside_window",
     "excluded_invoices_outside_window",
     "excluded_calendar_outside_window",
     "excluded_ratio",
-    "duplicate_id_rate",
     "date_parse_error_rate",
 ]
 

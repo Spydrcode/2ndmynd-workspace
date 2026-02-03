@@ -7,7 +7,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { updateLabels } from "@/lib/learning/store_jsonl";
+import { updateLabels } from "@/src/lib/learning/store_jsonl";
 
 function isInternalAllowed(request: NextRequest): { ok: boolean; status: number } {
   if (process.env.NODE_ENV === "production" && process.env.ALLOW_INTERNAL_TESTING !== "true") {

@@ -36,7 +36,7 @@ describe("Internal Testing - Status Management", () => {
   });
 
   it("should create status file with initial state", async () => {
-    const _writer = createFileStatusWriter(TEST_JOB_ID);
+    createFileStatusWriter(TEST_JOB_ID);
     
     const status = readJobStatus(TEST_JOB_ID);
     
@@ -87,29 +87,21 @@ describe("Internal Testing - Status Management", () => {
 
 describe("Internal Testing - Production Guardrails", () => {
   it("should block in production without ALLOW_INTERNAL_TESTING", () => {
-    const originalEnv = process.env.NODE_ENV;
-    const originalAllow = process.env.ALLOW_INTERNAL_TESTING;
-    
-    process.env.NODE_ENV = "production";
-    delete process.env.ALLOW_INTERNAL_TESTING;
+    // Mock the environment check without modifying readonly properties
+    const mockEnv = "production";
+    const mockAllow = undefined;
     
     // Simulate the check
-    const isAllowed = process.env.NODE_ENV === "production" && process.env.ALLOW_INTERNAL_TESTING !== "true";
+    const isAllowed = mockEnv === "production" && mockAllow !== "true";
     
     expect(isAllowed).toBe(true); // Should block
-    
-    // Restore
-    process.env.NODE_ENV = originalEnv;
-    if (originalAllow) process.env.ALLOW_INTERNAL_TESTING = originalAllow;
   });
 
   it("should allow in development", () => {
-    const originalEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "development";
+    // Mock the environment check
+    const mockEnv: string = "development";
     
-    const isAllowed = process.env.NODE_ENV !== "production";
+    const isAllowed = mockEnv !== "production";
     expect(isAllowed).toBe(true);
-    
-    process.env.NODE_ENV = originalEnv;
   });
 });

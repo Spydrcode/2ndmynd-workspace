@@ -12,7 +12,7 @@ import { spawn } from "child_process";
 import * as path from "path";
 import * as fs from "fs";
 import { nanoid } from "nanoid";
-import { exportDataset } from "@/lib/learning/store_jsonl";
+import { exportDataset } from "@/src/lib/learning/store_jsonl";
 
 function isInternalAllowed(request: NextRequest): { ok: boolean; status: number } {
   if (process.env.NODE_ENV === "production" && process.env.ALLOW_INTERNAL_TESTING !== "true") {

@@ -160,6 +160,7 @@ export interface PipelineResult {
   bundlePath: string;
   zipPath: string;
   manifest: BundleManifest;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   analysisResult?: any;
   error?: string;
 }

@@ -134,7 +134,7 @@ function getTicketDrivenItems(_snapshot: SnapshotV2): WatchListItem[] {
   return items;
 }
 
-function getInventorySensitiveItems(_snapshot: SnapshotV2): WatchListItem[] {
+function getInventorySensitiveItems(__snapshot: SnapshotV2): WatchListItem[] {
   const items: WatchListItem[] = [];
 
   items.push({
@@ -216,7 +216,7 @@ function getSeasonalSpikeItems(snapshot: SnapshotV2): WatchListItem[] {
   return items;
 }
 
-function getRepeatRelationshipItems(_snapshot: SnapshotV2): WatchListItem[] {
+function getRepeatRelationshipItems(__snapshot: SnapshotV2): WatchListItem[] {
   // Future: if snapshot includes repeat customer signals
   const items: WatchListItem[] = [];
 
