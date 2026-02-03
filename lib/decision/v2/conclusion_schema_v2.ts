@@ -14,6 +14,13 @@ export type SnapshotV2 = {
     report_date: string;
     lookback_days: number;
     sample_confidence: Confidence;
+    window_type: "last_90_days" | "last_12_months" | "cap_100_closed" | "custom";
+    window_reason?: string;
+  };
+  exclusions?: {
+    quotes_outside_window_count: number;
+    invoices_outside_window_count: number;
+    calendar_outside_window_count: number;
   };
   activity_signals: {
     quotes: {

@@ -1,0 +1,16 @@
+{
+  "industry": "hvac",
+  "seed": 42,
+  "days": 30,
+  "startDate": "2024-01-01T00:00:00.000Z",
+  "endDate": "2024-01-31T00:00:00.000Z",
+  "scenario": {},
+  "generatedAt": "2026-02-03T16:47:13.190Z",
+  "counts": {
+    "customers": 28,
+    "quotes": 69,
+    "jobs": 40,
+    "invoices": 40,
+    "calendar_events": 40
+  }
+}

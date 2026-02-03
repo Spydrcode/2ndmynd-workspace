@@ -125,23 +125,25 @@ export function buildSnapshotV2(input: BuildSnapshotV2Input): SnapshotV2 {
   const quotes = input.quotes ?? [];
   const invoices = input.invoices ?? [];
 
-  const quoteItems = quotes
-    .map((q) => ({
-      created: parseDate(q.created_at),
-      approved: parseDate(q.approved_at),
-      status: (q.status ?? "").toLowerCase(),
-      total: Number.isFinite(q.total ?? NaN) ? (q.total as number) : 0,
-    }))
-    .filter((q) => (q.created ? q.created >= sliceStart && q.created <= sliceEnd : false));
+  const allQuoteParsed = quotes.map((q) => ({
+    created: parseDate(q.created_at),
+    approved: parseDate(q.approved_at),
+    status: (q.status ?? "").toLowerCase(),
+    total: Number.isFinite(q.total ?? NaN) ? (q.total as number) : 0,
+  }));
+  const totalQuotesCount = allQuoteParsed.filter((q) => q.created !== null).length;
+  const quoteItems = allQuoteParsed.filter((q) => (q.created ? q.created >= sliceStart && q.created <= sliceEnd : false));
+  const quotesExcluded = totalQuotesCount - quoteItems.length;
 
-  const invoiceItems = invoices
-    .map((inv) => ({
-      issued: parseDate(inv.issued_at),
-      paid: parseDate(inv.paid_at),
-      status: (inv.status ?? "").toLowerCase(),
-      total: Number.isFinite(inv.total ?? NaN) ? (inv.total as number) : 0,
-    }))
-    .filter((inv) => (inv.issued ? inv.issued >= sliceStart && inv.issued <= sliceEnd : false));
+  const allInvoiceParsed = invoices.map((inv) => ({
+    issued: parseDate(inv.issued_at),
+    paid: parseDate(inv.paid_at),
+    status: (inv.status ?? "").toLowerCase(),
+    total: Number.isFinite(inv.total ?? NaN) ? (inv.total as number) : 0,
+  }));
+  const totalInvoicesCount = allInvoiceParsed.filter((inv) => inv.issued !== null).length;
+  const invoiceItems = allInvoiceParsed.filter((inv) => (inv.issued ? inv.issued >= sliceStart && inv.issued <= sliceEnd : false));
+  const invoicesExcluded = totalInvoicesCount - invoiceItems.length;
 
   const quotesCount = quoteItems.length;
   const quotesApprovedCount = quoteItems.filter((q) => q.status.includes("approved") || q.status.includes("converted") || q.approved).length;
@@ -217,6 +219,10 @@ export function buildSnapshotV2(input: BuildSnapshotV2Input): SnapshotV2 {
   const totalSignals = quotesCount + invoicesCount;
   const sampleConfidence = totalSignals >= 50 ? "high" : totalSignals >= 20 ? "medium" : "low";
 
+  const window_type: "last_90_days" | "last_12_months" | "cap_100_closed" | "custom" =
+    lookback === 90 ? "last_90_days" : lookback === 365 ? "last_12_months" : "custom";
+  const window_reason = window_type === "custom" ? `${lookback}-day lookback window` : undefined;
+
   return {
     snapshot_version: "snapshot_v2",
     pii_scrubbed: true,
@@ -226,6 +232,13 @@ export function buildSnapshotV2(input: BuildSnapshotV2Input): SnapshotV2 {
       report_date: toISODate(reportDate),
       lookback_days: lookback,
       sample_confidence: sampleConfidence,
+      window_type,
+      window_reason,
+    },
+    exclusions: {
+      quotes_outside_window_count: quotesExcluded,
+      invoices_outside_window_count: invoicesExcluded,
+      calendar_outside_window_count: 0,
     },
     activity_signals: {
       quotes: {

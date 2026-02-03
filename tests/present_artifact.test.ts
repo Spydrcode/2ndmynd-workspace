@@ -64,8 +64,8 @@ describe("presentArtifact", () => {
 
     expect(presented.evidence_chips.length).toBeGreaterThan(0);
     expect(JSON.stringify(presented.evidence_chips)).not.toContain("signals.");
-    expect(presented.technical_signals.length).toBeGreaterThan(0);
-    expect(presented.technical_signals[0]?.key).toContain("signals.");
+    expect(presented.technical_details?.signals.length).toBeGreaterThan(0);
+    expect(presented.technical_details?.signals[0]?.key).toContain("signals.");
   });
 });
 

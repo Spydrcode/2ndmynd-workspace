@@ -40,6 +40,7 @@ export type DataPackV0 = {
     issued_at?: string;
     paid_at?: string;
     total?: number;
+    related_quote_id?: string;
   }>;
   jobs?: Array<{
     id?: string;
@@ -47,6 +48,7 @@ export type DataPackV0 = {
     scheduled_at?: string;
     completed_at?: string;
     total?: number;
+    related_quote_id?: string;
   }>;
 };
 
@@ -59,6 +61,13 @@ export type DataPackStats = {
   customers: number;
   warnings: string[];
   file_categories?: Record<string, number>;
+  rows_by_type?: Record<string, number>;
+  files_attempted?: Array<{
+    filename: string;
+    type_guess: string;
+    status: "success" | "error";
+    error?: string;
+  }>;
 };
 
 const ajv = new Ajv({ allErrors: true, allowUnionTypes: true });
@@ -130,6 +139,7 @@ const packSchema = {
           issued_at: { type: "string" },
           paid_at: { type: "string" },
           total: { type: "number" },
+          related_quote_id: { type: "string" },
         },
       },
     },
@@ -144,6 +154,7 @@ const packSchema = {
           scheduled_at: { type: "string" },
           completed_at: { type: "string" },
           total: { type: "number" },
+          related_quote_id: { type: "string" },
         },
       },
     },

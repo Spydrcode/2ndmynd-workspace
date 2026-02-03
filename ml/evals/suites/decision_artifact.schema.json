@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DecisionArtifactV1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["version", "takeaway", "why_heavy", "next_7_days", "boundary", "window", "confidence", "pressure_map"],
+  "properties": {
+    "version": { "const": "v1" },
+    "takeaway": { "type": "string" },
+    "why_heavy": { "type": "string" },
+    "next_7_days": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "boundary": { "type": "string" },
+    "window": {
+      "type": "object",
+      "required": ["start_date", "end_date", "rule", "excluded_counts"],
+      "properties": {
+        "start_date": { "type": "string" },
+        "end_date": { "type": "string" },
+        "rule": { "type": "string" },
+        "excluded_counts": { "type": "object" }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "required": ["level", "reason"],
+      "properties": {
+        "level": { "type": "string" },
+        "reason": { "type": "string" }
+      }
+    },
+    "pressure_map": { "type": "array" }
+  }
+}

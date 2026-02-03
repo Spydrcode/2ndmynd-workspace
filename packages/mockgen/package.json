@@ -1,0 +1,32 @@
+{
+  "name": "@2ndmynd/mockgen",
+  "version": "1.0.0",
+  "description": "Backend-only mock dataset generator for 2ndmynd-workspace",
+  "main": "src/index.ts",
+  "type": "module",
+  "bin": {
+    "mockgen": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "demo": "tsx src/demo.ts",
+    "build": "echo 'No build needed - uses tsx directly'"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16",
+    "commander": "^12.1.0",
+    "nanoid": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/adm-zip": "^0.5.5",
+    "@types/node": "^20.0.0",
+    "vitest": "^2.0.0"
+  },
+  "keywords": [
+    "mock",
+    "dataset",
+    "generator",
+    "testing"
+  ]
+}

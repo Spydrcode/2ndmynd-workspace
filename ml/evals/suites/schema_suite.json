@@ -1,0 +1,21 @@
+[
+  {
+    "id": "schema-basic-1",
+    "suite": "schema",
+    "messages": [
+      { "role": "system", "content": "Return a decision artifact JSON only." },
+      { "role": "user", "content": "Provide a simple decision artifact for a small HVAC business with limited invoices." }
+    ],
+    "expected_schema_path": "ml/evals/suites/decision_artifact.schema.json",
+    "expected_output_json": {
+      "version": "v1",
+      "takeaway": "Focus on one repeatable follow-up rhythm this week.",
+      "why_heavy": "Decision timing is uneven and follow-up is slipping.",
+      "next_7_days": ["Assign one owner to follow-up", "Set a 48-hour follow-up pass"],
+      "boundary": "If most quotes are seasonal inquiries, keep a light touch.",
+      "window": { "start_date": "2025-01-01", "end_date": "2025-03-31", "rule": "last_90_days", "excluded_counts": {} },
+      "confidence": { "level": "medium", "reason": "Moderate coverage." },
+      "pressure_map": []
+    }
+  }
+]

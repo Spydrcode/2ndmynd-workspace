@@ -2,6 +2,7 @@
 
 import { useActionState, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { ArrowRight, UploadCloud } from "lucide-react";
 
 import { runUploadAction } from "./actions";
@@ -124,6 +125,13 @@ export default function UploadPage() {
                 className="mt-4"
               />
             </div>
+            <Separator />
+            <p className="text-xs text-muted-foreground">
+              Need help exporting data?{" "}
+              <Link href="/app/remote-assist" className="underline">
+                Request remote assist
+              </Link>
+            </p>
           </CardContent>
         </Card>
       </div>

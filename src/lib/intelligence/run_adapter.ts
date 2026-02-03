@@ -1,6 +1,10 @@
 import { createSupabaseServerClient } from "@/src/lib/supabase/server";
 import { getStore } from "@/src/lib/intelligence/store";
 import { DataPackV0 } from "@/src/lib/intelligence/data_pack_v0";
+import type { PredictiveContext } from "@/src/lib/intelligence/predictive/predictive_context";
+import type { RunManifest } from "@/src/lib/intelligence/run_manifest";
+import type { ArchetypeDetectionResult, ArchetypeWatchList } from "@/src/lib/intelligence/archetypes/types";
+import { parseFlexibleTimestamp } from "./dates";
 
 export type InputHealth = {
   date_range: string | null;
@@ -42,13 +46,29 @@ export type RunResults = {
     model_id?: string;
     primary_ok?: boolean;
   } | null;
+  readiness_level?: "blocked" | "partial" | "ready" | null;
+  diagnose_mode?: boolean | null;
   input_recognition?: {
     quotes_detected_count?: number;
     invoices_detected_count?: number;
     invoices_paid_detected_count?: number;
     reasons_dropped?: string[];
+    files_attempted?: Array<{
+      filename: string;
+      type_guess: string;
+      status: "success" | "error";
+      error?: string;
+    }>;
+    by_type?: Record<string, unknown>;
   } | null;
   data_warnings?: string[];
+  predictive_context?: PredictiveContext | null;
+  archetypes?: ArchetypeDetectionResult | null;
+  predictive_watch_list?: ArchetypeWatchList | null;
+  layer_fusion?: unknown | null;
+  benchmarks?: unknown | null;
+  mapping_confidence?: "low" | "medium" | "high" | null;
+  run_manifest?: RunManifest | null;
   artifacts?: {
     log_path?: string | null;
   } | null;
@@ -81,13 +101,21 @@ export type ResultsArtifact = {
   snapshot: unknown | null;
   input_recognition: RunResults["input_recognition"] | null;
   data_warnings: string[];
+  readiness_level?: RunResults["readiness_level"] | null;
+  diagnose_mode?: RunResults["diagnose_mode"] | null;
+  predictive_context?: PredictiveContext | null;
+  archetypes?: ArchetypeDetectionResult | null;
+  predictive_watch_list?: ArchetypeWatchList | null;
+  layer_fusion?: unknown | null;
+  benchmarks?: unknown | null;
+  mapping_confidence?: "low" | "medium" | "high" | null;
+  decision_artifact?: unknown | null;
+  run_manifest?: RunManifest | null;
 };
 
 function toDate(value?: string | null) {
   if (!value) return null;
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return null;
-  return date;
+  return parseFlexibleTimestamp(value);
 }
 
 function asRecord(value: unknown): Record<string, unknown> {
@@ -227,6 +255,16 @@ export function buildResultsArtifact(run: Run): ResultsArtifact {
     input_health: run.input_health_json ?? null,
     snapshot: run.results_json?.snapshot ?? null,
     input_recognition: run.results_json?.input_recognition ?? null,
+    archetypes: run.results_json?.archetypes ?? null,
+    predictive_watch_list: run.results_json?.predictive_watch_list ?? null,
     data_warnings: Array.isArray(run.results_json?.data_warnings) ? (run.results_json?.data_warnings as string[]) : [],
+    readiness_level: (run.results_json?.readiness_level as RunResults["readiness_level"]) ?? null,
+    diagnose_mode: (run.results_json?.diagnose_mode as RunResults["diagnose_mode"]) ?? null,
+    predictive_context: run.results_json?.predictive_context ?? null,
+    run_manifest: run.results_json?.run_manifest ?? null,
+    layer_fusion: run.results_json?.layer_fusion ?? null,
+    benchmarks: run.results_json?.benchmarks ?? null,
+    mapping_confidence: run.results_json?.mapping_confidence ?? null,
+    decision_artifact: run.results_json?.decision_artifact ?? null,
   };
 }

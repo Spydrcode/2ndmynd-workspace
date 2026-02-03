@@ -1,0 +1,295 @@
+Quote ID,Created At,Total,Status,Approved At,Service Area,Job Type,Est Labor Hrs,Est Material Cost
+Q-202502-0005,2025-02-03 09:45:00,282.62,draft,,Mesa - East,Capacitor / Electrical Repair,2.7,35.94
+Q-202502-0002,2025-02-03 14:45:00,139.89,approved,2025-02-07 15:45:00,Mesa - East,Maintenance Tune-Up,1.5,60.38
+Q-202502-0012,2025-02-04 09:45:00,319.8,approved,2025-02-06 11:45:00,Apache Junction,Capacitor / Electrical Repair,4.5,43.42
+Q-202502-0008,2025-02-04 15:00:00,266.23,sent,,Mesa - East,Capacitor / Electrical Repair,2.7,34.13
+Q-202502-0013,2025-02-05 16:00:00,269.43,rejected,,Tempe,Capacitor / Electrical Repair,0.9,106.67
+Q-202502-0011,2025-02-07 09:15:00,142.19,approved,2025-02-07 09:15:00,Gilbert,Maintenance Tune-Up,2.3,42.43
+Q-202502-0016,2025-02-07 13:15:00,187.67,approved,2025-02-07 20:15:00,Gilbert,Diagnostic / Service Call,0.7,78.49
+Q-202502-0023,2025-02-07 15:15:00,176.08,approved,2025-02-08 21:15:00,Gilbert,Maintenance Tune-Up,0.6,22.11
+Q-202502-0010,2025-02-10 08:15:00,173.31,approved,2025-02-11 16:15:00,Gilbert,Maintenance Tune-Up,3.7,74.97
+Q-202502-0004,2025-02-10 11:15:00,253.23,sent,,Tempe,Capacitor / Electrical Repair,3.1,89.97
+Q-202502-0001,2025-02-11 10:45:00,5970.84,sent,,Chandler,Full System Replacement,10.1,2498.18
+Q-202502-0022,2025-02-11 17:15:00,621.41,sent,,Tempe,Blower / Motor Repair,3.0,214.22
+Q-202502-0014,2025-02-12 11:30:00,363.97,sent,,Chandler,Capacitor / Electrical Repair,5.4,139.08
+Q-202502-0025,2025-02-13 13:30:00,136.71,sent,,Chandler,Maintenance Tune-Up,1.7,17.69
+Q-202502-0020,2025-02-18 10:00:00,815.9,sent,,Scottsdale,Blower / Motor Repair,5.3,130.81
+Q-202502-0009,2025-02-18 12:15:00,176.76,approved,2025-02-21 17:15:00,Scottsdale,Diagnostic / Service Call,2.3,59.91
+Q-202502-0018,2025-02-18 16:15:00,419.81,rejected,,Mesa - East,Capacitor / Electrical Repair,3.4,152.11
+Q-202502-0003,2025-02-19 12:15:00,150.41,approved,2025-02-19 20:15:00,Mesa - East,Diagnostic / Service Call,2.2,52.53
+Q-202502-0006,2025-02-23 13:45:00,140.06,sent,,Chandler,Diagnostic / Service Call,2.7,48.18
+Q-202502-0021,2025-02-24 09:00:00,145.65,approved,2025-02-24 17:00:00,Gilbert,Diagnostic / Service Call,2.0,17.46
+Q-202502-0024,2025-02-24 09:45:00,148.54,approved,2025-02-25 11:45:00,Scottsdale,Maintenance Tune-Up,2.4,51.58
+Q-202502-0007,2025-02-24 12:45:00,133.72,rejected,,Gilbert,Diagnostic / Service Call,2.0,34.98
+Q-202502-0015,2025-02-26 11:15:00,563.34,approved,2025-02-27 15:15:00,Chandler,Blower / Motor Repair,4.1,149.45
+Q-202502-0017,2025-02-26 13:00:00,471.5,approved,2025-03-05 14:00:00,Scottsdale,Capacitor / Electrical Repair,5.0,166.76
+Q-202502-0019,2025-02-28 11:15:00,243.83,approved,2025-03-04 16:15:00,Mesa - East,Capacitor / Electrical Repair,3.5,46.52
+Q-202503-0032,2025-03-01 12:30:00,471.79,sent,,Apache Junction,Capacitor / Electrical Repair,4.3,83.15
+Q-202503-0031,2025-03-02 10:00:00,165.68,approved,2025-03-03 10:00:00,Mesa - East,Diagnostic / Service Call,3.7,21.47
+Q-202503-0035,2025-03-03 08:00:00,131.46,approved,2025-03-06 16:00:00,Mesa - East,Diagnostic / Service Call,1.0,15.48
+Q-202503-0047,2025-03-03 13:15:00,226.12,approved,2025-03-03 19:15:00,Gilbert,Maintenance Tune-Up,2.9,52.91
+Q-202503-0036,2025-03-03 16:00:00,634.32,sent,,Tempe,Blower / Motor Repair,2.5,225.35
+Q-202503-0044,2025-03-05 11:30:00,166.87,sent,,Gilbert,Maintenance Tune-Up,2.6,68.33
+Q-202503-0046,2025-03-08 12:45:00,298.31,approved,2025-03-09 13:45:00,Chandler,Capacitor / Electrical Repair,1.7,51.53
+Q-202503-0028,2025-03-09 17:15:00,162.86,sent,,Mesa - East,Diagnostic / Service Call,0.7,19.16
+Q-202503-0027,2025-03-11 09:30:00,160.94,approved,2025-03-11 13:30:00,Mesa - East,Diagnostic / Service Call,2.9,68.95
+Q-202503-0033,2025-03-11 14:00:00,144.25,approved,2025-03-15 14:00:00,Gilbert,Diagnostic / Service Call,1.0,19.01
+Q-202503-0040,2025-03-13 11:15:00,6086.97,sent,,Mesa - East,Full System Replacement,11.0,891.2
+Q-202503-0030,2025-03-14 15:45:00,126.7,approved,2025-03-15 20:45:00,Apache Junction,Diagnostic / Service Call,2.1,21.48
+Q-202503-0039,2025-03-15 09:15:00,2457.56,sent,,Gilbert,Mini-Split Install,11.4,950.99
+Q-202503-0045,2025-03-18 11:00:00,164.91,approved,2025-03-19 15:00:00,Mesa - East,Diagnostic / Service Call,3.2,44.52
+Q-202503-0043,2025-03-19 09:30:00,1506.79,sent,,Apache Junction,Duct Repair / Sealing,3.8,590.87
+Q-202503-0038,2025-03-20 10:30:00,795.93,approved,2025-03-30 12:30:00,Mesa - East,Blower / Motor Repair,5.9,83.07
+Q-202503-0029,2025-03-21 12:15:00,8750.58,approved,2025-04-05 12:15:00,Gilbert,Full System Replacement,11.6,3920.91
+Q-202503-0034,2025-03-22 17:45:00,163.86,approved,2025-03-24 19:45:00,Tempe,Diagnostic / Service Call,1.2,18.9
+Q-202503-0041,2025-03-23 13:15:00,177.85,approved,2025-03-24 13:15:00,Gilbert,Diagnostic / Service Call,1.9,76.92
+Q-202503-0037,2025-03-24 15:45:00,692.09,sent,,Scottsdale,Duct Repair / Sealing,2.1,218.66
+Q-202503-0026,2025-03-25 10:30:00,841.87,sent,,Tempe,Blower / Motor Repair,4.6,203.8
+Q-202503-0042,2025-03-27 14:00:00,238.72,approved,2025-03-29 18:00:00,Apache Junction,Capacitor / Electrical Repair,2.8,54.97
+Q-202504-0057,2025-04-02 12:45:00,11902.39,rejected,,Scottsdale,Full System Replacement,10.6,1516.18
+Q-202504-0067,2025-04-02 13:30:00,472.39,approved,2025-04-12 16:30:00,Mesa - East,Blower / Motor Repair,5.2,181.95
+Q-202504-0066,2025-04-03 13:15:00,7189.66,sent,,Gilbert,Full System Replacement,10.4,2323.05
+Q-202504-0063,2025-04-04 14:45:00,933.27,approved,2025-04-07 20:45:00,Apache Junction,Blower / Motor Repair,4.1,243.89
+Q-202504-0056,2025-04-05 14:00:00,1768.94,approved,2025-04-06 14:00:00,Mesa - East,Duct Repair / Sealing,5.8,290.88
+Q-202504-0061,2025-04-05 15:15:00,240.73,approved,2025-04-06 18:15:00,Mesa - East,Maintenance Tune-Up,2.7,51.69
+Q-202504-0070,2025-04-07 14:45:00,99.53,sent,,Mesa - East,Diagnostic / Service Call,1.6,24.1
+Q-202504-0055,2025-04-08 12:30:00,155.12,sent,,Mesa - East,Diagnostic / Service Call,0.9,38.15
+Q-202504-0054,2025-04-08 15:00:00,163.65,approved,2025-04-11 18:00:00,Tempe,Diagnostic / Service Call,2.6,16.75
+Q-202504-0064,2025-04-09 12:15:00,235.72,approved,2025-04-11 15:15:00,Gilbert,Capacitor / Electrical Repair,1.8,50.5
+Q-202504-0060,2025-04-11 13:30:00,184.84,approved,2025-04-13 17:30:00,Gilbert,Diagnostic / Service Call,3.2,37.72
+Q-202504-0058,2025-04-14 09:15:00,168.19,approved,2025-04-17 10:15:00,Gilbert,Diagnostic / Service Call,3.7,19.72
+Q-202504-0068,2025-04-14 09:45:00,2663.66,sent,,Chandler,Mini-Split Install,11.4,914.68
+Q-202504-0053,2025-04-14 12:00:00,188.8,sent,,Mesa - East,Maintenance Tune-Up,1.8,33.94
+Q-202504-0049,2025-04-15 11:00:00,225.62,rejected,,Mesa - East,Capacitor / Electrical Repair,2.1,87.74
+Q-202504-0072,2025-04-17 10:15:00,113.56,approved,2025-04-17 11:15:00,Gilbert,Diagnostic / Service Call,1.7,26.61
+Q-202504-0065,2025-04-17 16:15:00,141.07,approved,2025-04-17 17:15:00,Chandler,Maintenance Tune-Up,1.4,14.33
+Q-202504-0050,2025-04-18 08:00:00,119.93,sent,,Tempe,Diagnostic / Service Call,4.2,52.39
+Q-202504-0052,2025-04-18 12:45:00,7556.32,draft,,Mesa - East,Full System Replacement,10.2,1376.53
+Q-202504-0062,2025-04-21 08:45:00,128.32,sent,,Chandler,Diagnostic / Service Call,2.2,24.73
+Q-202504-0048,2025-04-21 11:00:00,499.07,approved,2025-04-29 17:00:00,Mesa - East,Blower / Motor Repair,4.5,216.54
+Q-202504-0073,2025-04-21 11:45:00,238.83,approved,2025-04-25 14:45:00,Chandler,Capacitor / Electrical Repair,2.4,27.37
+Q-202504-0051,2025-04-21 14:00:00,960.42,rejected,,Mesa - East,Duct Repair / Sealing,5.3,183.74
+Q-202504-0069,2025-04-22 12:45:00,127.11,sent,,Apache Junction,Diagnostic / Service Call,2.5,13.52
+Q-202504-0071,2025-04-25 10:15:00,3854.64,sent,,Mesa - East,Mini-Split Install,10.2,1158.33
+Q-202504-0059,2025-04-26 14:00:00,1156.86,rejected,,Gilbert,Duct Repair / Sealing,4.1,194.62
+Q-202505-0094,2025-05-01 13:30:00,103.36,draft,,Apache Junction,Diagnostic / Service Call,0.9,28.56
+Q-202505-0093,2025-05-02 09:30:00,110.94,sent,,Gilbert,Diagnostic / Service Call,2.7,23.49
+Q-202505-0079,2025-05-05 12:45:00,2988.6,sent,,Mesa - East,Mini-Split Install,9.3,506.96
+Q-202505-0082,2025-05-05 13:30:00,312.68,approved,2025-05-06 17:30:00,Tempe,Capacitor / Electrical Repair,4.5,120.99
+Q-202505-0089,2025-05-07 14:30:00,7966.42,draft,,Chandler,Full System Replacement,10.4,3143.01
+Q-202505-0092,2025-05-07 16:00:00,167.02,sent,,Scottsdale,Diagnostic / Service Call,2.8,28.73
+Q-202505-0088,2025-05-11 12:00:00,148.84,approved,2025-05-15 16:00:00,Mesa - East,Diagnostic / Service Call,3.4,30.28
+Q-202505-0084,2025-05-12 17:45:00,100.27,sent,,Mesa - East,Diagnostic / Service Call,2.7,13.39
+Q-202505-0075,2025-05-13 13:45:00,150.45,approved,2025-05-16 20:45:00,Chandler,Maintenance Tune-Up,3.2,27.43
+Q-202505-0076,2025-05-17 08:00:00,106.4,draft,,Chandler,Diagnostic / Service Call,1.4,13.62
+Q-202505-0081,2025-05-18 16:00:00,147.21,sent,,Mesa - East,Diagnostic / Service Call,2.9,28.36
+Q-202505-0091,2025-05-19 09:15:00,101.42,approved,2025-05-20 14:15:00,Mesa - East,Diagnostic / Service Call,3.4,44.84
+Q-202505-0080,2025-05-21 12:30:00,230.62,rejected,,Scottsdale,Capacitor / Electrical Repair,1.6,65.9
+Q-202505-0087,2025-05-21 14:15:00,136.65,approved,2025-05-24 22:15:00,Chandler,Maintenance Tune-Up,3.1,13.97
+Q-202505-0083,2025-05-21 14:45:00,236.47,approved,2025-05-22 14:45:00,Chandler,Maintenance Tune-Up,3.5,25.49
+Q-202505-0095,2025-05-24 08:45:00,3755.87,approved,2025-06-12 08:45:00,Mesa - East,Mini-Split Install,8.4,1082.66
+Q-202505-0086,2025-05-24 15:15:00,99.04,approved,2025-05-24 21:15:00,Mesa - East,Diagnostic / Service Call,2.7,16.34
+Q-202505-0077,2025-05-26 10:00:00,188.65,sent,,Scottsdale,Diagnostic / Service Call,1.1,27.56
+Q-202505-0078,2025-05-26 10:15:00,130.58,rejected,,Mesa - East,Diagnostic / Service Call,0.8,54.03
+Q-202505-0085,2025-05-26 12:45:00,930.28,approved,2025-06-04 17:45:00,Scottsdale,Blower / Motor Repair,4.6,286.67
+Q-202505-0074,2025-05-27 13:00:00,183.69,draft,,Gilbert,Maintenance Tune-Up,1.9,45.38
+Q-202505-0090,2025-05-27 16:00:00,181.47,sent,,Scottsdale,Maintenance Tune-Up,2.7,68.27
+Q-202506-0096,2025-06-01 13:45:00,161.57,draft,,Mesa - East,Diagnostic / Service Call,3.1,35.79
+Q-202506-0110,2025-06-02 09:30:00,434.24,sent,,Tempe,Blower / Motor Repair,5.3,143.32
+Q-202506-0121,2025-06-02 13:00:00,9671.47,rejected,,Gilbert,Full System Replacement,10.5,2888.17
+Q-202506-0119,2025-06-03 11:00:00,140.21,rejected,,Chandler,Diagnostic / Service Call,1.7,22.92
+Q-202506-0101,2025-06-04 11:45:00,146.8,approved,2025-06-06 17:45:00,Mesa - East,Maintenance Tune-Up,0.5,28.75
+Q-202506-0100,2025-06-05 11:30:00,170.84,approved,2025-06-06 15:30:00,Chandler,Maintenance Tune-Up,2.3,75.39
+Q-202506-0097,2025-06-06 12:15:00,156.78,approved,2025-06-06 19:15:00,Apache Junction,Maintenance Tune-Up,2.7,58.91
+Q-202506-0107,2025-06-07 10:15:00,2406.68,rejected,,Apache Junction,Mini-Split Install,12.4,781.62
+Q-202506-0098,2025-06-07 12:30:00,148.04,approved,2025-06-08 19:30:00,Gilbert,Diagnostic / Service Call,1.8,21.38
+Q-202506-0117,2025-06-10 13:45:00,144.34,approved,2025-06-14 18:45:00,Gilbert,Diagnostic / Service Call,1.9,63.69
+Q-202506-0106,2025-06-12 08:30:00,589.81,approved,2025-06-19 14:30:00,Mesa - East,Blower / Motor Repair,2.7,188.74
+Q-202506-0108,2025-06-12 14:45:00,167.39,sent,,Apache Junction,Diagnostic / Service Call,0.5,37.52
+Q-202506-0112,2025-06-13 16:15:00,160.92,rejected,,Chandler,Diagnostic / Service Call,0.9,66.87
+Q-202506-0113,2025-06-16 11:00:00,3515.76,sent,,Tempe,Mini-Split Install,9.3,867.21
+Q-202506-0114,2025-06-16 16:00:00,180.49,sent,,Gilbert,Diagnostic / Service Call,2.5,52.13
+Q-202506-0116,2025-06-17 15:45:00,112.0,approved,2025-06-20 17:45:00,Tempe,Diagnostic / Service Call,1.2,24.47
+Q-202506-0099,2025-06-19 11:15:00,1371.24,sent,,Gilbert,Duct Repair / Sealing,4.8,281.83
+Q-202506-0111,2025-06-21 12:30:00,198.42,rejected,,Chandler,Maintenance Tune-Up,2.3,51.23
+Q-202506-0123,2025-06-22 09:00:00,109.92,approved,2025-06-24 12:00:00,Mesa - East,Diagnostic / Service Call,3.8,28.33
+Q-202506-0103,2025-06-22 10:00:00,3139.04,rejected,,Gilbert,Mini-Split Install,11.5,774.88
+Q-202506-0104,2025-06-23 10:30:00,1179.29,approved,2025-06-30 18:30:00,Scottsdale,Duct Repair / Sealing,4.7,396.64
+Q-202506-0105,2025-06-23 11:30:00,150.71,approved,2025-06-26 19:30:00,Mesa - East,Diagnostic / Service Call,1.5,15.92
+Q-202506-0102,2025-06-23 11:30:00,111.76,approved,2025-06-26 11:30:00,Gilbert,Diagnostic / Service Call,2.0,40.16
+Q-202506-0109,2025-06-23 14:30:00,160.09,approved,2025-06-25 19:30:00,Apache Junction,Diagnostic / Service Call,2.8,29.73
+Q-202506-0118,2025-06-24 16:45:00,2349.1,approved,2025-06-28 16:45:00,Chandler,Mini-Split Install,10.9,391.08
+Q-202506-0120,2025-06-25 09:00:00,10846.97,sent,,Gilbert,Full System Replacement,10.0,4358.94
+Q-202506-0122,2025-06-25 14:45:00,184.24,approved,2025-06-29 16:45:00,Gilbert,Capacitor / Electrical Repair,2.4,49.08
+Q-202506-0115,2025-06-27 13:45:00,143.78,approved,2025-06-30 18:45:00,Tempe,Diagnostic / Service Call,2.9,35.81
+Q-202507-0131,2025-07-01 13:30:00,2261.71,approved,2025-07-23 20:30:00,Chandler,Mini-Split Install,10.9,690.61
+Q-202507-0148,2025-07-02 12:00:00,1303.08,rejected,,Gilbert,Duct Repair / Sealing,4.1,185.74
+Q-202507-0144,2025-07-03 08:45:00,635.97,sent,,Apache Junction,Blower / Motor Repair,4.3,188.94
+Q-202507-0138,2025-07-04 14:00:00,139.71,approved,2025-07-05 21:00:00,Chandler,Diagnostic / Service Call,2.1,19.62
+Q-202507-0155,2025-07-04 16:15:00,238.87,approved,2025-07-06 19:15:00,Scottsdale,Maintenance Tune-Up,0.7,85.41
+Q-202507-0142,2025-07-05 15:00:00,463.09,approved,2025-07-11 21:00:00,Tempe,Capacitor / Electrical Repair,4.9,52.88
+Q-202507-0125,2025-07-06 10:00:00,157.04,approved,2025-07-09 17:00:00,Gilbert,Diagnostic / Service Call,2.0,36.91
+Q-202507-0157,2025-07-06 11:30:00,143.23,approved,2025-07-07 15:30:00,Chandler,Diagnostic / Service Call,2.2,17.18
+Q-202507-0145,2025-07-06 13:00:00,182.89,rejected,,Gilbert,Diagnostic / Service Call,2.3,41.12
+Q-202507-0133,2025-07-06 14:00:00,102.13,approved,2025-07-09 21:00:00,Mesa - East,Diagnostic / Service Call,3.3,44.07
+Q-202507-0134,2025-07-06 15:15:00,882.15,rejected,,Gilbert,Duct Repair / Sealing,1.3,378.97
+Q-202507-0130,2025-07-07 11:15:00,1567.04,approved,2025-07-17 16:15:00,Mesa - East,Duct Repair / Sealing,6.0,377.46
+Q-202507-0147,2025-07-08 09:15:00,450.73,approved,2025-07-17 09:15:00,Chandler,Blower / Motor Repair,4.5,48.14
+Q-202507-0141,2025-07-09 11:30:00,122.54,approved,2025-07-10 12:30:00,Gilbert,Diagnostic / Service Call,1.4,28.99
+Q-202507-0132,2025-07-09 14:00:00,168.05,sent,,Apache Junction,Diagnostic / Service Call,2.8,66.43
+Q-202507-0137,2025-07-13 09:30:00,114.17,approved,2025-07-14 09:30:00,Gilbert,Diagnostic / Service Call,1.3,30.11
+Q-202507-0152,2025-07-13 15:00:00,880.62,rejected,,Scottsdale,Blower / Motor Repair,5.1,285.81
+Q-202507-0129,2025-07-13 15:15:00,1303.67,approved,2025-07-20 22:15:00,Apache Junction,Duct Repair / Sealing,3.2,377.02
+Q-202507-0159,2025-07-14 09:00:00,344.98,approved,2025-07-21 11:00:00,Gilbert,Capacitor / Electrical Repair,5.8,84.96
+Q-202507-0139,2025-07-14 14:15:00,7262.2,sent,,Mesa - East,Full System Replacement,11.1,1388.79
+Q-202507-0150,2025-07-14 17:00:00,462.39,sent,,Gilbert,Capacitor / Electrical Repair,4.0,181.95
+Q-202507-0140,2025-07-15 15:00:00,190.61,sent,,Mesa - East,Maintenance Tune-Up,1.9,56.42
+Q-202507-0158,2025-07-17 11:15:00,159.14,approved,2025-07-18 15:15:00,Gilbert,Diagnostic / Service Call,2.1,61.65
+Q-202507-0135,2025-07-18 08:00:00,145.2,sent,,Mesa - East,Diagnostic / Service Call,1.2,17.35
+Q-202507-0128,2025-07-18 09:45:00,2801.29,sent,,Tempe,Mini-Split Install,8.5,583.55
+Q-202507-0149,2025-07-19 11:15:00,693.7,rejected,,Mesa - East,Blower / Motor Repair,5.1,269.92
+Q-202507-0153,2025-07-20 12:00:00,7128.78,sent,,Chandler,Full System Replacement,9.7,1430.27
+Q-202507-0160,2025-07-20 14:30:00,166.12,sent,,Mesa - East,Diagnostic / Service Call,3.4,27.32
+Q-202507-0156,2025-07-20 15:45:00,189.29,approved,2025-07-21 23:45:00,Scottsdale,Capacitor / Electrical Repair,1.1,55.1
+Q-202507-0154,2025-07-21 10:00:00,185.32,sent,,Mesa - East,Diagnostic / Service Call,1.5,48.78
+Q-202507-0124,2025-07-22 12:00:00,100.03,approved,2025-07-26 13:00:00,Tempe,Diagnostic / Service Call,1.4,23.62
+Q-202507-0136,2025-07-25 08:15:00,529.28,sent,,Chandler,Blower / Motor Repair,5.8,140.13
+Q-202507-0146,2025-07-25 14:00:00,108.69,sent,,Gilbert,Diagnostic / Service Call,1.1,31.05
+Q-202507-0151,2025-07-26 13:45:00,103.82,approved,2025-07-28 16:45:00,Scottsdale,Diagnostic / Service Call,2.9,42.01
+Q-202507-0127,2025-07-27 08:30:00,172.06,sent,,Scottsdale,Diagnostic / Service Call,2.9,75.94
+Q-202507-0143,2025-07-27 09:45:00,6639.57,approved,2025-08-20 12:45:00,Tempe,Full System Replacement,12.4,2018.61
+Q-202507-0126,2025-07-28 17:00:00,9407.39,approved,2025-08-14 20:00:00,Scottsdale,Full System Replacement,10.5,2180.98
+Q-202508-0163,2025-08-01 09:15:00,7933.7,draft,,Mesa - East,Full System Replacement,11.4,1221.61
+Q-202508-0178,2025-08-01 15:15:00,8103.42,rejected,,Apache Junction,Full System Replacement,9.7,1637.03
+Q-202508-0183,2025-08-02 11:45:00,175.19,sent,,Chandler,Diagnostic / Service Call,2.4,20.2
+Q-202508-0171,2025-08-03 11:45:00,9301.33,draft,,Chandler,Full System Replacement,9.2,2507.05
+Q-202508-0192,2025-08-03 15:00:00,845.64,rejected,,Chandler,Blower / Motor Repair,6.9,172.1
+Q-202508-0197,2025-08-04 11:30:00,119.43,approved,2025-08-08 12:30:00,Tempe,Diagnostic / Service Call,1.5,42.69
+Q-202508-0166,2025-08-04 13:00:00,356.44,approved,2025-08-13 13:00:00,Tempe,Blower / Motor Repair,4.8,150.05
+Q-202508-0189,2025-08-05 08:00:00,431.87,approved,2025-08-08 16:00:00,Tempe,Capacitor / Electrical Repair,3.9,171.02
+Q-202508-0185,2025-08-05 13:30:00,162.69,approved,2025-08-06 18:30:00,Mesa - East,Diagnostic / Service Call,0.9,52.11
+Q-202508-0191,2025-08-05 15:45:00,191.98,approved,2025-08-06 18:45:00,Mesa - East,Capacitor / Electrical Repair,2.9,67.78
+Q-202508-0190,2025-08-05 16:30:00,121.82,approved,2025-08-05 22:30:00,Scottsdale,Diagnostic / Service Call,2.6,50.78
+Q-202508-0167,2025-08-05 17:15:00,143.58,approved,2025-08-09 18:15:00,Gilbert,Maintenance Tune-Up,2.0,15.82
+Q-202508-0172,2025-08-06 10:30:00,99.69,sent,,Gilbert,Diagnostic / Service Call,1.6,13.98
+Q-202508-0187,2025-08-06 13:45:00,288.89,approved,2025-08-06 13:45:00,Gilbert,Capacitor / Electrical Repair,2.1,29.98
+Q-202508-0170,2025-08-08 08:15:00,436.41,approved,2025-08-16 12:15:00,Apache Junction,Capacitor / Electrical Repair,3.4,107.55
+Q-202508-0174,2025-08-09 16:15:00,1160.46,sent,,Chandler,Duct Repair / Sealing,3.7,259.39
+Q-202508-0188,2025-08-11 08:30:00,206.34,draft,,Apache Junction,Maintenance Tune-Up,0.9,71.14
+Q-202508-0165,2025-08-11 13:00:00,333.78,approved,2025-08-16 18:00:00,Scottsdale,Capacitor / Electrical Repair,4.5,129.24
+Q-202508-0173,2025-08-13 09:00:00,238.56,approved,2025-08-16 12:00:00,Gilbert,Maintenance Tune-Up,1.1,62.85
+Q-202508-0162,2025-08-14 08:00:00,688.96,approved,2025-08-23 12:00:00,Mesa - East,Blower / Motor Repair,4.1,198.75
+Q-202508-0161,2025-08-14 17:45:00,206.38,draft,,Chandler,Capacitor / Electrical Repair,2.2,81.18
+Q-202508-0196,2025-08-15 14:30:00,234.15,sent,,Mesa - East,Capacitor / Electrical Repair,2.0,41.55
+Q-202508-0164,2025-08-16 14:45:00,236.9,draft,,Tempe,Maintenance Tune-Up,3.9,91.34
+Q-202508-0168,2025-08-16 15:45:00,104.59,approved,2025-08-20 20:45:00,Scottsdale,Diagnostic / Service Call,3.0,15.73
+Q-202508-0176,2025-08-17 09:30:00,220.78,approved,2025-08-21 11:30:00,Tempe,Maintenance Tune-Up,1.5,46.09
+Q-202508-0184,2025-08-18 10:15:00,254.91,approved,2025-08-20 15:15:00,Chandler,Capacitor / Electrical Repair,2.5,62.22
+Q-202508-0194,2025-08-20 09:00:00,279.46,sent,,Tempe,Capacitor / Electrical Repair,2.1,121.14
+Q-202508-0182,2025-08-20 11:30:00,3247.11,sent,,Chandler,Mini-Split Install,10.3,1110.73
+Q-202508-0169,2025-08-20 14:00:00,1668.65,sent,,Mesa - East,Duct Repair / Sealing,4.4,198.74
+Q-202508-0195,2025-08-21 10:30:00,192.65,approved,2025-08-22 13:30:00,Scottsdale,Maintenance Tune-Up,2.3,65.03
+Q-202508-0175,2025-08-21 17:15:00,322.79,approved,2025-08-29 19:15:00,Gilbert,Capacitor / Electrical Repair,3.9,138.71
+Q-202508-0181,2025-08-22 09:00:00,243.04,sent,,Tempe,Capacitor / Electrical Repair,3.3,59.8
+Q-202508-0193,2025-08-22 13:15:00,342.82,approved,2025-08-29 21:15:00,Gilbert,Capacitor / Electrical Repair,6.3,143.31
+Q-202508-0180,2025-08-22 17:30:00,6227.17,sent,,Apache Junction,Full System Replacement,9.0,2530.03
+Q-202508-0186,2025-08-23 12:00:00,153.77,approved,2025-08-25 16:00:00,Gilbert,Maintenance Tune-Up,2.1,25.99
+Q-202508-0179,2025-08-24 11:00:00,362.56,approved,2025-08-29 13:00:00,Gilbert,Capacitor / Electrical Repair,3.5,84.57
+Q-202508-0177,2025-08-25 12:15:00,166.35,approved,2025-08-26 18:15:00,Mesa - East,Maintenance Tune-Up,2.5,33.07
+Q-202509-0203,2025-09-01 08:30:00,142.85,approved,2025-09-01 08:30:00,Apache Junction,Diagnostic / Service Call,3.6,18.02
+Q-202509-0212,2025-09-02 14:45:00,360.87,sent,,Mesa - East,Capacitor / Electrical Repair,2.4,66.62
+Q-202509-0216,2025-09-03 08:15:00,3788.45,sent,,Mesa - East,Mini-Split Install,10.6,940.03
+Q-202509-0227,2025-09-03 13:15:00,933.24,approved,2025-09-05 17:15:00,Scottsdale,Blower / Motor Repair,5.2,323.14
+Q-202509-0211,2025-09-03 17:15:00,130.81,approved,2025-09-06 18:15:00,Gilbert,Diagnostic / Service Call,2.0,51.47
+Q-202509-0202,2025-09-06 10:30:00,380.87,sent,,Scottsdale,Capacitor / Electrical Repair,5.4,109.86
+Q-202509-0220,2025-09-07 13:45:00,167.86,rejected,,Gilbert,Maintenance Tune-Up,2.8,59.87
+Q-202509-0222,2025-09-09 08:30:00,120.76,approved,2025-09-11 14:30:00,Tempe,Diagnostic / Service Call,1.3,39.24
+Q-202509-0201,2025-09-09 13:15:00,5638.34,sent,,Tempe,Full System Replacement,8.8,1526.96
+Q-202509-0199,2025-09-10 09:15:00,883.18,draft,,Gilbert,Blower / Motor Repair,4.4,123.78
+Q-202509-0223,2025-09-10 09:30:00,177.49,approved,2025-09-12 16:30:00,Mesa - East,Diagnostic / Service Call,0.8,30.92
+Q-202509-0225,2025-09-11 08:15:00,368.2,approved,2025-09-14 16:15:00,Mesa - East,Capacitor / Electrical Repair,3.7,113.52
+Q-202509-0209,2025-09-12 10:15:00,11276.98,sent,,Mesa - East,Full System Replacement,7.9,3372.43
+Q-202509-0205,2025-09-12 13:00:00,1180.13,approved,2025-09-16 20:00:00,Gilbert,Duct Repair / Sealing,4.7,479.96
+Q-202509-0200,2025-09-12 13:00:00,110.05,approved,2025-09-16 18:00:00,Scottsdale,Diagnostic / Service Call,2.4,38.81
+Q-202509-0221,2025-09-13 13:00:00,7943.95,draft,,Mesa - East,Full System Replacement,12.7,2538.04
+Q-202509-0226,2025-09-17 14:00:00,4256.17,approved,2025-10-08 22:00:00,Mesa - East,Mini-Split Install,11.4,1905.43
+Q-202509-0210,2025-09-19 09:15:00,3125.49,sent,,Gilbert,Mini-Split Install,8.7,392.95
+Q-202509-0206,2025-09-19 17:15:00,5721.73,sent,,Apache Junction,Full System Replacement,9.7,2122.79
+Q-202509-0213,2025-09-20 08:00:00,172.47,approved,2025-09-21 08:00:00,Mesa - East,Diagnostic / Service Call,1.2,28.61
+Q-202509-0219,2025-09-20 10:00:00,144.17,approved,2025-09-21 14:00:00,Mesa - East,Diagnostic / Service Call,4.2,61.84
+Q-202509-0217,2025-09-20 17:30:00,365.6,sent,,Mesa - East,Capacitor / Electrical Repair,4.7,135.86
+Q-202509-0224,2025-09-22 08:00:00,181.14,approved,2025-09-24 10:00:00,Mesa - East,Diagnostic / Service Call,2.3,49.98
+Q-202509-0214,2025-09-22 13:15:00,8192.77,approved,2025-10-16 18:15:00,Mesa - East,Full System Replacement,9.3,3044.32
+Q-202509-0228,2025-09-23 08:45:00,148.39,draft,,Chandler,Diagnostic / Service Call,2.5,52.12
+Q-202509-0204,2025-09-23 15:45:00,243.95,approved,2025-09-25 20:45:00,Mesa - East,Maintenance Tune-Up,2.7,69.5
+Q-202509-0198,2025-09-24 16:00:00,761.58,approved,2025-09-28 23:00:00,Gilbert,Blower / Motor Repair,3.9,282.73
+Q-202509-0218,2025-09-25 16:45:00,131.52,approved,2025-09-27 18:45:00,Chandler,Diagnostic / Service Call,1.4,24.79
+Q-202509-0207,2025-09-26 12:15:00,183.48,sent,,Scottsdale,Diagnostic / Service Call,4.3,65.84
+Q-202509-0215,2025-09-28 08:00:00,3892.42,rejected,,Apache Junction,Mini-Split Install,11.1,1225.68
+Q-202509-0208,2025-09-28 16:45:00,162.38,sent,,Gilbert,Diagnostic / Service Call,2.1,44.87
+Q-202510-0231,2025-10-02 14:30:00,138.82,draft,,Tempe,Diagnostic / Service Call,1.6,13.93
+Q-202510-0241,2025-10-04 09:15:00,692.62,approved,2025-10-12 10:15:00,Scottsdale,Blower / Motor Repair,3.8,274.87
+Q-202510-0247,2025-10-04 11:00:00,304.41,sent,,Apache Junction,Capacitor / Electrical Repair,4.9,103.52
+Q-202510-0242,2025-10-05 14:00:00,2636.57,approved,2025-10-25 14:00:00,Scottsdale,Mini-Split Install,10.8,435.43
+Q-202510-0246,2025-10-06 14:00:00,4787.89,approved,2025-10-29 21:00:00,Mesa - East,Mini-Split Install,11.2,780.7
+Q-202510-0237,2025-10-07 10:45:00,125.14,draft,,Apache Junction,Diagnostic / Service Call,2.2,31.9
+Q-202510-0234,2025-10-07 16:15:00,251.59,approved,2025-10-10 18:15:00,Scottsdale,Capacitor / Electrical Repair,2.5,81.56
+Q-202510-0244,2025-10-07 16:30:00,158.07,rejected,,Apache Junction,Diagnostic / Service Call,4.2,67.28
+Q-202510-0229,2025-10-11 16:45:00,2653.71,sent,,Gilbert,Mini-Split Install,9.1,1099.52
+Q-202510-0232,2025-10-11 17:45:00,155.66,draft,,Mesa - East,Diagnostic / Service Call,2.6,19.06
+Q-202510-0236,2025-10-12 16:30:00,121.76,approved,2025-10-12 20:30:00,Scottsdale,Diagnostic / Service Call,0.9,14.64
+Q-202510-0239,2025-10-13 14:45:00,11358.54,rejected,,Gilbert,Full System Replacement,11.3,3492.43
+Q-202510-0245,2025-10-15 16:00:00,99.77,approved,2025-10-19 21:00:00,Tempe,Diagnostic / Service Call,1.5,11.21
+Q-202510-0230,2025-10-20 16:30:00,399.0,draft,,Tempe,Capacitor / Electrical Repair,4.2,56.12
+Q-202510-0243,2025-10-22 08:30:00,1640.13,sent,,Gilbert,Duct Repair / Sealing,4.1,339.08
+Q-202510-0233,2025-10-22 13:00:00,147.88,approved,2025-10-26 17:00:00,Chandler,Diagnostic / Service Call,0.5,28.36
+Q-202510-0235,2025-10-22 16:30:00,206.4,approved,2025-10-25 17:30:00,Gilbert,Capacitor / Electrical Repair,1.5,53.1
+Q-202510-0248,2025-10-23 10:00:00,182.56,sent,,Mesa - East,Maintenance Tune-Up,1.7,63.43
+Q-202510-0238,2025-10-23 12:45:00,153.67,approved,2025-10-24 18:45:00,Gilbert,Diagnostic / Service Call,1.6,61.07
+Q-202510-0240,2025-10-23 14:45:00,232.87,approved,2025-10-26 21:45:00,Apache Junction,Capacitor / Electrical Repair,2.6,34.31
+Q-202511-0252,2025-11-02 10:30:00,142.29,approved,2025-11-04 12:30:00,Gilbert,Diagnostic / Service Call,2.3,19.69
+Q-202511-0261,2025-11-03 13:15:00,1191.07,sent,,Scottsdale,Duct Repair / Sealing,3.7,464.46
+Q-202511-0257,2025-11-03 17:30:00,649.47,sent,,Apache Junction,Duct Repair / Sealing,5.3,142.7
+Q-202511-0254,2025-11-04 09:15:00,143.65,approved,2025-11-04 14:15:00,Mesa - East,Diagnostic / Service Call,2.3,37.89
+Q-202511-0258,2025-11-06 08:30:00,8177.8,rejected,,Apache Junction,Full System Replacement,12.0,1518.56
+Q-202511-0251,2025-11-07 15:30:00,359.33,approved,2025-11-09 18:30:00,Scottsdale,Capacitor / Electrical Repair,5.6,53.5
+Q-202511-0249,2025-11-09 13:15:00,829.62,sent,,Mesa - East,Blower / Motor Repair,5.8,178.09
+Q-202511-0250,2025-11-10 11:00:00,112.4,approved,2025-11-12 17:00:00,Mesa - East,Diagnostic / Service Call,1.9,15.74
+Q-202511-0260,2025-11-16 16:30:00,166.63,rejected,,Apache Junction,Diagnostic / Service Call,1.7,53.12
+Q-202511-0253,2025-11-17 17:00:00,161.69,approved,2025-11-19 18:00:00,Gilbert,Diagnostic / Service Call,0.5,37.37
+Q-202511-0264,2025-11-22 14:30:00,301.87,approved,2025-11-28 20:30:00,Scottsdale,Capacitor / Electrical Repair,4.8,113.97
+Q-202511-0262,2025-11-24 15:15:00,228.02,sent,,Gilbert,Maintenance Tune-Up,2.6,82.5
+Q-202511-0255,2025-11-24 16:15:00,359.07,draft,,Scottsdale,Blower / Motor Repair,4.0,107.59
+Q-202511-0256,2025-11-25 10:15:00,248.78,approved,2025-11-29 18:15:00,Scottsdale,Maintenance Tune-Up,2.4,34.42
+Q-202511-0263,2025-11-26 12:15:00,702.58,draft,,Mesa - East,Blower / Motor Repair,5.0,293.57
+Q-202511-0259,2025-11-26 13:15:00,239.99,sent,,Mesa - East,Maintenance Tune-Up,2.4,107.77
+Q-202512-0271,2025-12-01 14:45:00,421.47,draft,,Chandler,Capacitor / Electrical Repair,5.2,95.29
+Q-202512-0280,2025-12-04 13:00:00,1439.32,approved,2025-12-10 16:00:00,Gilbert,Duct Repair / Sealing,3.7,145.66
+Q-202512-0268,2025-12-05 12:45:00,9556.12,sent,,Mesa - East,Full System Replacement,9.9,1976.84
+Q-202512-0272,2025-12-06 17:45:00,1552.39,approved,2025-12-09 20:45:00,Scottsdale,Duct Repair / Sealing,3.3,435.6
+Q-202512-0265,2025-12-07 09:30:00,319.78,approved,2025-12-13 10:30:00,Gilbert,Capacitor / Electrical Repair,3.9,143.06
+Q-202512-0270,2025-12-07 17:00:00,808.3,draft,,Apache Junction,Duct Repair / Sealing,3.2,296.53
+Q-202512-0278,2025-12-08 11:00:00,179.89,draft,,Scottsdale,Diagnostic / Service Call,1.0,41.97
+Q-202512-0266,2025-12-09 13:15:00,119.18,sent,,Gilbert,Diagnostic / Service Call,1.9,24.79
+Q-202512-0277,2025-12-10 10:15:00,104.94,approved,2025-12-14 10:15:00,Gilbert,Diagnostic / Service Call,2.6,41.78
+Q-202512-0276,2025-12-13 13:45:00,4617.2,approved,2025-12-22 15:45:00,Gilbert,Mini-Split Install,9.7,1321.11
+Q-202512-0275,2025-12-18 17:30:00,183.59,approved,2025-12-19 18:30:00,Gilbert,Diagnostic / Service Call,0.5,74.62
+Q-202512-0274,2025-12-21 10:30:00,124.1,approved,2025-12-25 16:30:00,Mesa - East,Diagnostic / Service Call,3.6,45.1
+Q-202512-0279,2025-12-21 14:30:00,221.58,draft,,Tempe,Maintenance Tune-Up,2.5,38.68
+Q-202512-0273,2025-12-23 10:30:00,1732.47,approved,2025-12-29 17:30:00,Gilbert,Duct Repair / Sealing,4.7,417.66
+Q-202512-0269,2025-12-26 08:45:00,387.47,approved,2025-12-28 16:45:00,Gilbert,Capacitor / Electrical Repair,5.2,89.9
+Q-202512-0267,2025-12-26 17:15:00,186.14,approved,2025-12-26 17:15:00,Scottsdale,Diagnostic / Service Call,2.3,74.22
+Q-202601-0289,2026-01-01 08:00:00,102.89,sent,,Gilbert,Diagnostic / Service Call,1.0,41.21
+Q-202601-0283,2026-01-03 15:15:00,186.23,sent,,Gilbert,Diagnostic / Service Call,1.2,40.89
+Q-202601-0282,2026-01-04 14:45:00,703.25,approved,2026-01-05 19:45:00,Chandler,Blower / Motor Repair,2.4,306.95
+Q-202601-0292,2026-01-05 09:45:00,2388.23,approved,2026-01-16 09:45:00,Chandler,Mini-Split Install,10.9,566.74
+Q-202601-0294,2026-01-06 10:15:00,3169.82,sent,,Chandler,Mini-Split Install,10.3,1333.61
+Q-202601-0287,2026-01-06 13:45:00,171.4,approved,2026-01-06 18:45:00,Scottsdale,Diagnostic / Service Call,2.9,23.54
+Q-202601-0285,2026-01-07 16:30:00,242.8,draft,,Tempe,Maintenance Tune-Up,2.9,25.62
+Q-202601-0284,2026-01-13 10:30:00,105.88,rejected,,Tempe,Diagnostic / Service Call,0.8,39.4
+Q-202601-0286,2026-01-14 08:30:00,1353.09,sent,,Chandler,Duct Repair / Sealing,4.3,280.11
+Q-202601-0293,2026-01-15 08:45:00,182.76,approved,2026-01-15 16:45:00,Mesa - East,Diagnostic / Service Call,1.8,59.13
+Q-202601-0288,2026-01-17 17:30:00,154.11,approved,2026-01-17 20:30:00,Chandler,Maintenance Tune-Up,1.6,53.72
+Q-202601-0290,2026-01-18 15:45:00,1684.87,approved,2026-01-22 20:45:00,Tempe,Duct Repair / Sealing,6.0,394.11
+Q-202601-0291,2026-01-19 08:45:00,741.14,draft,,Mesa - East,Blower / Motor Repair,4.7,242.6
+Q-202601-0281,2026-01-21 13:30:00,249.09,approved,2026-01-22 17:30:00,Chandler,Capacitor / Electrical Repair,1.2,98.09

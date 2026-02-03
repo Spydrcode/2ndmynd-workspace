@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "TrainExample",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "split",
+    "instruction",
+    "expected_output_json",
+    "tags",
+    "created_at",
+    "reviewer",
+    "quality"
+  ],
+  "properties": {
+    "id": { "type": "string" },
+    "source_log_id": { "type": "string" },
+    "split": { "enum": ["gold", "growth"] },
+    "instruction": { "type": "string" },
+    "messages": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["role", "content"],
+        "properties": {
+          "role": { "enum": ["system", "user", "assistant", "tool"] },
+          "content": { "type": "string" }
+        }
+      }
+    },
+    "expected_output_json": { "type": "object" },
+    "expected_output_text": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "created_at": { "type": "string", "format": "date-time" },
+    "reviewer": { "type": "string" },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "notes"],
+      "properties": {
+        "score": { "type": "number", "minimum": 1, "maximum": 5 },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

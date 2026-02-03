@@ -1,0 +1,11 @@
+[
+  {
+    "id": "toolcall-pipeline",
+    "suite": "toolcall",
+    "messages": [
+      { "role": "system", "content": "Use tools when needed to validate conclusions." },
+      { "role": "user", "content": "Run a snapshot pipeline for a mock pack before deciding." }
+    ],
+    "expected_tool_calls": ["run_pipeline_v2"]
+  }
+]

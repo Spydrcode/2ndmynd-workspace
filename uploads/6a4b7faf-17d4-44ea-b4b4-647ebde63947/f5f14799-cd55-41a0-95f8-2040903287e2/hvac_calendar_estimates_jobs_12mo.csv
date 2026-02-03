@@ -1,0 +1,431 @@
+Subject,Start Date,Start Time,End Date,End Time,All Day Event,Location,Description,Quote ID,Event Type
+Estimate - Maintenance Tune-Up,02/03/2025,02:00 PM,02/03/2025,02:45 PM,False,Mesa - East,Quote Q-202502-0002 | Type: Estimate | Area: Mesa - East,Q-202502-0002,Estimate
+Estimate - Capacitor / Electrical Repair,02/05/2025,11:00 AM,02/05/2025,11:45 AM,False,Mesa - East,Quote Q-202502-0005 | Type: Estimate | Area: Mesa - East,Q-202502-0005,Estimate
+Estimate - Capacitor / Electrical Repair,02/06/2025,03:00 PM,02/06/2025,03:45 PM,False,Apache Junction,Quote Q-202502-0012 | Type: Estimate | Area: Apache Junction,Q-202502-0012,Estimate
+Estimate - Capacitor / Electrical Repair,02/07/2025,01:00 PM,02/07/2025,01:45 PM,False,Mesa - East,Quote Q-202502-0008 | Type: Estimate | Area: Mesa - East,Q-202502-0008,Estimate
+Estimate - Capacitor / Electrical Repair,02/07/2025,10:00 AM,02/07/2025,10:45 AM,False,Tempe,Quote Q-202502-0013 | Type: Estimate | Area: Tempe,Q-202502-0013,Estimate
+Estimate - Maintenance Tune-Up,02/07/2025,11:00 AM,02/07/2025,11:45 AM,False,Gilbert,Quote Q-202502-0011 | Type: Estimate | Area: Gilbert,Q-202502-0011,Estimate
+Job - Maintenance Tune-Up,02/08/2025,09:00 AM,02/08/2025,11:00 AM,False,Mesa - East,Quote Q-202502-0002 | Type: Job | Area: Mesa - East,Q-202502-0002,Job
+Estimate - Diagnostic / Service Call,02/09/2025,03:00 PM,02/09/2025,03:45 PM,False,Gilbert,Quote Q-202502-0016 | Type: Estimate | Area: Gilbert,Q-202502-0016,Estimate
+Job - Maintenance Tune-Up,02/09/2025,09:00 AM,02/09/2025,11:00 AM,False,Gilbert,Quote Q-202502-0011 | Type: Job | Area: Gilbert,Q-202502-0011,Job
+Estimate - Maintenance Tune-Up,02/09/2025,09:00 AM,02/09/2025,09:45 AM,False,Gilbert,Quote Q-202502-0023 | Type: Estimate | Area: Gilbert,Q-202502-0023,Estimate
+Estimate - Maintenance Tune-Up,02/10/2025,01:00 PM,02/10/2025,01:45 PM,False,Gilbert,Quote Q-202502-0010 | Type: Estimate | Area: Gilbert,Q-202502-0010,Estimate
+Job - Maintenance Tune-Up,02/11/2025,02:00 PM,02/11/2025,04:00 PM,False,Gilbert,Quote Q-202502-0023 | Type: Job | Area: Gilbert,Q-202502-0023,Job
+Estimate - Capacitor / Electrical Repair,02/12/2025,02:00 PM,02/12/2025,02:45 PM,False,Tempe,Quote Q-202502-0004 | Type: Estimate | Area: Tempe,Q-202502-0004,Estimate
+Estimate - Full System Replacement,02/12/2025,09:00 AM,02/12/2025,09:45 AM,False,Chandler,Quote Q-202502-0001 | Type: Estimate | Area: Chandler,Q-202502-0001,Estimate
+Estimate - Blower / Motor Repair,02/13/2025,02:00 PM,02/13/2025,02:45 PM,False,Tempe,Quote Q-202502-0022 | Type: Estimate | Area: Tempe,Q-202502-0022,Estimate
+Estimate - Capacitor / Electrical Repair,02/15/2025,03:00 PM,02/15/2025,03:45 PM,False,Chandler,Quote Q-202502-0014 | Type: Estimate | Area: Chandler,Q-202502-0014,Estimate
+Estimate - Maintenance Tune-Up,02/15/2025,09:00 AM,02/15/2025,09:45 AM,False,Chandler,Quote Q-202502-0025 | Type: Estimate | Area: Chandler,Q-202502-0025,Estimate
+Job - Diagnostic / Service Call,02/18/2025,08:00 AM,02/18/2025,10:00 AM,False,Gilbert,Quote Q-202502-0016 | Type: Job | Area: Gilbert,Q-202502-0016,Job
+Estimate - Capacitor / Electrical Repair,02/19/2025,01:00 PM,02/19/2025,01:45 PM,False,Mesa - East,Quote Q-202502-0018 | Type: Estimate | Area: Mesa - East,Q-202502-0018,Estimate
+Estimate - Diagnostic / Service Call,02/19/2025,02:00 PM,02/19/2025,02:45 PM,False,Mesa - East,Quote Q-202502-0003 | Type: Estimate | Area: Mesa - East,Q-202502-0003,Estimate
+Job - Capacitor / Electrical Repair,02/20/2025,02:00 PM,02/20/2025,06:00 PM,False,Apache Junction,Quote Q-202502-0012 | Type: Job | Area: Apache Junction,Q-202502-0012,Job
+Estimate - Blower / Motor Repair,02/21/2025,02:00 PM,02/21/2025,02:45 PM,False,Scottsdale,Quote Q-202502-0020 | Type: Estimate | Area: Scottsdale,Q-202502-0020,Estimate
+Estimate - Diagnostic / Service Call,02/21/2025,10:00 AM,02/21/2025,10:45 AM,False,Scottsdale,Quote Q-202502-0009 | Type: Estimate | Area: Scottsdale,Q-202502-0009,Estimate
+Estimate - Diagnostic / Service Call,02/23/2025,09:00 AM,02/23/2025,09:45 AM,False,Chandler,Quote Q-202502-0006 | Type: Estimate | Area: Chandler,Q-202502-0006,Estimate
+Job - Maintenance Tune-Up,02/24/2025,02:00 PM,02/24/2025,04:00 PM,False,Gilbert,Quote Q-202502-0010 | Type: Job | Area: Gilbert,Q-202502-0010,Job
+Job - Diagnostic / Service Call,02/24/2025,09:00 AM,02/24/2025,11:00 AM,False,Scottsdale,Quote Q-202502-0009 | Type: Job | Area: Scottsdale,Q-202502-0009,Job
+Estimate - Diagnostic / Service Call,02/25/2025,02:00 PM,02/25/2025,02:45 PM,False,Gilbert,Quote Q-202502-0007 | Type: Estimate | Area: Gilbert,Q-202502-0007,Estimate
+Estimate - Diagnostic / Service Call,02/25/2025,11:00 AM,02/25/2025,11:45 AM,False,Gilbert,Quote Q-202502-0021 | Type: Estimate | Area: Gilbert,Q-202502-0021,Estimate
+Job - Diagnostic / Service Call,02/26/2025,01:00 PM,02/26/2025,03:00 PM,False,Gilbert,Quote Q-202502-0021 | Type: Job | Area: Gilbert,Q-202502-0021,Job
+Estimate - Blower / Motor Repair,02/27/2025,03:00 PM,02/27/2025,03:45 PM,False,Chandler,Quote Q-202502-0015 | Type: Estimate | Area: Chandler,Q-202502-0015,Estimate
+Estimate - Capacitor / Electrical Repair,02/27/2025,10:00 AM,02/27/2025,10:45 AM,False,Scottsdale,Quote Q-202502-0017 | Type: Estimate | Area: Scottsdale,Q-202502-0017,Estimate
+Estimate - Maintenance Tune-Up,02/27/2025,11:00 AM,02/27/2025,11:45 AM,False,Scottsdale,Quote Q-202502-0024 | Type: Estimate | Area: Scottsdale,Q-202502-0024,Estimate
+Job - Diagnostic / Service Call,03/02/2025,01:00 PM,03/02/2025,03:00 PM,False,Mesa - East,Quote Q-202502-0003 | Type: Job | Area: Mesa - East,Q-202502-0003,Job
+Estimate - Capacitor / Electrical Repair,03/02/2025,09:00 AM,03/02/2025,09:45 AM,False,Apache Junction,Quote Q-202503-0032 | Type: Estimate | Area: Apache Junction,Q-202503-0032,Estimate
+Estimate - Diagnostic / Service Call,03/03/2025,03:00 PM,03/03/2025,03:45 PM,False,Mesa - East,Quote Q-202503-0035 | Type: Estimate | Area: Mesa - East,Q-202503-0035,Estimate
+Estimate - Capacitor / Electrical Repair,03/03/2025,10:00 AM,03/03/2025,10:45 AM,False,Mesa - East,Quote Q-202502-0019 | Type: Estimate | Area: Mesa - East,Q-202502-0019,Estimate
+Job - Maintenance Tune-Up,03/03/2025,10:00 AM,03/03/2025,12:00 PM,False,Scottsdale,Quote Q-202502-0024 | Type: Job | Area: Scottsdale,Q-202502-0024,Job
+Estimate - Maintenance Tune-Up,03/04/2025,01:00 PM,03/04/2025,01:45 PM,False,Gilbert,Quote Q-202503-0047 | Type: Estimate | Area: Gilbert,Q-202503-0047,Estimate
+Estimate - Blower / Motor Repair,03/04/2025,10:00 AM,03/04/2025,10:45 AM,False,Tempe,Quote Q-202503-0036 | Type: Estimate | Area: Tempe,Q-202503-0036,Estimate
+Estimate - Diagnostic / Service Call,03/05/2025,02:00 PM,03/05/2025,02:45 PM,False,Mesa - East,Quote Q-202503-0031 | Type: Estimate | Area: Mesa - East,Q-202503-0031,Estimate
+Job - Blower / Motor Repair,03/05/2025,12:00 PM,03/05/2025,04:00 PM,False,Chandler,Quote Q-202502-0015 | Type: Job | Area: Chandler,Q-202502-0015,Job
+Job - Diagnostic / Service Call,03/08/2025,01:00 PM,03/08/2025,03:00 PM,False,Mesa - East,Quote Q-202503-0031 | Type: Job | Area: Mesa - East,Q-202503-0031,Job
+Estimate - Maintenance Tune-Up,03/08/2025,02:00 PM,03/08/2025,02:45 PM,False,Gilbert,Quote Q-202503-0044 | Type: Estimate | Area: Gilbert,Q-202503-0044,Estimate
+Estimate - Diagnostic / Service Call,03/10/2025,11:00 AM,03/10/2025,11:45 AM,False,Mesa - East,Quote Q-202503-0028 | Type: Estimate | Area: Mesa - East,Q-202503-0028,Estimate
+Job - Diagnostic / Service Call,03/10/2025,12:00 PM,03/10/2025,02:00 PM,False,Mesa - East,Quote Q-202503-0035 | Type: Job | Area: Mesa - East,Q-202503-0035,Job
+Estimate - Capacitor / Electrical Repair,03/11/2025,02:00 PM,03/11/2025,02:45 PM,False,Chandler,Quote Q-202503-0046 | Type: Estimate | Area: Chandler,Q-202503-0046,Estimate
+Estimate - Diagnostic / Service Call,03/11/2025,10:00 AM,03/11/2025,10:45 AM,False,Gilbert,Quote Q-202503-0033 | Type: Estimate | Area: Gilbert,Q-202503-0033,Estimate
+Estimate - Diagnostic / Service Call,03/11/2025,11:00 AM,03/11/2025,11:45 AM,False,Mesa - East,Quote Q-202503-0027 | Type: Estimate | Area: Mesa - East,Q-202503-0027,Estimate
+Estimate - Diagnostic / Service Call,03/15/2025,01:00 PM,03/15/2025,01:45 PM,False,Apache Junction,Quote Q-202503-0030 | Type: Estimate | Area: Apache Junction,Q-202503-0030,Estimate
+Estimate - Full System Replacement,03/15/2025,09:00 AM,03/15/2025,09:45 AM,False,Mesa - East,Quote Q-202503-0040 | Type: Estimate | Area: Mesa - East,Q-202503-0040,Estimate
+Job - Capacitor / Electrical Repair,03/15/2025,12:00 PM,03/15/2025,04:00 PM,False,Scottsdale,Quote Q-202502-0017 | Type: Job | Area: Scottsdale,Q-202502-0017,Job
+Job - Capacitor / Electrical Repair,03/15/2025,12:00 PM,03/15/2025,02:00 PM,False,Chandler,Quote Q-202503-0046 | Type: Job | Area: Chandler,Q-202503-0046,Job
+Job - Maintenance Tune-Up,03/16/2025,08:00 AM,03/16/2025,10:00 AM,False,Gilbert,Quote Q-202503-0047 | Type: Job | Area: Gilbert,Q-202503-0047,Job
+Job - Capacitor / Electrical Repair,03/16/2025,10:00 AM,03/16/2025,12:00 PM,False,Mesa - East,Quote Q-202502-0019 | Type: Job | Area: Mesa - East,Q-202502-0019,Job
+Job - Diagnostic / Service Call,03/16/2025,12:00 PM,03/16/2025,02:00 PM,False,Gilbert,Quote Q-202503-0033 | Type: Job | Area: Gilbert,Q-202503-0033,Job
+Estimate - Mini-Split Install,03/18/2025,11:00 AM,03/18/2025,11:45 AM,False,Gilbert,Quote Q-202503-0039 | Type: Estimate | Area: Gilbert,Q-202503-0039,Estimate
+Estimate - Diagnostic / Service Call,03/19/2025,10:00 AM,03/19/2025,10:45 AM,False,Mesa - East,Quote Q-202503-0045 | Type: Estimate | Area: Mesa - East,Q-202503-0045,Estimate
+Estimate - Blower / Motor Repair,03/20/2025,01:00 PM,03/20/2025,01:45 PM,False,Mesa - East,Quote Q-202503-0038 | Type: Estimate | Area: Mesa - East,Q-202503-0038,Estimate
+Estimate - Duct Repair / Sealing,03/21/2025,03:00 PM,03/21/2025,03:45 PM,False,Apache Junction,Quote Q-202503-0043 | Type: Estimate | Area: Apache Junction,Q-202503-0043,Estimate
+Estimate - Full System Replacement,03/21/2025,09:00 AM,03/21/2025,09:45 AM,False,Gilbert,Quote Q-202503-0029 | Type: Estimate | Area: Gilbert,Q-202503-0029,Estimate
+Estimate - Diagnostic / Service Call,03/25/2025,03:00 PM,03/25/2025,03:45 PM,False,Tempe,Quote Q-202503-0034 | Type: Estimate | Area: Tempe,Q-202503-0034,Estimate
+Job - Diagnostic / Service Call,03/25/2025,09:00 AM,03/25/2025,11:00 AM,False,Mesa - East,Quote Q-202503-0027 | Type: Job | Area: Mesa - East,Q-202503-0027,Job
+Estimate - Duct Repair / Sealing,03/25/2025,09:00 AM,03/25/2025,09:45 AM,False,Scottsdale,Quote Q-202503-0037 | Type: Estimate | Area: Scottsdale,Q-202503-0037,Estimate
+Job - Diagnostic / Service Call,03/25/2025,10:00 AM,03/25/2025,12:00 PM,False,Mesa - East,Quote Q-202503-0045 | Type: Job | Area: Mesa - East,Q-202503-0045,Job
+Estimate - Diagnostic / Service Call,03/26/2025,01:00 PM,03/26/2025,01:45 PM,False,Gilbert,Quote Q-202503-0041 | Type: Estimate | Area: Gilbert,Q-202503-0041,Estimate
+Job - Diagnostic / Service Call,03/27/2025,12:00 PM,03/27/2025,02:00 PM,False,Gilbert,Quote Q-202503-0041 | Type: Job | Area: Gilbert,Q-202503-0041,Job
+Estimate - Blower / Motor Repair,03/28/2025,03:00 PM,03/28/2025,03:45 PM,False,Tempe,Quote Q-202503-0026 | Type: Estimate | Area: Tempe,Q-202503-0026,Estimate
+Estimate - Capacitor / Electrical Repair,03/30/2025,01:00 PM,03/30/2025,01:45 PM,False,Apache Junction,Quote Q-202503-0042 | Type: Estimate | Area: Apache Junction,Q-202503-0042,Estimate
+Job - Diagnostic / Service Call,04/02/2025,09:00 AM,04/02/2025,11:00 AM,False,Tempe,Quote Q-202503-0034 | Type: Job | Area: Tempe,Q-202503-0034,Job
+Estimate - Full System Replacement,04/02/2025,11:00 AM,04/02/2025,11:45 AM,False,Scottsdale,Quote Q-202504-0057 | Type: Estimate | Area: Scottsdale,Q-202504-0057,Estimate
+Estimate - Blower / Motor Repair,04/04/2025,01:00 PM,04/04/2025,01:45 PM,False,Mesa - East,Quote Q-202504-0067 | Type: Estimate | Area: Mesa - East,Q-202504-0067,Estimate
+Estimate - Blower / Motor Repair,04/05/2025,03:00 PM,04/05/2025,03:45 PM,False,Apache Junction,Quote Q-202504-0063 | Type: Estimate | Area: Apache Junction,Q-202504-0063,Estimate
+Estimate - Full System Replacement,04/05/2025,10:00 AM,04/05/2025,10:45 AM,False,Gilbert,Quote Q-202504-0066 | Type: Estimate | Area: Gilbert,Q-202504-0066,Estimate
+Estimate - Maintenance Tune-Up,04/07/2025,01:00 PM,04/07/2025,01:45 PM,False,Mesa - East,Quote Q-202504-0061 | Type: Estimate | Area: Mesa - East,Q-202504-0061,Estimate
+Estimate - Diagnostic / Service Call,04/08/2025,02:00 PM,04/08/2025,02:45 PM,False,Mesa - East,Quote Q-202504-0055 | Type: Estimate | Area: Mesa - East,Q-202504-0055,Estimate
+Estimate - Duct Repair / Sealing,04/08/2025,03:00 PM,04/08/2025,03:45 PM,False,Mesa - East,Quote Q-202504-0056 | Type: Estimate | Area: Mesa - East,Q-202504-0056,Estimate
+Estimate - Diagnostic / Service Call,04/09/2025,01:00 PM,04/09/2025,01:45 PM,False,Mesa - East,Quote Q-202504-0070 | Type: Estimate | Area: Mesa - East,Q-202504-0070,Estimate
+Estimate - Diagnostic / Service Call,04/10/2025,03:00 PM,04/10/2025,03:45 PM,False,Tempe,Quote Q-202504-0054 | Type: Estimate | Area: Tempe,Q-202504-0054,Estimate
+Job - Blower / Motor Repair,04/10/2025,08:00 AM,04/10/2025,12:00 PM,False,Mesa - East,Quote Q-202503-0038 | Type: Job | Area: Mesa - East,Q-202503-0038,Job
+Estimate - Diagnostic / Service Call,04/11/2025,09:00 AM,04/11/2025,09:45 AM,False,Gilbert,Quote Q-202504-0060 | Type: Estimate | Area: Gilbert,Q-202504-0060,Estimate
+Estimate - Capacitor / Electrical Repair,04/12/2025,11:00 AM,04/12/2025,11:45 AM,False,Gilbert,Quote Q-202504-0064 | Type: Estimate | Area: Gilbert,Q-202504-0064,Estimate
+Job - Diagnostic / Service Call,04/13/2025,09:00 AM,04/13/2025,11:00 AM,False,Tempe,Quote Q-202504-0054 | Type: Job | Area: Tempe,Q-202504-0054,Job
+Job - Blower / Motor Repair,04/15/2025,01:00 PM,04/15/2025,05:00 PM,False,Mesa - East,Quote Q-202504-0067 | Type: Job | Area: Mesa - East,Q-202504-0067,Job
+Job - Diagnostic / Service Call,04/15/2025,12:00 PM,04/15/2025,02:00 PM,False,Gilbert,Quote Q-202504-0060 | Type: Job | Area: Gilbert,Q-202504-0060,Job
+Estimate - Diagnostic / Service Call,04/17/2025,10:00 AM,04/17/2025,10:45 AM,False,Gilbert,Quote Q-202504-0058 | Type: Estimate | Area: Gilbert,Q-202504-0058,Estimate
+Estimate - Maintenance Tune-Up,04/17/2025,11:00 AM,04/17/2025,11:45 AM,False,Mesa - East,Quote Q-202504-0053 | Type: Estimate | Area: Mesa - East,Q-202504-0053,Estimate
+Estimate - Mini-Split Install,04/17/2025,11:00 AM,04/17/2025,11:45 AM,False,Chandler,Quote Q-202504-0068 | Type: Estimate | Area: Chandler,Q-202504-0068,Estimate
+Estimate - Maintenance Tune-Up,04/18/2025,01:00 PM,04/18/2025,01:45 PM,False,Chandler,Quote Q-202504-0065 | Type: Estimate | Area: Chandler,Q-202504-0065,Estimate
+Job - Duct Repair / Sealing,04/18/2025,08:00 AM,04/18/2025,12:00 PM,False,Mesa - East,Quote Q-202504-0056 | Type: Job | Area: Mesa - East,Q-202504-0056,Job
+Estimate - Capacitor / Electrical Repair,04/18/2025,09:00 AM,04/18/2025,09:45 AM,False,Mesa - East,Quote Q-202504-0049 | Type: Estimate | Area: Mesa - East,Q-202504-0049,Estimate
+Job - Maintenance Tune-Up,04/18/2025,10:00 AM,04/18/2025,12:00 PM,False,Chandler,Quote Q-202504-0065 | Type: Job | Area: Chandler,Q-202504-0065,Job
+Estimate - Diagnostic / Service Call,04/18/2025,11:00 AM,04/18/2025,11:45 AM,False,Gilbert,Quote Q-202504-0072 | Type: Estimate | Area: Gilbert,Q-202504-0072,Estimate
+Job - Diagnostic / Service Call,04/18/2025,12:00 PM,04/18/2025,02:00 PM,False,Gilbert,Quote Q-202504-0072 | Type: Job | Area: Gilbert,Q-202504-0072,Job
+Job - Maintenance Tune-Up,04/19/2025,01:00 PM,04/19/2025,03:00 PM,False,Mesa - East,Quote Q-202504-0061 | Type: Job | Area: Mesa - East,Q-202504-0061,Job
+Estimate - Full System Replacement,04/19/2025,09:00 AM,04/19/2025,09:45 AM,False,Mesa - East,Quote Q-202504-0052 | Type: Estimate | Area: Mesa - East,Q-202504-0052,Estimate
+Estimate - Diagnostic / Service Call,04/20/2025,02:00 PM,04/20/2025,02:45 PM,False,Tempe,Quote Q-202504-0050 | Type: Estimate | Area: Tempe,Q-202504-0050,Estimate
+Job - Blower / Motor Repair,04/20/2025,02:00 PM,04/20/2025,06:00 PM,False,Apache Junction,Quote Q-202504-0063 | Type: Job | Area: Apache Junction,Q-202504-0063,Job
+Estimate - Duct Repair / Sealing,04/21/2025,09:00 AM,04/21/2025,09:45 AM,False,Mesa - East,Quote Q-202504-0051 | Type: Estimate | Area: Mesa - East,Q-202504-0051,Estimate
+Estimate - Blower / Motor Repair,04/21/2025,10:00 AM,04/21/2025,10:45 AM,False,Mesa - East,Quote Q-202504-0048 | Type: Estimate | Area: Mesa - East,Q-202504-0048,Estimate
+Estimate - Diagnostic / Service Call,04/21/2025,10:00 AM,04/21/2025,10:45 AM,False,Chandler,Quote Q-202504-0062 | Type: Estimate | Area: Chandler,Q-202504-0062,Estimate
+Job - Full System Replacement,04/22/2025,01:00 PM,04/22/2025,09:00 PM,False,Gilbert,Quote Q-202503-0029 | Type: Job | Area: Gilbert,Q-202503-0029,Job
+Estimate - Capacitor / Electrical Repair,04/22/2025,01:00 PM,04/22/2025,01:45 PM,False,Chandler,Quote Q-202504-0073 | Type: Estimate | Area: Chandler,Q-202504-0073,Estimate
+Estimate - Diagnostic / Service Call,04/24/2025,03:00 PM,04/24/2025,03:45 PM,False,Apache Junction,Quote Q-202504-0069 | Type: Estimate | Area: Apache Junction,Q-202504-0069,Estimate
+Job - Diagnostic / Service Call,04/25/2025,09:00 AM,04/25/2025,11:00 AM,False,Gilbert,Quote Q-202504-0058 | Type: Job | Area: Gilbert,Q-202504-0058,Job
+Estimate - Duct Repair / Sealing,04/26/2025,02:00 PM,04/26/2025,02:45 PM,False,Gilbert,Quote Q-202504-0059 | Type: Estimate | Area: Gilbert,Q-202504-0059,Estimate
+Estimate - Mini-Split Install,04/27/2025,03:00 PM,04/27/2025,03:45 PM,False,Mesa - East,Quote Q-202504-0071 | Type: Estimate | Area: Mesa - East,Q-202504-0071,Estimate
+Job - Capacitor / Electrical Repair,04/28/2025,09:00 AM,04/28/2025,11:00 AM,False,Chandler,Quote Q-202504-0073 | Type: Job | Area: Chandler,Q-202504-0073,Job
+Estimate - Diagnostic / Service Call,05/03/2025,02:00 PM,05/03/2025,02:45 PM,False,Apache Junction,Quote Q-202505-0094 | Type: Estimate | Area: Apache Junction,Q-202505-0094,Estimate
+Estimate - Diagnostic / Service Call,05/05/2025,11:00 AM,05/05/2025,11:45 AM,False,Gilbert,Quote Q-202505-0093 | Type: Estimate | Area: Gilbert,Q-202505-0093,Estimate
+Estimate - Diagnostic / Service Call,05/07/2025,09:00 AM,05/07/2025,09:45 AM,False,Scottsdale,Quote Q-202505-0092 | Type: Estimate | Area: Scottsdale,Q-202505-0092,Estimate
+Estimate - Capacitor / Electrical Repair,05/07/2025,11:00 AM,05/07/2025,11:45 AM,False,Tempe,Quote Q-202505-0082 | Type: Estimate | Area: Tempe,Q-202505-0082,Estimate
+Estimate - Mini-Split Install,05/08/2025,10:00 AM,05/08/2025,10:45 AM,False,Mesa - East,Quote Q-202505-0079 | Type: Estimate | Area: Mesa - East,Q-202505-0079,Estimate
+Estimate - Full System Replacement,05/10/2025,01:00 PM,05/10/2025,01:45 PM,False,Chandler,Quote Q-202505-0089 | Type: Estimate | Area: Chandler,Q-202505-0089,Estimate
+Job - Blower / Motor Repair,05/11/2025,12:00 PM,05/11/2025,04:00 PM,False,Mesa - East,Quote Q-202504-0048 | Type: Job | Area: Mesa - East,Q-202504-0048,Job
+Estimate - Diagnostic / Service Call,05/12/2025,09:00 AM,05/12/2025,09:45 AM,False,Mesa - East,Quote Q-202505-0088 | Type: Estimate | Area: Mesa - East,Q-202505-0088,Estimate
+Estimate - Diagnostic / Service Call,05/13/2025,03:00 PM,05/13/2025,03:45 PM,False,Mesa - East,Quote Q-202505-0084 | Type: Estimate | Area: Mesa - East,Q-202505-0084,Estimate
+Job - Diagnostic / Service Call,05/16/2025,09:00 AM,05/16/2025,11:00 AM,False,Mesa - East,Quote Q-202505-0088 | Type: Job | Area: Mesa - East,Q-202505-0088,Job
+Estimate - Maintenance Tune-Up,05/16/2025,10:00 AM,05/16/2025,10:45 AM,False,Chandler,Quote Q-202505-0075 | Type: Estimate | Area: Chandler,Q-202505-0075,Estimate
+Estimate - Diagnostic / Service Call,05/19/2025,09:00 AM,05/19/2025,09:45 AM,False,Mesa - East,Quote Q-202505-0091 | Type: Estimate | Area: Mesa - East,Q-202505-0091,Estimate
+Job - Capacitor / Electrical Repair,05/20/2025,01:00 PM,05/20/2025,05:00 PM,False,Tempe,Quote Q-202505-0082 | Type: Job | Area: Tempe,Q-202505-0082,Job
+Estimate - Diagnostic / Service Call,05/20/2025,02:00 PM,05/20/2025,02:45 PM,False,Mesa - East,Quote Q-202505-0081 | Type: Estimate | Area: Mesa - East,Q-202505-0081,Estimate
+Estimate - Diagnostic / Service Call,05/20/2025,03:00 PM,05/20/2025,03:45 PM,False,Chandler,Quote Q-202505-0076 | Type: Estimate | Area: Chandler,Q-202505-0076,Estimate
+Estimate - Maintenance Tune-Up,05/21/2025,02:00 PM,05/21/2025,02:45 PM,False,Chandler,Quote Q-202505-0083 | Type: Estimate | Area: Chandler,Q-202505-0083,Estimate
+Estimate - Capacitor / Electrical Repair,05/23/2025,01:00 PM,05/23/2025,01:45 PM,False,Scottsdale,Quote Q-202505-0080 | Type: Estimate | Area: Scottsdale,Q-202505-0080,Estimate
+Job - Maintenance Tune-Up,05/23/2025,08:00 AM,05/23/2025,10:00 AM,False,Chandler,Quote Q-202505-0075 | Type: Job | Area: Chandler,Q-202505-0075,Job
+Job - Maintenance Tune-Up,05/24/2025,01:00 PM,05/24/2025,03:00 PM,False,Chandler,Quote Q-202505-0083 | Type: Job | Area: Chandler,Q-202505-0083,Job
+Estimate - Maintenance Tune-Up,05/24/2025,03:00 PM,05/24/2025,03:45 PM,False,Chandler,Quote Q-202505-0087 | Type: Estimate | Area: Chandler,Q-202505-0087,Estimate
+Estimate - Mini-Split Install,05/25/2025,03:00 PM,05/25/2025,03:45 PM,False,Mesa - East,Quote Q-202505-0095 | Type: Estimate | Area: Mesa - East,Q-202505-0095,Estimate
+Estimate - Diagnostic / Service Call,05/25/2025,09:00 AM,05/25/2025,09:45 AM,False,Mesa - East,Quote Q-202505-0086 | Type: Estimate | Area: Mesa - East,Q-202505-0086,Estimate
+Job - Maintenance Tune-Up,05/26/2025,02:00 PM,05/26/2025,04:00 PM,False,Chandler,Quote Q-202505-0087 | Type: Job | Area: Chandler,Q-202505-0087,Job
+Job - Diagnostic / Service Call,05/26/2025,08:00 AM,05/26/2025,10:00 AM,False,Mesa - East,Quote Q-202505-0086 | Type: Job | Area: Mesa - East,Q-202505-0086,Job
+Estimate - Maintenance Tune-Up,05/28/2025,01:00 PM,05/28/2025,01:45 PM,False,Gilbert,Quote Q-202505-0074 | Type: Estimate | Area: Gilbert,Q-202505-0074,Estimate
+Estimate - Diagnostic / Service Call,05/28/2025,01:00 PM,05/28/2025,01:45 PM,False,Mesa - East,Quote Q-202505-0078 | Type: Estimate | Area: Mesa - East,Q-202505-0078,Estimate
+Estimate - Blower / Motor Repair,05/29/2025,02:00 PM,05/29/2025,02:45 PM,False,Scottsdale,Quote Q-202505-0085 | Type: Estimate | Area: Scottsdale,Q-202505-0085,Estimate
+Estimate - Diagnostic / Service Call,05/29/2025,11:00 AM,05/29/2025,11:45 AM,False,Scottsdale,Quote Q-202505-0077 | Type: Estimate | Area: Scottsdale,Q-202505-0077,Estimate
+Estimate - Maintenance Tune-Up,05/30/2025,02:00 PM,05/30/2025,02:45 PM,False,Scottsdale,Quote Q-202505-0090 | Type: Estimate | Area: Scottsdale,Q-202505-0090,Estimate
+Job - Diagnostic / Service Call,06/01/2025,02:00 PM,06/01/2025,04:00 PM,False,Mesa - East,Quote Q-202505-0091 | Type: Job | Area: Mesa - East,Q-202505-0091,Job
+Estimate - Full System Replacement,06/02/2025,09:00 AM,06/02/2025,09:45 AM,False,Gilbert,Quote Q-202506-0121 | Type: Estimate | Area: Gilbert,Q-202506-0121,Estimate
+Estimate - Diagnostic / Service Call,06/03/2025,01:00 PM,06/03/2025,01:45 PM,False,Chandler,Quote Q-202506-0119 | Type: Estimate | Area: Chandler,Q-202506-0119,Estimate
+Estimate - Diagnostic / Service Call,06/03/2025,02:00 PM,06/03/2025,02:45 PM,False,Mesa - East,Quote Q-202506-0096 | Type: Estimate | Area: Mesa - East,Q-202506-0096,Estimate
+Estimate - Blower / Motor Repair,06/03/2025,09:00 AM,06/03/2025,09:45 AM,False,Tempe,Quote Q-202506-0110 | Type: Estimate | Area: Tempe,Q-202506-0110,Estimate
+Estimate - Maintenance Tune-Up,06/04/2025,03:00 PM,06/04/2025,03:45 PM,False,Mesa - East,Quote Q-202506-0101 | Type: Estimate | Area: Mesa - East,Q-202506-0101,Estimate
+Estimate - Maintenance Tune-Up,06/05/2025,10:00 AM,06/05/2025,10:45 AM,False,Chandler,Quote Q-202506-0100 | Type: Estimate | Area: Chandler,Q-202506-0100,Estimate
+Estimate - Maintenance Tune-Up,06/06/2025,03:00 PM,06/06/2025,03:45 PM,False,Apache Junction,Quote Q-202506-0097 | Type: Estimate | Area: Apache Junction,Q-202506-0097,Estimate
+Estimate - Diagnostic / Service Call,06/07/2025,11:00 AM,06/07/2025,11:45 AM,False,Gilbert,Quote Q-202506-0098 | Type: Estimate | Area: Gilbert,Q-202506-0098,Estimate
+Estimate - Mini-Split Install,06/08/2025,10:00 AM,06/08/2025,10:45 AM,False,Apache Junction,Quote Q-202506-0107 | Type: Estimate | Area: Apache Junction,Q-202506-0107,Estimate
+Job - Maintenance Tune-Up,06/08/2025,12:00 PM,06/08/2025,02:00 PM,False,Apache Junction,Quote Q-202506-0097 | Type: Job | Area: Apache Junction,Q-202506-0097,Job
+Job - Maintenance Tune-Up,06/11/2025,09:00 AM,06/11/2025,11:00 AM,False,Mesa - East,Quote Q-202506-0101 | Type: Job | Area: Mesa - East,Q-202506-0101,Job
+Estimate - Diagnostic / Service Call,06/13/2025,09:00 AM,06/13/2025,09:45 AM,False,Gilbert,Quote Q-202506-0117 | Type: Estimate | Area: Gilbert,Q-202506-0117,Estimate
+Estimate - Diagnostic / Service Call,06/13/2025,11:00 AM,06/13/2025,11:45 AM,False,Apache Junction,Quote Q-202506-0108 | Type: Estimate | Area: Apache Junction,Q-202506-0108,Estimate
+Estimate - Blower / Motor Repair,06/14/2025,02:00 PM,06/14/2025,02:45 PM,False,Mesa - East,Quote Q-202506-0106 | Type: Estimate | Area: Mesa - East,Q-202506-0106,Estimate
+Job - Mini-Split Install,06/15/2025,01:00 PM,06/15/2025,09:00 PM,False,Mesa - East,Quote Q-202505-0095 | Type: Job | Area: Mesa - East,Q-202505-0095,Job
+Estimate - Diagnostic / Service Call,06/15/2025,10:00 AM,06/15/2025,10:45 AM,False,Chandler,Quote Q-202506-0112 | Type: Estimate | Area: Chandler,Q-202506-0112,Estimate
+Estimate - Diagnostic / Service Call,06/16/2025,10:00 AM,06/16/2025,10:45 AM,False,Gilbert,Quote Q-202506-0114 | Type: Estimate | Area: Gilbert,Q-202506-0114,Estimate
+Estimate - Mini-Split Install,06/17/2025,01:00 PM,06/17/2025,01:45 PM,False,Tempe,Quote Q-202506-0113 | Type: Estimate | Area: Tempe,Q-202506-0113,Estimate
+Job - Diagnostic / Service Call,06/17/2025,09:00 AM,06/17/2025,11:00 AM,False,Gilbert,Quote Q-202506-0098 | Type: Job | Area: Gilbert,Q-202506-0098,Job
+Estimate - Diagnostic / Service Call,06/19/2025,11:00 AM,06/19/2025,11:45 AM,False,Tempe,Quote Q-202506-0116 | Type: Estimate | Area: Tempe,Q-202506-0116,Estimate
+Job - Diagnostic / Service Call,06/20/2025,02:00 PM,06/20/2025,04:00 PM,False,Gilbert,Quote Q-202506-0117 | Type: Job | Area: Gilbert,Q-202506-0117,Job
+Estimate - Duct Repair / Sealing,06/20/2025,03:00 PM,06/20/2025,03:45 PM,False,Gilbert,Quote Q-202506-0099 | Type: Estimate | Area: Gilbert,Q-202506-0099,Estimate
+Estimate - Maintenance Tune-Up,06/22/2025,10:00 AM,06/22/2025,10:45 AM,False,Chandler,Quote Q-202506-0111 | Type: Estimate | Area: Chandler,Q-202506-0111,Estimate
+Estimate - Diagnostic / Service Call,06/23/2025,09:00 AM,06/23/2025,09:45 AM,False,Mesa - East,Quote Q-202506-0123 | Type: Estimate | Area: Mesa - East,Q-202506-0123,Estimate
+Job - Blower / Motor Repair,06/23/2025,10:00 AM,06/23/2025,02:00 PM,False,Mesa - East,Quote Q-202506-0106 | Type: Job | Area: Mesa - East,Q-202506-0106,Job
+Estimate - Duct Repair / Sealing,06/24/2025,03:00 PM,06/24/2025,03:45 PM,False,Scottsdale,Quote Q-202506-0104 | Type: Estimate | Area: Scottsdale,Q-202506-0104,Estimate
+Estimate - Diagnostic / Service Call,06/25/2025,02:00 PM,06/25/2025,02:45 PM,False,Mesa - East,Quote Q-202506-0105 | Type: Estimate | Area: Mesa - East,Q-202506-0105,Estimate
+Estimate - Mini-Split Install,06/25/2025,03:00 PM,06/25/2025,03:45 PM,False,Gilbert,Quote Q-202506-0103 | Type: Estimate | Area: Gilbert,Q-202506-0103,Estimate
+Estimate - Diagnostic / Service Call,06/25/2025,11:00 AM,06/25/2025,11:45 AM,False,Apache Junction,Quote Q-202506-0109 | Type: Estimate | Area: Apache Junction,Q-202506-0109,Estimate
+Estimate - Full System Replacement,06/26/2025,01:00 PM,06/26/2025,01:45 PM,False,Gilbert,Quote Q-202506-0120 | Type: Estimate | Area: Gilbert,Q-202506-0120,Estimate
+Estimate - Diagnostic / Service Call,06/26/2025,03:00 PM,06/26/2025,03:45 PM,False,Gilbert,Quote Q-202506-0102 | Type: Estimate | Area: Gilbert,Q-202506-0102,Estimate
+Estimate - Mini-Split Install,06/27/2025,02:00 PM,06/27/2025,02:45 PM,False,Chandler,Quote Q-202506-0118 | Type: Estimate | Area: Chandler,Q-202506-0118,Estimate
+Estimate - Diagnostic / Service Call,06/27/2025,10:00 AM,06/27/2025,10:45 AM,False,Tempe,Quote Q-202506-0115 | Type: Estimate | Area: Tempe,Q-202506-0115,Estimate
+Estimate - Capacitor / Electrical Repair,06/28/2025,02:00 PM,06/28/2025,02:45 PM,False,Gilbert,Quote Q-202506-0122 | Type: Estimate | Area: Gilbert,Q-202506-0122,Estimate
+Job - Diagnostic / Service Call,06/29/2025,01:00 PM,06/29/2025,03:00 PM,False,Tempe,Quote Q-202506-0116 | Type: Job | Area: Tempe,Q-202506-0116,Job
+Job - Mini-Split Install,06/30/2025,01:00 PM,06/30/2025,09:00 PM,False,Chandler,Quote Q-202506-0118 | Type: Job | Area: Chandler,Q-202506-0118,Job
+Job - Duct Repair / Sealing,07/01/2025,12:00 PM,07/01/2025,04:00 PM,False,Scottsdale,Quote Q-202506-0104 | Type: Job | Area: Scottsdale,Q-202506-0104,Job
+Job - Diagnostic / Service Call,07/02/2025,01:00 PM,07/02/2025,03:00 PM,False,Apache Junction,Quote Q-202506-0109 | Type: Job | Area: Apache Junction,Q-202506-0109,Job
+Estimate - Mini-Split Install,07/02/2025,11:00 AM,07/02/2025,11:45 AM,False,Chandler,Quote Q-202507-0131 | Type: Estimate | Area: Chandler,Q-202507-0131,Estimate
+Estimate - Duct Repair / Sealing,07/03/2025,02:00 PM,07/03/2025,02:45 PM,False,Gilbert,Quote Q-202507-0148 | Type: Estimate | Area: Gilbert,Q-202507-0148,Estimate
+Estimate - Blower / Motor Repair,07/05/2025,09:00 AM,07/05/2025,09:45 AM,False,Apache Junction,Quote Q-202507-0144 | Type: Estimate | Area: Apache Junction,Q-202507-0144,Estimate
+Estimate - Maintenance Tune-Up,07/06/2025,01:00 PM,07/06/2025,01:45 PM,False,Scottsdale,Quote Q-202507-0155 | Type: Estimate | Area: Scottsdale,Q-202507-0155,Estimate
+Job - Diagnostic / Service Call,07/06/2025,02:00 PM,07/06/2025,04:00 PM,False,Mesa - East,Quote Q-202506-0123 | Type: Job | Area: Mesa - East,Q-202506-0123,Job
+Estimate - Diagnostic / Service Call,07/06/2025,02:00 PM,07/06/2025,02:45 PM,False,Mesa - East,Quote Q-202507-0133 | Type: Estimate | Area: Mesa - East,Q-202507-0133,Estimate
+Estimate - Diagnostic / Service Call,07/06/2025,10:00 AM,07/06/2025,10:45 AM,False,Chandler,Quote Q-202507-0138 | Type: Estimate | Area: Chandler,Q-202507-0138,Estimate
+Estimate - Diagnostic / Service Call,07/06/2025,10:00 AM,07/06/2025,10:45 AM,False,Chandler,Quote Q-202507-0157 | Type: Estimate | Area: Chandler,Q-202507-0157,Estimate
+Estimate - Diagnostic / Service Call,07/07/2025,11:00 AM,07/07/2025,11:45 AM,False,Gilbert,Quote Q-202507-0145 | Type: Estimate | Area: Gilbert,Q-202507-0145,Estimate
+Job - Diagnostic / Service Call,07/08/2025,02:00 PM,07/08/2025,04:00 PM,False,Gilbert,Quote Q-202506-0102 | Type: Job | Area: Gilbert,Q-202506-0102,Job
+Estimate - Duct Repair / Sealing,07/08/2025,09:00 AM,07/08/2025,09:45 AM,False,Gilbert,Quote Q-202507-0134 | Type: Estimate | Area: Gilbert,Q-202507-0134,Estimate
+Estimate - Duct Repair / Sealing,07/08/2025,10:00 AM,07/08/2025,10:45 AM,False,Mesa - East,Quote Q-202507-0130 | Type: Estimate | Area: Mesa - East,Q-202507-0130,Estimate
+Estimate - Capacitor / Electrical Repair,07/08/2025,10:00 AM,07/08/2025,10:45 AM,False,Tempe,Quote Q-202507-0142 | Type: Estimate | Area: Tempe,Q-202507-0142,Estimate
+Job - Diagnostic / Service Call,07/08/2025,12:00 PM,07/08/2025,02:00 PM,False,Mesa - East,Quote Q-202506-0105 | Type: Job | Area: Mesa - East,Q-202506-0105,Job
+Estimate - Diagnostic / Service Call,07/09/2025,11:00 AM,07/09/2025,11:45 AM,False,Gilbert,Quote Q-202507-0125 | Type: Estimate | Area: Gilbert,Q-202507-0125,Estimate
+Estimate - Blower / Motor Repair,07/09/2025,11:00 AM,07/09/2025,11:45 AM,False,Chandler,Quote Q-202507-0147 | Type: Estimate | Area: Chandler,Q-202507-0147,Estimate
+Job - Capacitor / Electrical Repair,07/10/2025,12:00 PM,07/10/2025,02:00 PM,False,Gilbert,Quote Q-202506-0122 | Type: Job | Area: Gilbert,Q-202506-0122,Job
+Job - Diagnostic / Service Call,07/11/2025,02:00 PM,07/11/2025,04:00 PM,False,Tempe,Quote Q-202506-0115 | Type: Job | Area: Tempe,Q-202506-0115,Job
+Job - Diagnostic / Service Call,07/11/2025,02:00 PM,07/11/2025,04:00 PM,False,Mesa - East,Quote Q-202507-0133 | Type: Job | Area: Mesa - East,Q-202507-0133,Job
+Estimate - Diagnostic / Service Call,07/11/2025,10:00 AM,07/11/2025,10:45 AM,False,Apache Junction,Quote Q-202507-0132 | Type: Estimate | Area: Apache Junction,Q-202507-0132,Estimate
+Estimate - Diagnostic / Service Call,07/12/2025,10:00 AM,07/12/2025,10:45 AM,False,Gilbert,Quote Q-202507-0141 | Type: Estimate | Area: Gilbert,Q-202507-0141,Estimate
+Estimate - Diagnostic / Service Call,07/14/2025,09:00 AM,07/14/2025,09:45 AM,False,Gilbert,Quote Q-202507-0137 | Type: Estimate | Area: Gilbert,Q-202507-0137,Estimate
+Job - Capacitor / Electrical Repair,07/14/2025,09:00 AM,07/14/2025,01:00 PM,False,Tempe,Quote Q-202507-0142 | Type: Job | Area: Tempe,Q-202507-0142,Job
+Estimate - Full System Replacement,07/14/2025,11:00 AM,07/14/2025,11:45 AM,False,Mesa - East,Quote Q-202507-0139 | Type: Estimate | Area: Mesa - East,Q-202507-0139,Estimate
+Estimate - Blower / Motor Repair,07/15/2025,03:00 PM,07/15/2025,03:45 PM,False,Scottsdale,Quote Q-202507-0152 | Type: Estimate | Area: Scottsdale,Q-202507-0152,Estimate
+Estimate - Duct Repair / Sealing,07/15/2025,09:00 AM,07/15/2025,09:45 AM,False,Apache Junction,Quote Q-202507-0129 | Type: Estimate | Area: Apache Junction,Q-202507-0129,Estimate
+Estimate - Capacitor / Electrical Repair,07/16/2025,02:00 PM,07/16/2025,02:45 PM,False,Gilbert,Quote Q-202507-0159 | Type: Estimate | Area: Gilbert,Q-202507-0159,Estimate
+Job - Maintenance Tune-Up,07/16/2025,09:00 AM,07/16/2025,11:00 AM,False,Scottsdale,Quote Q-202507-0155 | Type: Job | Area: Scottsdale,Q-202507-0155,Job
+Estimate - Capacitor / Electrical Repair,07/17/2025,02:00 PM,07/17/2025,02:45 PM,False,Gilbert,Quote Q-202507-0150 | Type: Estimate | Area: Gilbert,Q-202507-0150,Estimate
+Estimate - Diagnostic / Service Call,07/17/2025,03:00 PM,07/17/2025,03:45 PM,False,Gilbert,Quote Q-202507-0158 | Type: Estimate | Area: Gilbert,Q-202507-0158,Estimate
+Job - Diagnostic / Service Call,07/17/2025,08:00 AM,07/17/2025,10:00 AM,False,Chandler,Quote Q-202507-0138 | Type: Job | Area: Chandler,Q-202507-0138,Job
+Estimate - Maintenance Tune-Up,07/17/2025,09:00 AM,07/17/2025,09:45 AM,False,Mesa - East,Quote Q-202507-0140 | Type: Estimate | Area: Mesa - East,Q-202507-0140,Estimate
+Job - Diagnostic / Service Call,07/17/2025,10:00 AM,07/17/2025,12:00 PM,False,Chandler,Quote Q-202507-0157 | Type: Job | Area: Chandler,Q-202507-0157,Job
+Estimate - Mini-Split Install,07/18/2025,03:00 PM,07/18/2025,03:45 PM,False,Tempe,Quote Q-202507-0128 | Type: Estimate | Area: Tempe,Q-202507-0128,Estimate
+Job - Diagnostic / Service Call,07/19/2025,10:00 AM,07/19/2025,12:00 PM,False,Gilbert,Quote Q-202507-0125 | Type: Job | Area: Gilbert,Q-202507-0125,Job
+Estimate - Diagnostic / Service Call,07/19/2025,11:00 AM,07/19/2025,11:45 AM,False,Mesa - East,Quote Q-202507-0135 | Type: Estimate | Area: Mesa - East,Q-202507-0135,Estimate
+Estimate - Diagnostic / Service Call,07/22/2025,01:00 PM,07/22/2025,01:45 PM,False,Mesa - East,Quote Q-202507-0154 | Type: Estimate | Area: Mesa - East,Q-202507-0154,Estimate
+Estimate - Blower / Motor Repair,07/22/2025,03:00 PM,07/22/2025,03:45 PM,False,Mesa - East,Quote Q-202507-0149 | Type: Estimate | Area: Mesa - East,Q-202507-0149,Estimate
+Job - Diagnostic / Service Call,07/22/2025,10:00 AM,07/22/2025,12:00 PM,False,Gilbert,Quote Q-202507-0141 | Type: Job | Area: Gilbert,Q-202507-0141,Job
+Estimate - Diagnostic / Service Call,07/22/2025,10:00 AM,07/22/2025,10:45 AM,False,Mesa - East,Quote Q-202507-0160 | Type: Estimate | Area: Mesa - East,Q-202507-0160,Estimate
+Estimate - Full System Replacement,07/22/2025,11:00 AM,07/22/2025,11:45 AM,False,Chandler,Quote Q-202507-0153 | Type: Estimate | Area: Chandler,Q-202507-0153,Estimate
+Estimate - Capacitor / Electrical Repair,07/23/2025,09:00 AM,07/23/2025,09:45 AM,False,Scottsdale,Quote Q-202507-0156 | Type: Estimate | Area: Scottsdale,Q-202507-0156,Estimate
+Estimate - Diagnostic / Service Call,07/24/2025,03:00 PM,07/24/2025,03:45 PM,False,Tempe,Quote Q-202507-0124 | Type: Estimate | Area: Tempe,Q-202507-0124,Estimate
+Job - Duct Repair / Sealing,07/25/2025,10:00 AM,07/25/2025,02:00 PM,False,Mesa - East,Quote Q-202507-0130 | Type: Job | Area: Mesa - East,Q-202507-0130,Job
+Estimate - Diagnostic / Service Call,07/26/2025,09:00 AM,07/26/2025,09:45 AM,False,Gilbert,Quote Q-202507-0146 | Type: Estimate | Area: Gilbert,Q-202507-0146,Estimate
+Estimate - Diagnostic / Service Call,07/26/2025,11:00 AM,07/26/2025,11:45 AM,False,Scottsdale,Quote Q-202507-0151 | Type: Estimate | Area: Scottsdale,Q-202507-0151,Estimate
+Job - Blower / Motor Repair,07/27/2025,02:00 PM,07/27/2025,06:00 PM,False,Chandler,Quote Q-202507-0147 | Type: Job | Area: Chandler,Q-202507-0147,Job
+Estimate - Blower / Motor Repair,07/27/2025,11:00 AM,07/27/2025,11:45 AM,False,Chandler,Quote Q-202507-0136 | Type: Estimate | Area: Chandler,Q-202507-0136,Estimate
+Job - Diagnostic / Service Call,07/28/2025,09:00 AM,07/28/2025,11:00 AM,False,Gilbert,Quote Q-202507-0137 | Type: Job | Area: Gilbert,Q-202507-0137,Job
+Estimate - Full System Replacement,07/28/2025,09:00 AM,07/28/2025,09:45 AM,False,Tempe,Quote Q-202507-0143 | Type: Estimate | Area: Tempe,Q-202507-0143,Estimate
+Job - Capacitor / Electrical Repair,07/28/2025,12:00 PM,07/28/2025,04:00 PM,False,Gilbert,Quote Q-202507-0159 | Type: Job | Area: Gilbert,Q-202507-0159,Job
+Job - Duct Repair / Sealing,07/30/2025,01:00 PM,07/30/2025,05:00 PM,False,Apache Junction,Quote Q-202507-0129 | Type: Job | Area: Apache Junction,Q-202507-0129,Job
+Estimate - Diagnostic / Service Call,07/30/2025,11:00 AM,07/30/2025,11:45 AM,False,Scottsdale,Quote Q-202507-0127 | Type: Estimate | Area: Scottsdale,Q-202507-0127,Estimate
+Estimate - Full System Replacement,07/31/2025,02:00 PM,07/31/2025,02:45 PM,False,Scottsdale,Quote Q-202507-0126 | Type: Estimate | Area: Scottsdale,Q-202507-0126,Estimate
+Job - Diagnostic / Service Call,07/31/2025,08:00 AM,07/31/2025,10:00 AM,False,Scottsdale,Quote Q-202507-0151 | Type: Job | Area: Scottsdale,Q-202507-0151,Job
+Job - Diagnostic / Service Call,07/31/2025,12:00 PM,07/31/2025,02:00 PM,False,Gilbert,Quote Q-202507-0158 | Type: Job | Area: Gilbert,Q-202507-0158,Job
+Estimate - Full System Replacement,08/02/2025,01:00 PM,08/02/2025,01:45 PM,False,Mesa - East,Quote Q-202508-0163 | Type: Estimate | Area: Mesa - East,Q-202508-0163,Estimate
+Estimate - Full System Replacement,08/03/2025,02:00 PM,08/03/2025,02:45 PM,False,Apache Junction,Quote Q-202508-0178 | Type: Estimate | Area: Apache Junction,Q-202508-0178,Estimate
+Estimate - Diagnostic / Service Call,08/04/2025,01:00 PM,08/04/2025,01:45 PM,False,Tempe,Quote Q-202508-0197 | Type: Estimate | Area: Tempe,Q-202508-0197,Estimate
+Estimate - Full System Replacement,08/04/2025,09:00 AM,08/04/2025,09:45 AM,False,Chandler,Quote Q-202508-0171 | Type: Estimate | Area: Chandler,Q-202508-0171,Estimate
+Estimate - Diagnostic / Service Call,08/04/2025,10:00 AM,08/04/2025,10:45 AM,False,Chandler,Quote Q-202508-0183 | Type: Estimate | Area: Chandler,Q-202508-0183,Estimate
+Estimate - Diagnostic / Service Call,08/05/2025,02:00 PM,08/05/2025,02:45 PM,False,Mesa - East,Quote Q-202508-0185 | Type: Estimate | Area: Mesa - East,Q-202508-0185,Estimate
+Estimate - Capacitor / Electrical Repair,08/05/2025,09:00 AM,08/05/2025,09:45 AM,False,Mesa - East,Quote Q-202508-0191 | Type: Estimate | Area: Mesa - East,Q-202508-0191,Estimate
+Estimate - Maintenance Tune-Up,08/05/2025,10:00 AM,08/05/2025,10:45 AM,False,Gilbert,Quote Q-202508-0167 | Type: Estimate | Area: Gilbert,Q-202508-0167,Estimate
+Estimate - Diagnostic / Service Call,08/06/2025,01:00 PM,08/06/2025,01:45 PM,False,Scottsdale,Quote Q-202508-0190 | Type: Estimate | Area: Scottsdale,Q-202508-0190,Estimate
+Estimate - Blower / Motor Repair,08/06/2025,02:00 PM,08/06/2025,02:45 PM,False,Chandler,Quote Q-202508-0192 | Type: Estimate | Area: Chandler,Q-202508-0192,Estimate
+Estimate - Capacitor / Electrical Repair,08/06/2025,09:00 AM,08/06/2025,09:45 AM,False,Tempe,Quote Q-202508-0189 | Type: Estimate | Area: Tempe,Q-202508-0189,Estimate
+Estimate - Blower / Motor Repair,08/07/2025,09:00 AM,08/07/2025,09:45 AM,False,Tempe,Quote Q-202508-0166 | Type: Estimate | Area: Tempe,Q-202508-0166,Estimate
+Job - Diagnostic / Service Call,08/09/2025,02:00 PM,08/09/2025,04:00 PM,False,Mesa - East,Quote Q-202508-0185 | Type: Job | Area: Mesa - East,Q-202508-0185,Job
+Estimate - Capacitor / Electrical Repair,08/09/2025,09:00 AM,08/09/2025,09:45 AM,False,Gilbert,Quote Q-202508-0187 | Type: Estimate | Area: Gilbert,Q-202508-0187,Estimate
+Estimate - Diagnostic / Service Call,08/09/2025,11:00 AM,08/09/2025,11:45 AM,False,Gilbert,Quote Q-202508-0172 | Type: Estimate | Area: Gilbert,Q-202508-0172,Estimate
+Job - Diagnostic / Service Call,08/09/2025,12:00 PM,08/09/2025,02:00 PM,False,Tempe,Quote Q-202507-0124 | Type: Job | Area: Tempe,Q-202507-0124,Job
+Estimate - Capacitor / Electrical Repair,08/10/2025,01:00 PM,08/10/2025,01:45 PM,False,Apache Junction,Quote Q-202508-0170 | Type: Estimate | Area: Apache Junction,Q-202508-0170,Estimate
+Estimate - Duct Repair / Sealing,08/12/2025,01:00 PM,08/12/2025,01:45 PM,False,Chandler,Quote Q-202508-0174 | Type: Estimate | Area: Chandler,Q-202508-0174,Estimate
+Job - Capacitor / Electrical Repair,08/12/2025,02:00 PM,08/12/2025,04:00 PM,False,Gilbert,Quote Q-202508-0187 | Type: Job | Area: Gilbert,Q-202508-0187,Job
+Estimate - Maintenance Tune-Up,08/12/2025,09:00 AM,08/12/2025,09:45 AM,False,Apache Junction,Quote Q-202508-0188 | Type: Estimate | Area: Apache Junction,Q-202508-0188,Estimate
+Estimate - Capacitor / Electrical Repair,08/14/2025,03:00 PM,08/14/2025,03:45 PM,False,Scottsdale,Quote Q-202508-0165 | Type: Estimate | Area: Scottsdale,Q-202508-0165,Estimate
+Estimate - Maintenance Tune-Up,08/15/2025,10:00 AM,08/15/2025,10:45 AM,False,Gilbert,Quote Q-202508-0173 | Type: Estimate | Area: Gilbert,Q-202508-0173,Estimate
+Estimate - Capacitor / Electrical Repair,08/16/2025,10:00 AM,08/16/2025,10:45 AM,False,Chandler,Quote Q-202508-0161 | Type: Estimate | Area: Chandler,Q-202508-0161,Estimate
+Estimate - Blower / Motor Repair,08/17/2025,02:00 PM,08/17/2025,02:45 PM,False,Mesa - East,Quote Q-202508-0162 | Type: Estimate | Area: Mesa - East,Q-202508-0162,Estimate
+Estimate - Capacitor / Electrical Repair,08/17/2025,03:00 PM,08/17/2025,03:45 PM,False,Mesa - East,Quote Q-202508-0196 | Type: Estimate | Area: Mesa - East,Q-202508-0196,Estimate
+Job - Diagnostic / Service Call,08/17/2025,09:00 AM,08/17/2025,11:00 AM,False,Scottsdale,Quote Q-202508-0190 | Type: Job | Area: Scottsdale,Q-202508-0190,Job
+Estimate - Maintenance Tune-Up,08/17/2025,11:00 AM,08/17/2025,11:45 AM,False,Tempe,Quote Q-202508-0164 | Type: Estimate | Area: Tempe,Q-202508-0164,Estimate
+Estimate - Diagnostic / Service Call,08/17/2025,11:00 AM,08/17/2025,11:45 AM,False,Scottsdale,Quote Q-202508-0168 | Type: Estimate | Area: Scottsdale,Q-202508-0168,Estimate
+Estimate - Capacitor / Electrical Repair,08/19/2025,03:00 PM,08/19/2025,03:45 PM,False,Chandler,Quote Q-202508-0184 | Type: Estimate | Area: Chandler,Q-202508-0184,Estimate
+Job - Capacitor / Electrical Repair,08/20/2025,01:00 PM,08/20/2025,03:00 PM,False,Mesa - East,Quote Q-202508-0191 | Type: Job | Area: Mesa - East,Q-202508-0191,Job
+Estimate - Maintenance Tune-Up,08/20/2025,03:00 PM,08/20/2025,03:45 PM,False,Tempe,Quote Q-202508-0176 | Type: Estimate | Area: Tempe,Q-202508-0176,Estimate
+Job - Capacitor / Electrical Repair,08/21/2025,01:00 PM,08/21/2025,05:00 PM,False,Scottsdale,Quote Q-202508-0165 | Type: Job | Area: Scottsdale,Q-202508-0165,Job
+Job - Maintenance Tune-Up,08/21/2025,02:00 PM,08/21/2025,04:00 PM,False,Gilbert,Quote Q-202508-0173 | Type: Job | Area: Gilbert,Q-202508-0173,Job
+Job - Diagnostic / Service Call,08/21/2025,10:00 AM,08/21/2025,12:00 PM,False,Scottsdale,Quote Q-202508-0168 | Type: Job | Area: Scottsdale,Q-202508-0168,Job
+Estimate - Duct Repair / Sealing,08/21/2025,10:00 AM,08/21/2025,10:45 AM,False,Mesa - East,Quote Q-202508-0169 | Type: Estimate | Area: Mesa - East,Q-202508-0169,Estimate
+Job - Diagnostic / Service Call,08/21/2025,12:00 PM,08/21/2025,02:00 PM,False,Tempe,Quote Q-202508-0197 | Type: Job | Area: Tempe,Q-202508-0197,Job
+Estimate - Full System Replacement,08/22/2025,10:00 AM,08/22/2025,10:45 AM,False,Apache Junction,Quote Q-202508-0180 | Type: Estimate | Area: Apache Junction,Q-202508-0180,Estimate
+Job - Capacitor / Electrical Repair,08/22/2025,10:00 AM,08/22/2025,02:00 PM,False,Tempe,Quote Q-202508-0189 | Type: Job | Area: Tempe,Q-202508-0189,Job
+Job - Full System Replacement,08/22/2025,12:00 PM,08/22/2025,08:00 PM,False,Scottsdale,Quote Q-202507-0126 | Type: Job | Area: Scottsdale,Q-202507-0126,Job
+Estimate - Capacitor / Electrical Repair,08/23/2025,01:00 PM,08/23/2025,01:45 PM,False,Gilbert,Quote Q-202508-0193 | Type: Estimate | Area: Gilbert,Q-202508-0193,Estimate
+Estimate - Capacitor / Electrical Repair,08/23/2025,02:00 PM,08/23/2025,02:45 PM,False,Gilbert,Quote Q-202508-0175 | Type: Estimate | Area: Gilbert,Q-202508-0175,Estimate
+Estimate - Mini-Split Install,08/23/2025,02:00 PM,08/23/2025,02:45 PM,False,Chandler,Quote Q-202508-0182 | Type: Estimate | Area: Chandler,Q-202508-0182,Estimate
+Job - Capacitor / Electrical Repair,08/23/2025,02:00 PM,08/23/2025,04:00 PM,False,Chandler,Quote Q-202508-0184 | Type: Job | Area: Chandler,Q-202508-0184,Job
+Estimate - Capacitor / Electrical Repair,08/23/2025,03:00 PM,08/23/2025,03:45 PM,False,Tempe,Quote Q-202508-0194 | Type: Estimate | Area: Tempe,Q-202508-0194,Estimate
+Estimate - Capacitor / Electrical Repair,08/24/2025,02:00 PM,08/24/2025,02:45 PM,False,Gilbert,Quote Q-202508-0179 | Type: Estimate | Area: Gilbert,Q-202508-0179,Estimate
+Estimate - Maintenance Tune-Up,08/24/2025,03:00 PM,08/24/2025,03:45 PM,False,Scottsdale,Quote Q-202508-0195 | Type: Estimate | Area: Scottsdale,Q-202508-0195,Estimate
+Job - Blower / Motor Repair,08/24/2025,08:00 AM,08/24/2025,12:00 PM,False,Tempe,Quote Q-202508-0166 | Type: Job | Area: Tempe,Q-202508-0166,Job
+Job - Maintenance Tune-Up,08/24/2025,09:00 AM,08/24/2025,11:00 AM,False,Tempe,Quote Q-202508-0176 | Type: Job | Area: Tempe,Q-202508-0176,Job
+Estimate - Maintenance Tune-Up,08/25/2025,01:00 PM,08/25/2025,01:45 PM,False,Gilbert,Quote Q-202508-0186 | Type: Estimate | Area: Gilbert,Q-202508-0186,Estimate
+Estimate - Capacitor / Electrical Repair,08/25/2025,03:00 PM,08/25/2025,03:45 PM,False,Tempe,Quote Q-202508-0181 | Type: Estimate | Area: Tempe,Q-202508-0181,Estimate
+Estimate - Maintenance Tune-Up,08/28/2025,01:00 PM,08/28/2025,01:45 PM,False,Mesa - East,Quote Q-202508-0177 | Type: Estimate | Area: Mesa - East,Q-202508-0177,Estimate
+Job - Maintenance Tune-Up,09/02/2025,01:00 PM,09/02/2025,03:00 PM,False,Scottsdale,Quote Q-202508-0195 | Type: Job | Area: Scottsdale,Q-202508-0195,Job
+Estimate - Capacitor / Electrical Repair,09/02/2025,10:00 AM,09/02/2025,10:45 AM,False,Mesa - East,Quote Q-202509-0212 | Type: Estimate | Area: Mesa - East,Q-202509-0212,Estimate
+Estimate - Blower / Motor Repair,09/03/2025,11:00 AM,09/03/2025,11:45 AM,False,Scottsdale,Quote Q-202509-0227 | Type: Estimate | Area: Scottsdale,Q-202509-0227,Estimate
+Estimate - Diagnostic / Service Call,09/04/2025,01:00 PM,09/04/2025,01:45 PM,False,Apache Junction,Quote Q-202509-0203 | Type: Estimate | Area: Apache Junction,Q-202509-0203,Estimate
+Job - Blower / Motor Repair,09/04/2025,02:00 PM,09/04/2025,06:00 PM,False,Mesa - East,Quote Q-202508-0162 | Type: Job | Area: Mesa - East,Q-202508-0162,Job
+Estimate - Mini-Split Install,09/04/2025,03:00 PM,09/04/2025,03:45 PM,False,Mesa - East,Quote Q-202509-0216 | Type: Estimate | Area: Mesa - East,Q-202509-0216,Estimate
+Estimate - Diagnostic / Service Call,09/05/2025,10:00 AM,09/05/2025,10:45 AM,False,Gilbert,Quote Q-202509-0211 | Type: Estimate | Area: Gilbert,Q-202509-0211,Estimate
+Job - Maintenance Tune-Up,09/06/2025,09:00 AM,09/06/2025,11:00 AM,False,Mesa - East,Quote Q-202508-0177 | Type: Job | Area: Mesa - East,Q-202508-0177,Job
+Job - Blower / Motor Repair,09/06/2025,09:00 AM,09/06/2025,01:00 PM,False,Scottsdale,Quote Q-202509-0227 | Type: Job | Area: Scottsdale,Q-202509-0227,Job
+Job - Full System Replacement,09/06/2025,12:00 PM,09/06/2025,08:00 PM,False,Tempe,Quote Q-202507-0143 | Type: Job | Area: Tempe,Q-202507-0143,Job
+Estimate - Maintenance Tune-Up,09/07/2025,03:00 PM,09/07/2025,03:45 PM,False,Gilbert,Quote Q-202509-0220 | Type: Estimate | Area: Gilbert,Q-202509-0220,Estimate
+Estimate - Capacitor / Electrical Repair,09/08/2025,01:00 PM,09/08/2025,01:45 PM,False,Scottsdale,Quote Q-202509-0202 | Type: Estimate | Area: Scottsdale,Q-202509-0202,Estimate
+Job - Capacitor / Electrical Repair,09/08/2025,10:00 AM,09/08/2025,02:00 PM,False,Gilbert,Quote Q-202508-0175 | Type: Job | Area: Gilbert,Q-202508-0175,Job
+Job - Capacitor / Electrical Repair,09/09/2025,09:00 AM,09/09/2025,01:00 PM,False,Gilbert,Quote Q-202508-0179 | Type: Job | Area: Gilbert,Q-202508-0179,Job
+Estimate - Full System Replacement,09/09/2025,11:00 AM,09/09/2025,11:45 AM,False,Tempe,Quote Q-202509-0201 | Type: Estimate | Area: Tempe,Q-202509-0201,Estimate
+Estimate - Diagnostic / Service Call,09/10/2025,10:00 AM,09/10/2025,10:45 AM,False,Mesa - East,Quote Q-202509-0223 | Type: Estimate | Area: Mesa - East,Q-202509-0223,Estimate
+Job - Diagnostic / Service Call,09/11/2025,01:00 PM,09/11/2025,03:00 PM,False,Gilbert,Quote Q-202509-0211 | Type: Job | Area: Gilbert,Q-202509-0211,Job
+Estimate - Diagnostic / Service Call,09/11/2025,01:00 PM,09/11/2025,01:45 PM,False,Tempe,Quote Q-202509-0222 | Type: Estimate | Area: Tempe,Q-202509-0222,Estimate
+Estimate - Diagnostic / Service Call,09/12/2025,02:00 PM,09/12/2025,02:45 PM,False,Scottsdale,Quote Q-202509-0200 | Type: Estimate | Area: Scottsdale,Q-202509-0200,Estimate
+Estimate - Duct Repair / Sealing,09/12/2025,03:00 PM,09/12/2025,03:45 PM,False,Gilbert,Quote Q-202509-0205 | Type: Estimate | Area: Gilbert,Q-202509-0205,Estimate
+Estimate - Blower / Motor Repair,09/12/2025,10:00 AM,09/12/2025,10:45 AM,False,Gilbert,Quote Q-202509-0199 | Type: Estimate | Area: Gilbert,Q-202509-0199,Estimate
+Estimate - Capacitor / Electrical Repair,09/14/2025,03:00 PM,09/14/2025,03:45 PM,False,Mesa - East,Quote Q-202509-0225 | Type: Estimate | Area: Mesa - East,Q-202509-0225,Estimate
+Estimate - Full System Replacement,09/14/2025,09:00 AM,09/14/2025,09:45 AM,False,Mesa - East,Quote Q-202509-0221 | Type: Estimate | Area: Mesa - East,Q-202509-0221,Estimate
+Estimate - Full System Replacement,09/14/2025,10:00 AM,09/14/2025,10:45 AM,False,Mesa - East,Quote Q-202509-0209 | Type: Estimate | Area: Mesa - East,Q-202509-0209,Estimate
+Job - Capacitor / Electrical Repair,09/15/2025,08:00 AM,09/15/2025,12:00 PM,False,Mesa - East,Quote Q-202509-0225 | Type: Job | Area: Mesa - East,Q-202509-0225,Job
+Estimate - Mini-Split Install,09/19/2025,01:00 PM,09/19/2025,01:45 PM,False,Mesa - East,Quote Q-202509-0226 | Type: Estimate | Area: Mesa - East,Q-202509-0226,Estimate
+Estimate - Full System Replacement,09/19/2025,11:00 AM,09/19/2025,11:45 AM,False,Apache Junction,Quote Q-202509-0206 | Type: Estimate | Area: Apache Junction,Q-202509-0206,Estimate
+Estimate - Mini-Split Install,09/20/2025,02:00 PM,09/20/2025,02:45 PM,False,Gilbert,Quote Q-202509-0210 | Type: Estimate | Area: Gilbert,Q-202509-0210,Estimate
+Estimate - Diagnostic / Service Call,09/20/2025,03:00 PM,09/20/2025,03:45 PM,False,Mesa - East,Quote Q-202509-0213 | Type: Estimate | Area: Mesa - East,Q-202509-0213,Estimate
+Job - Diagnostic / Service Call,09/21/2025,09:00 AM,09/21/2025,11:00 AM,False,Tempe,Quote Q-202509-0222 | Type: Job | Area: Tempe,Q-202509-0222,Job
+Job - Diagnostic / Service Call,09/22/2025,01:00 PM,09/22/2025,03:00 PM,False,Scottsdale,Quote Q-202509-0200 | Type: Job | Area: Scottsdale,Q-202509-0200,Job
+Estimate - Capacitor / Electrical Repair,09/22/2025,03:00 PM,09/22/2025,03:45 PM,False,Mesa - East,Quote Q-202509-0217 | Type: Estimate | Area: Mesa - East,Q-202509-0217,Estimate
+Estimate - Diagnostic / Service Call,09/22/2025,03:00 PM,09/22/2025,03:45 PM,False,Mesa - East,Quote Q-202509-0219 | Type: Estimate | Area: Mesa - East,Q-202509-0219,Estimate
+Job - Diagnostic / Service Call,09/22/2025,09:00 AM,09/22/2025,11:00 AM,False,Mesa - East,Quote Q-202509-0213 | Type: Job | Area: Mesa - East,Q-202509-0213,Job
+Job - Diagnostic / Service Call,09/24/2025,02:00 PM,09/24/2025,04:00 PM,False,Mesa - East,Quote Q-202509-0219 | Type: Job | Area: Mesa - East,Q-202509-0219,Job
+Estimate - Diagnostic / Service Call,09/24/2025,09:00 AM,09/24/2025,09:45 AM,False,Mesa - East,Quote Q-202509-0224 | Type: Estimate | Area: Mesa - East,Q-202509-0224,Estimate
+Job - Diagnostic / Service Call,09/24/2025,10:00 AM,09/24/2025,12:00 PM,False,Mesa - East,Quote Q-202509-0223 | Type: Job | Area: Mesa - East,Q-202509-0223,Job
+Estimate - Maintenance Tune-Up,09/25/2025,10:00 AM,09/25/2025,10:45 AM,False,Mesa - East,Quote Q-202509-0204 | Type: Estimate | Area: Mesa - East,Q-202509-0204,Estimate
+Estimate - Blower / Motor Repair,09/25/2025,11:00 AM,09/25/2025,11:45 AM,False,Gilbert,Quote Q-202509-0198 | Type: Estimate | Area: Gilbert,Q-202509-0198,Estimate
+Estimate - Full System Replacement,09/25/2025,11:00 AM,09/25/2025,11:45 AM,False,Mesa - East,Quote Q-202509-0214 | Type: Estimate | Area: Mesa - East,Q-202509-0214,Estimate
+Estimate - Diagnostic / Service Call,09/26/2025,01:00 PM,09/26/2025,01:45 PM,False,Chandler,Quote Q-202509-0228 | Type: Estimate | Area: Chandler,Q-202509-0228,Estimate
+Job - Maintenance Tune-Up,09/26/2025,09:00 AM,09/26/2025,11:00 AM,False,Mesa - East,Quote Q-202509-0204 | Type: Job | Area: Mesa - East,Q-202509-0204,Job
+Job - Duct Repair / Sealing,09/27/2025,09:00 AM,09/27/2025,01:00 PM,False,Gilbert,Quote Q-202509-0205 | Type: Job | Area: Gilbert,Q-202509-0205,Job
+Estimate - Diagnostic / Service Call,09/27/2025,11:00 AM,09/27/2025,11:45 AM,False,Scottsdale,Quote Q-202509-0207 | Type: Estimate | Area: Scottsdale,Q-202509-0207,Estimate
+Estimate - Diagnostic / Service Call,09/28/2025,09:00 AM,09/28/2025,09:45 AM,False,Chandler,Quote Q-202509-0218 | Type: Estimate | Area: Chandler,Q-202509-0218,Estimate
+Estimate - Diagnostic / Service Call,09/29/2025,10:00 AM,09/29/2025,10:45 AM,False,Gilbert,Quote Q-202509-0208 | Type: Estimate | Area: Gilbert,Q-202509-0208,Estimate
+Job - Blower / Motor Repair,09/29/2025,12:00 PM,09/29/2025,04:00 PM,False,Gilbert,Quote Q-202509-0198 | Type: Job | Area: Gilbert,Q-202509-0198,Job
+Estimate - Mini-Split Install,09/30/2025,10:00 AM,09/30/2025,10:45 AM,False,Apache Junction,Quote Q-202509-0215 | Type: Estimate | Area: Apache Junction,Q-202509-0215,Estimate
+Job - Diagnostic / Service Call,10/02/2025,02:00 PM,10/02/2025,04:00 PM,False,Mesa - East,Quote Q-202509-0224 | Type: Job | Area: Mesa - East,Q-202509-0224,Job
+Estimate - Diagnostic / Service Call,10/05/2025,02:00 PM,10/05/2025,02:45 PM,False,Tempe,Quote Q-202510-0231 | Type: Estimate | Area: Tempe,Q-202510-0231,Estimate
+Estimate - Blower / Motor Repair,10/05/2025,02:00 PM,10/05/2025,02:45 PM,False,Scottsdale,Quote Q-202510-0241 | Type: Estimate | Area: Scottsdale,Q-202510-0241,Estimate
+Estimate - Capacitor / Electrical Repair,10/05/2025,09:00 AM,10/05/2025,09:45 AM,False,Apache Junction,Quote Q-202510-0247 | Type: Estimate | Area: Apache Junction,Q-202510-0247,Estimate
+Estimate - Mini-Split Install,10/07/2025,01:00 PM,10/07/2025,01:45 PM,False,Mesa - East,Quote Q-202510-0246 | Type: Estimate | Area: Mesa - East,Q-202510-0246,Estimate
+Estimate - Mini-Split Install,10/07/2025,02:00 PM,10/07/2025,02:45 PM,False,Scottsdale,Quote Q-202510-0242 | Type: Estimate | Area: Scottsdale,Q-202510-0242,Estimate
+Estimate - Capacitor / Electrical Repair,10/07/2025,11:00 AM,10/07/2025,11:45 AM,False,Scottsdale,Quote Q-202510-0234 | Type: Estimate | Area: Scottsdale,Q-202510-0234,Estimate
+Estimate - Diagnostic / Service Call,10/09/2025,09:00 AM,10/09/2025,09:45 AM,False,Apache Junction,Quote Q-202510-0237 | Type: Estimate | Area: Apache Junction,Q-202510-0237,Estimate
+Estimate - Diagnostic / Service Call,10/09/2025,10:00 AM,10/09/2025,10:45 AM,False,Apache Junction,Quote Q-202510-0244 | Type: Estimate | Area: Apache Junction,Q-202510-0244,Estimate
+Job - Diagnostic / Service Call,10/10/2025,10:00 AM,10/10/2025,12:00 PM,False,Chandler,Quote Q-202509-0218 | Type: Job | Area: Chandler,Q-202509-0218,Job
+Estimate - Mini-Split Install,10/11/2025,10:00 AM,10/11/2025,10:45 AM,False,Gilbert,Quote Q-202510-0229 | Type: Estimate | Area: Gilbert,Q-202510-0229,Estimate
+Estimate - Diagnostic / Service Call,10/13/2025,02:00 PM,10/13/2025,02:45 PM,False,Mesa - East,Quote Q-202510-0232 | Type: Estimate | Area: Mesa - East,Q-202510-0232,Estimate
+Estimate - Diagnostic / Service Call,10/13/2025,11:00 AM,10/13/2025,11:45 AM,False,Scottsdale,Quote Q-202510-0236 | Type: Estimate | Area: Scottsdale,Q-202510-0236,Estimate
+Estimate - Full System Replacement,10/16/2025,01:00 PM,10/16/2025,01:45 PM,False,Gilbert,Quote Q-202510-0239 | Type: Estimate | Area: Gilbert,Q-202510-0239,Estimate
+Estimate - Diagnostic / Service Call,10/16/2025,01:00 PM,10/16/2025,01:45 PM,False,Tempe,Quote Q-202510-0245 | Type: Estimate | Area: Tempe,Q-202510-0245,Estimate
+Job - Diagnostic / Service Call,10/17/2025,10:00 AM,10/17/2025,12:00 PM,False,Scottsdale,Quote Q-202510-0236 | Type: Job | Area: Scottsdale,Q-202510-0236,Job
+Estimate - Capacitor / Electrical Repair,10/20/2025,03:00 PM,10/20/2025,03:45 PM,False,Tempe,Quote Q-202510-0230 | Type: Estimate | Area: Tempe,Q-202510-0230,Estimate
+Estimate - Capacitor / Electrical Repair,10/23/2025,03:00 PM,10/23/2025,03:45 PM,False,Apache Junction,Quote Q-202510-0240 | Type: Estimate | Area: Apache Junction,Q-202510-0240,Estimate
+Estimate - Duct Repair / Sealing,10/23/2025,09:00 AM,10/23/2025,09:45 AM,False,Gilbert,Quote Q-202510-0243 | Type: Estimate | Area: Gilbert,Q-202510-0243,Estimate
+Estimate - Diagnostic / Service Call,10/24/2025,02:00 PM,10/24/2025,02:45 PM,False,Gilbert,Quote Q-202510-0238 | Type: Estimate | Area: Gilbert,Q-202510-0238,Estimate
+Estimate - Maintenance Tune-Up,10/24/2025,11:00 AM,10/24/2025,11:45 AM,False,Mesa - East,Quote Q-202510-0248 | Type: Estimate | Area: Mesa - East,Q-202510-0248,Estimate
+Job - Capacitor / Electrical Repair,10/24/2025,12:00 PM,10/24/2025,02:00 PM,False,Scottsdale,Quote Q-202510-0234 | Type: Job | Area: Scottsdale,Q-202510-0234,Job
+Estimate - Diagnostic / Service Call,10/25/2025,03:00 PM,10/25/2025,03:45 PM,False,Chandler,Quote Q-202510-0233 | Type: Estimate | Area: Chandler,Q-202510-0233,Estimate
+Estimate - Capacitor / Electrical Repair,10/25/2025,03:00 PM,10/25/2025,03:45 PM,False,Gilbert,Quote Q-202510-0235 | Type: Estimate | Area: Gilbert,Q-202510-0235,Estimate
+Job - Blower / Motor Repair,10/26/2025,02:00 PM,10/26/2025,06:00 PM,False,Scottsdale,Quote Q-202510-0241 | Type: Job | Area: Scottsdale,Q-202510-0241,Job
+Job - Capacitor / Electrical Repair,10/30/2025,12:00 PM,10/30/2025,02:00 PM,False,Apache Junction,Quote Q-202510-0240 | Type: Job | Area: Apache Junction,Q-202510-0240,Job
+Job - Diagnostic / Service Call,10/31/2025,09:00 AM,10/31/2025,11:00 AM,False,Tempe,Quote Q-202510-0245 | Type: Job | Area: Tempe,Q-202510-0245,Job
+Estimate - Diagnostic / Service Call,11/04/2025,09:00 AM,11/04/2025,09:45 AM,False,Gilbert,Quote Q-202511-0252 | Type: Estimate | Area: Gilbert,Q-202511-0252,Estimate
+Estimate - Diagnostic / Service Call,11/05/2025,02:00 PM,11/05/2025,02:45 PM,False,Mesa - East,Quote Q-202511-0254 | Type: Estimate | Area: Mesa - East,Q-202511-0254,Estimate
+Estimate - Duct Repair / Sealing,11/05/2025,09:00 AM,11/05/2025,09:45 AM,False,Scottsdale,Quote Q-202511-0261 | Type: Estimate | Area: Scottsdale,Q-202511-0261,Estimate
+Job - Diagnostic / Service Call,11/05/2025,12:00 PM,11/05/2025,02:00 PM,False,Chandler,Quote Q-202510-0233 | Type: Job | Area: Chandler,Q-202510-0233,Job
+Job - Mini-Split Install,11/05/2025,12:00 PM,11/05/2025,08:00 PM,False,Scottsdale,Quote Q-202510-0242 | Type: Job | Area: Scottsdale,Q-202510-0242,Job
+Estimate - Duct Repair / Sealing,11/06/2025,02:00 PM,11/06/2025,02:45 PM,False,Apache Junction,Quote Q-202511-0257 | Type: Estimate | Area: Apache Junction,Q-202511-0257,Estimate
+Job - Capacitor / Electrical Repair,11/07/2025,01:00 PM,11/07/2025,03:00 PM,False,Gilbert,Quote Q-202510-0235 | Type: Job | Area: Gilbert,Q-202510-0235,Job
+Job - Diagnostic / Service Call,11/07/2025,02:00 PM,11/07/2025,04:00 PM,False,Gilbert,Quote Q-202510-0238 | Type: Job | Area: Gilbert,Q-202510-0238,Job
+Estimate - Full System Replacement,11/07/2025,10:00 AM,11/07/2025,10:45 AM,False,Apache Junction,Quote Q-202511-0258 | Type: Estimate | Area: Apache Junction,Q-202511-0258,Estimate
+Job - Mini-Split Install,11/08/2025,09:00 AM,11/08/2025,05:00 PM,False,Mesa - East,Quote Q-202510-0246 | Type: Job | Area: Mesa - East,Q-202510-0246,Job
+Estimate - Capacitor / Electrical Repair,11/09/2025,10:00 AM,11/09/2025,10:45 AM,False,Scottsdale,Quote Q-202511-0251 | Type: Estimate | Area: Scottsdale,Q-202511-0251,Estimate
+Estimate - Blower / Motor Repair,11/10/2025,03:00 PM,11/10/2025,03:45 PM,False,Mesa - East,Quote Q-202511-0249 | Type: Estimate | Area: Mesa - East,Q-202511-0249,Estimate
+Job - Diagnostic / Service Call,11/12/2025,08:00 AM,11/12/2025,10:00 AM,False,Gilbert,Quote Q-202511-0252 | Type: Job | Area: Gilbert,Q-202511-0252,Job
+Estimate - Diagnostic / Service Call,11/12/2025,09:00 AM,11/12/2025,09:45 AM,False,Mesa - East,Quote Q-202511-0250 | Type: Estimate | Area: Mesa - East,Q-202511-0250,Estimate
+Job - Diagnostic / Service Call,11/13/2025,10:00 AM,11/13/2025,12:00 PM,False,Mesa - East,Quote Q-202511-0254 | Type: Job | Area: Mesa - East,Q-202511-0254,Job
+Job - Capacitor / Electrical Repair,11/14/2025,08:00 AM,11/14/2025,12:00 PM,False,Scottsdale,Quote Q-202511-0251 | Type: Job | Area: Scottsdale,Q-202511-0251,Job
+Job - Diagnostic / Service Call,11/16/2025,02:00 PM,11/16/2025,04:00 PM,False,Mesa - East,Quote Q-202511-0250 | Type: Job | Area: Mesa - East,Q-202511-0250,Job
+Estimate - Diagnostic / Service Call,11/18/2025,01:00 PM,11/18/2025,01:45 PM,False,Apache Junction,Quote Q-202511-0260 | Type: Estimate | Area: Apache Junction,Q-202511-0260,Estimate
+Estimate - Diagnostic / Service Call,11/18/2025,11:00 AM,11/18/2025,11:45 AM,False,Gilbert,Quote Q-202511-0253 | Type: Estimate | Area: Gilbert,Q-202511-0253,Estimate
+Job - Diagnostic / Service Call,11/21/2025,10:00 AM,11/21/2025,12:00 PM,False,Gilbert,Quote Q-202511-0253 | Type: Job | Area: Gilbert,Q-202511-0253,Job
+Estimate - Capacitor / Electrical Repair,11/22/2025,11:00 AM,11/22/2025,11:45 AM,False,Scottsdale,Quote Q-202511-0264 | Type: Estimate | Area: Scottsdale,Q-202511-0264,Estimate
+Estimate - Maintenance Tune-Up,11/24/2025,09:00 AM,11/24/2025,09:45 AM,False,Gilbert,Quote Q-202511-0262 | Type: Estimate | Area: Gilbert,Q-202511-0262,Estimate
+Estimate - Blower / Motor Repair,11/25/2025,09:00 AM,11/25/2025,09:45 AM,False,Scottsdale,Quote Q-202511-0255 | Type: Estimate | Area: Scottsdale,Q-202511-0255,Estimate
+Estimate - Maintenance Tune-Up,11/25/2025,09:00 AM,11/25/2025,09:45 AM,False,Scottsdale,Quote Q-202511-0256 | Type: Estimate | Area: Scottsdale,Q-202511-0256,Estimate
+Estimate - Blower / Motor Repair,11/26/2025,01:00 PM,11/26/2025,01:45 PM,False,Mesa - East,Quote Q-202511-0263 | Type: Estimate | Area: Mesa - East,Q-202511-0263,Estimate
+Job - Capacitor / Electrical Repair,11/29/2025,08:00 AM,11/29/2025,12:00 PM,False,Scottsdale,Quote Q-202511-0264 | Type: Job | Area: Scottsdale,Q-202511-0264,Job
+Estimate - Maintenance Tune-Up,11/29/2025,09:00 AM,11/29/2025,09:45 AM,False,Mesa - East,Quote Q-202511-0259 | Type: Estimate | Area: Mesa - East,Q-202511-0259,Estimate
+Job - Maintenance Tune-Up,12/03/2025,09:00 AM,12/03/2025,11:00 AM,False,Scottsdale,Quote Q-202511-0256 | Type: Job | Area: Scottsdale,Q-202511-0256,Job
+Estimate - Capacitor / Electrical Repair,12/03/2025,11:00 AM,12/03/2025,11:45 AM,False,Chandler,Quote Q-202512-0271 | Type: Estimate | Area: Chandler,Q-202512-0271,Estimate
+Estimate - Duct Repair / Sealing,12/05/2025,01:00 PM,12/05/2025,01:45 PM,False,Gilbert,Quote Q-202512-0280 | Type: Estimate | Area: Gilbert,Q-202512-0280,Estimate
+Estimate - Duct Repair / Sealing,12/06/2025,10:00 AM,12/06/2025,10:45 AM,False,Scottsdale,Quote Q-202512-0272 | Type: Estimate | Area: Scottsdale,Q-202512-0272,Estimate
+Estimate - Full System Replacement,12/08/2025,02:00 PM,12/08/2025,02:45 PM,False,Mesa - East,Quote Q-202512-0268 | Type: Estimate | Area: Mesa - East,Q-202512-0268,Estimate
+Estimate - Capacitor / Electrical Repair,12/08/2025,03:00 PM,12/08/2025,03:45 PM,False,Gilbert,Quote Q-202512-0265 | Type: Estimate | Area: Gilbert,Q-202512-0265,Estimate
+Estimate - Duct Repair / Sealing,12/09/2025,02:00 PM,12/09/2025,02:45 PM,False,Apache Junction,Quote Q-202512-0270 | Type: Estimate | Area: Apache Junction,Q-202512-0270,Estimate
+Estimate - Diagnostic / Service Call,12/10/2025,10:00 AM,12/10/2025,10:45 AM,False,Scottsdale,Quote Q-202512-0278 | Type: Estimate | Area: Scottsdale,Q-202512-0278,Estimate
+Estimate - Diagnostic / Service Call,12/11/2025,02:00 PM,12/11/2025,02:45 PM,False,Gilbert,Quote Q-202512-0266 | Type: Estimate | Area: Gilbert,Q-202512-0266,Estimate
+Estimate - Diagnostic / Service Call,12/11/2025,02:00 PM,12/11/2025,02:45 PM,False,Gilbert,Quote Q-202512-0277 | Type: Estimate | Area: Gilbert,Q-202512-0277,Estimate
+Job - Duct Repair / Sealing,12/11/2025,12:00 PM,12/11/2025,04:00 PM,False,Gilbert,Quote Q-202512-0280 | Type: Job | Area: Gilbert,Q-202512-0280,Job
+Estimate - Mini-Split Install,12/16/2025,03:00 PM,12/16/2025,03:45 PM,False,Gilbert,Quote Q-202512-0276 | Type: Estimate | Area: Gilbert,Q-202512-0276,Estimate
+Job - Diagnostic / Service Call,12/18/2025,01:00 PM,12/18/2025,03:00 PM,False,Gilbert,Quote Q-202512-0277 | Type: Job | Area: Gilbert,Q-202512-0277,Job
+Estimate - Diagnostic / Service Call,12/18/2025,02:00 PM,12/18/2025,02:45 PM,False,Gilbert,Quote Q-202512-0275 | Type: Estimate | Area: Gilbert,Q-202512-0275,Estimate
+Job - Duct Repair / Sealing,12/18/2025,09:00 AM,12/18/2025,01:00 PM,False,Scottsdale,Quote Q-202512-0272 | Type: Job | Area: Scottsdale,Q-202512-0272,Job
+Job - Capacitor / Electrical Repair,12/20/2025,02:00 PM,12/20/2025,06:00 PM,False,Gilbert,Quote Q-202512-0265 | Type: Job | Area: Gilbert,Q-202512-0265,Job
+Estimate - Maintenance Tune-Up,12/22/2025,11:00 AM,12/22/2025,11:45 AM,False,Tempe,Quote Q-202512-0279 | Type: Estimate | Area: Tempe,Q-202512-0279,Estimate
+Estimate - Diagnostic / Service Call,12/23/2025,01:00 PM,12/23/2025,01:45 PM,False,Mesa - East,Quote Q-202512-0274 | Type: Estimate | Area: Mesa - East,Q-202512-0274,Estimate
+Estimate - Duct Repair / Sealing,12/25/2025,11:00 AM,12/25/2025,11:45 AM,False,Gilbert,Quote Q-202512-0273 | Type: Estimate | Area: Gilbert,Q-202512-0273,Estimate
+Job - Diagnostic / Service Call,12/26/2025,02:00 PM,12/26/2025,04:00 PM,False,Gilbert,Quote Q-202512-0275 | Type: Job | Area: Gilbert,Q-202512-0275,Job
+Estimate - Diagnostic / Service Call,12/26/2025,10:00 AM,12/26/2025,10:45 AM,False,Scottsdale,Quote Q-202512-0267 | Type: Estimate | Area: Scottsdale,Q-202512-0267,Estimate
+Estimate - Capacitor / Electrical Repair,12/28/2025,02:00 PM,12/28/2025,02:45 PM,False,Gilbert,Quote Q-202512-0269 | Type: Estimate | Area: Gilbert,Q-202512-0269,Estimate
+Job - Diagnostic / Service Call,01/01/2026,01:00 PM,01/01/2026,03:00 PM,False,Mesa - East,Quote Q-202512-0274 | Type: Job | Area: Mesa - East,Q-202512-0274,Job
+Estimate - Diagnostic / Service Call,01/03/2026,02:00 PM,01/03/2026,02:45 PM,False,Gilbert,Quote Q-202601-0289 | Type: Estimate | Area: Gilbert,Q-202601-0289,Estimate
+Estimate - Diagnostic / Service Call,01/04/2026,09:00 AM,01/04/2026,09:45 AM,False,Gilbert,Quote Q-202601-0283 | Type: Estimate | Area: Gilbert,Q-202601-0283,Estimate
+Job - Duct Repair / Sealing,01/05/2026,12:00 PM,01/05/2026,04:00 PM,False,Gilbert,Quote Q-202512-0273 | Type: Job | Area: Gilbert,Q-202512-0273,Job
+Estimate - Blower / Motor Repair,01/06/2026,03:00 PM,01/06/2026,03:45 PM,False,Chandler,Quote Q-202601-0282 | Type: Estimate | Area: Chandler,Q-202601-0282,Estimate
+Estimate - Mini-Split Install,01/06/2026,03:00 PM,01/06/2026,03:45 PM,False,Chandler,Quote Q-202601-0292 | Type: Estimate | Area: Chandler,Q-202601-0292,Estimate
+Estimate - Mini-Split Install,01/06/2026,09:00 AM,01/06/2026,09:45 AM,False,Chandler,Quote Q-202601-0294 | Type: Estimate | Area: Chandler,Q-202601-0294,Estimate
+Estimate - Diagnostic / Service Call,01/07/2026,11:00 AM,01/07/2026,11:45 AM,False,Scottsdale,Quote Q-202601-0287 | Type: Estimate | Area: Scottsdale,Q-202601-0287,Estimate
+Job - Diagnostic / Service Call,01/08/2026,02:00 PM,01/08/2026,04:00 PM,False,Scottsdale,Quote Q-202512-0267 | Type: Job | Area: Scottsdale,Q-202512-0267,Job
+Job - Capacitor / Electrical Repair,01/09/2026,01:00 PM,01/09/2026,05:00 PM,False,Gilbert,Quote Q-202512-0269 | Type: Job | Area: Gilbert,Q-202512-0269,Job
+Estimate - Maintenance Tune-Up,01/09/2026,10:00 AM,01/09/2026,10:45 AM,False,Tempe,Quote Q-202601-0285 | Type: Estimate | Area: Tempe,Q-202601-0285,Estimate
+Estimate - Duct Repair / Sealing,01/14/2026,03:00 PM,01/14/2026,03:45 PM,False,Chandler,Quote Q-202601-0286 | Type: Estimate | Area: Chandler,Q-202601-0286,Estimate
+Estimate - Diagnostic / Service Call,01/14/2026,11:00 AM,01/14/2026,11:45 AM,False,Tempe,Quote Q-202601-0284 | Type: Estimate | Area: Tempe,Q-202601-0284,Estimate
+Job - Diagnostic / Service Call,01/14/2026,12:00 PM,01/14/2026,02:00 PM,False,Scottsdale,Quote Q-202601-0287 | Type: Job | Area: Scottsdale,Q-202601-0287,Job
+Estimate - Duct Repair / Sealing,01/18/2026,09:00 AM,01/18/2026,09:45 AM,False,Tempe,Quote Q-202601-0290 | Type: Estimate | Area: Tempe,Q-202601-0290,Estimate
+Estimate - Diagnostic / Service Call,01/18/2026,11:00 AM,01/18/2026,11:45 AM,False,Mesa - East,Quote Q-202601-0293 | Type: Estimate | Area: Mesa - East,Q-202601-0293,Estimate
+Estimate - Maintenance Tune-Up,01/20/2026,03:00 PM,01/20/2026,03:45 PM,False,Chandler,Quote Q-202601-0288 | Type: Estimate | Area: Chandler,Q-202601-0288,Estimate
+Job - Maintenance Tune-Up,01/20/2026,12:00 PM,01/20/2026,02:00 PM,False,Chandler,Quote Q-202601-0288 | Type: Job | Area: Chandler,Q-202601-0288,Job
+Estimate - Capacitor / Electrical Repair,01/21/2026,10:00 AM,01/21/2026,10:45 AM,False,Chandler,Quote Q-202601-0281 | Type: Estimate | Area: Chandler,Q-202601-0281,Estimate
+Estimate - Blower / Motor Repair,01/22/2026,02:00 PM,01/22/2026,02:45 PM,False,Mesa - East,Quote Q-202601-0291 | Type: Estimate | Area: Mesa - East,Q-202601-0291,Estimate
+Job - Capacitor / Electrical Repair,01/23/2026,01:00 PM,01/23/2026,03:00 PM,False,Chandler,Quote Q-202601-0281 | Type: Job | Area: Chandler,Q-202601-0281,Job
+Job - Diagnostic / Service Call,01/23/2026,08:00 AM,01/23/2026,10:00 AM,False,Mesa - East,Quote Q-202601-0293 | Type: Job | Area: Mesa - East,Q-202601-0293,Job
+Job - Duct Repair / Sealing,01/25/2026,09:00 AM,01/25/2026,01:00 PM,False,Tempe,Quote Q-202601-0290 | Type: Job | Area: Tempe,Q-202601-0290,Job
+Job - Mini-Split Install,02/06/2026,08:00 AM,02/06/2026,04:00 PM,False,Chandler,Quote Q-202601-0292 | Type: Job | Area: Chandler,Q-202601-0292,Job

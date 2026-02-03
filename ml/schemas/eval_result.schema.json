@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "EvalResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "suite", "model_id", "scores", "pass", "errors"],
+  "properties": {
+    "id": { "type": "string" },
+    "suite": { "type": "string" },
+    "model_id": { "type": "string" },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_valid", "doctrine_score", "groundedness_score", "clarity_score"],
+      "properties": {
+        "schema_valid": { "type": "number", "minimum": 0, "maximum": 1 },
+        "doctrine_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "groundedness_score": { "type": "number", "minimum": 0, "maximum": 1 },
+        "clarity_score": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "pass": { "type": "boolean" },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "latency_ms": { "type": "number" },
+    "output_json": { "type": ["object", "null"] },
+    "output_text": { "type": "string" }
+  }
+}

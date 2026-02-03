@@ -11,6 +11,8 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { rerunSnapshot } from "./actions";
+import { DecisionArtifactView } from "./DecisionArtifactView";
+import type { DecisionArtifactV1 } from "@/src/lib/types/decision_artifact";
 
 function formatTimestamp(value?: string | null) {
   if (!value) return "Timestamp unavailable";
@@ -52,6 +54,32 @@ function renderInputHealth(inputHealth?: InputHealth | null) {
       )}
     </div>
   );
+}
+
+type FileAttempt = {
+  filename: string;
+  type_guess: string;
+  status: "success" | "error" | "unknown";
+  error?: string;
+};
+
+function getFileAttempts(inputRecognition: unknown): FileAttempt[] {
+  if (!inputRecognition || typeof inputRecognition !== "object") return [];
+  const record = inputRecognition as Record<string, unknown>;
+  const raw = record.files_attempted;
+  if (!Array.isArray(raw)) return [];
+  const out: FileAttempt[] = [];
+  for (const entry of raw) {
+    if (!entry || typeof entry !== "object") continue;
+    const e = entry as Record<string, unknown>;
+    const filename = typeof e.filename === "string" ? e.filename : "unknown";
+    const type_guess = typeof e.type_guess === "string" ? e.type_guess : "unknown";
+    const statusRaw = typeof e.status === "string" ? e.status : "unknown";
+    const status: FileAttempt["status"] = statusRaw === "success" || statusRaw === "error" ? statusRaw : "unknown";
+    const error = typeof e.error === "string" ? e.error : undefined;
+    out.push({ filename, type_guess, status, error });
+  }
+  return out;
 }
 
 function SnapshotSkeleton() {
@@ -118,6 +146,11 @@ export default async function ResultsPage({
   const conclusion = artifact.conclusion;
   const validation = artifact.validation;
   const profile = artifact.business_profile;
+  const fileAttempts = getFileAttempts(artifact.input_recognition);
+  
+  // Type-safe decision_artifact extraction
+  const decision_artifact = artifact.decision_artifact as DecisionArtifactV1 | null | undefined;
+  const hasDecisionArtifact = decision_artifact?.version === "v1";
 
   return (
     <div className="space-y-6">
@@ -190,8 +223,10 @@ export default async function ResultsPage({
         </Card>
       ) : null}
 
-      {!conclusion ? (
+      {!conclusion && !artifact.diagnose_mode ? (
         <SnapshotSkeleton />
+      ) : hasDecisionArtifact ? (
+        <DecisionArtifactView artifact={decision_artifact!} isDev={!quiet} />
       ) : (
         <div className="space-y-6">
           <Card className="rounded-2xl border border-border/60 bg-background/90">
@@ -214,7 +249,7 @@ export default async function ResultsPage({
                   ))}
                 </ul>
               ) : null}
-              {typeof conclusion.boundary === "string" && conclusion.boundary.trim().length ? (
+              {conclusion && typeof conclusion.boundary === "string" && conclusion.boundary.trim().length ? (
                 <>
                   <Separator />
                   <p className="text-xs text-muted-foreground">Boundary: {conclusion.boundary}</p>
@@ -229,6 +264,38 @@ export default async function ResultsPage({
             </CardHeader>
             <CardContent className="text-sm text-muted-foreground">{presented.why_heavy}</CardContent>
           </Card>
+
+          {!quiet && presented.predictive_watch_list && presented.predictive_watch_list.length > 0 ? (
+            <Card className="rounded-2xl border border-border/60 bg-background/90">
+              <CardHeader>
+                <CardTitle className="text-base font-semibold">
+                  What might shift in the next 30–90 days (optional)
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm text-muted-foreground">
+                <details>
+                  <summary className="cursor-pointer select-none text-sm text-foreground">
+                    Show watch list
+                  </summary>
+                  <div className="mt-3 space-y-4">
+                    {presented.predictive_watch_list.map((item) => (
+                      <div key={item.topic} className="space-y-1">
+                        <p className="font-medium text-foreground">{item.topic}</p>
+                        <p className="text-xs text-muted-foreground">{item.why}</p>
+                        <p className="text-xs italic text-muted-foreground">
+                          What to watch: {item.what_to_watch}
+                        </p>
+                      </div>
+                    ))}
+                    <Separator />
+                    <p className="text-xs text-muted-foreground italic">
+                      This is a watch list, not a forecast.
+                    </p>
+                  </div>
+                </details>
+              </CardContent>
+            </Card>
+          ) : null}
 
           {!quiet ? (
             <Card className="rounded-2xl border border-border/60 bg-background/90">
@@ -264,7 +331,15 @@ export default async function ResultsPage({
                       Show technical details
                     </summary>
                     <div className="mt-2 space-y-2">
-                      {presented.technical_signals.map((s) => (
+                      {presented.technical_details ? (
+                        <div className="space-y-2">
+                          <p className="text-xs text-foreground">
+                            Run manifest: {presented.technical_details.manifest_summary}
+                          </p>
+                          <Separator />
+                        </div>
+                      ) : null}
+                      {presented.technical_details?.signals.map((s) => (
                         <pre
                           key={`${s.key}=${s.value}`}
                           className="overflow-x-auto rounded-lg border border-border/60 bg-muted/20 p-3 font-mono text-xs text-foreground"
@@ -314,6 +389,22 @@ export default async function ResultsPage({
                           {artifact.input_recognition.invoices_detected_count ?? "?"} invoices,{" "}
                           {artifact.input_recognition.invoices_paid_detected_count ?? "?"} paid invoices detected.
                         </p>
+                        {fileAttempts.length ? (
+                          <div className="pt-2 text-xs text-muted-foreground">
+                            <p className="mb-1">Files attempted:</p>
+                            <ul className="list-disc space-y-1 pl-5">
+                              {fileAttempts.map((entry) => {
+                                const error = entry.error ? `: ${entry.error}` : "";
+                                return (
+                                  <li key={`${entry.filename}:${entry.type_guess}:${entry.status}`}>
+                                    {entry.filename} — {entry.type_guess} ({entry.status}
+                                    {error})
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        ) : null}
                       </>
                     ) : null}
                   </div>
@@ -331,8 +422,8 @@ export default async function ResultsPage({
             </Alert>
           ) : null}
         </div>
+        </div>
       )}
     </div>
   );
 }
-

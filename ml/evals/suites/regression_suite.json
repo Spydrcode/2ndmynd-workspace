@@ -1,0 +1,11 @@
+[
+  {
+    "id": "regression-followup",
+    "suite": "regression",
+    "messages": [
+      { "role": "system", "content": "Provide a decision artifact JSON only." },
+      { "role": "user", "content": "The business has slow approval-to-scheduled timing. Provide the next steps." }
+    ],
+    "expected_schema_path": "ml/evals/suites/decision_artifact.schema.json"
+  }
+]

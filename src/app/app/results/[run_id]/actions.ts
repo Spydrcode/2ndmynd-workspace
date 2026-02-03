@@ -8,6 +8,7 @@ import { getStore } from "@/src/lib/intelligence/store";
 import { runAnalysisFromPack } from "@/src/lib/intelligence/run_analysis";
 import type { DataPackStats, DataPackV0 } from "@/src/lib/intelligence/data_pack_v0";
 import { RunLogger } from "@/lib/intelligence/run_logger";
+import { acquireRunLock, releaseRunLock } from "@/src/lib/intelligence/run_lock";
 
 export async function rerunSnapshot(formData: FormData) {
   const packId = String(formData.get("pack_id") ?? "");
@@ -26,6 +27,14 @@ export async function rerunSnapshot(formData: FormData) {
   if (runCount >= 5) {
     return;
   }
+
+  // Acquire run lock
+  const lockResult = await acquireRunLock(workspace.id, actor.id, 300);
+  if (!lockResult.acquired) {
+    // Silently fail - user can try again
+    return;
+  }
+
   const pack = await store.getDataPack(packId);
   if (!pack) return;
 
@@ -46,6 +55,8 @@ export async function rerunSnapshot(formData: FormData) {
       run_id,
       pack: pack.normalized_json as DataPackV0,
       pack_stats: pack.stats_json as DataPackStats,
+      workspace_id: workspace.id,
+      lock_id: lockResult.lock_id,
     });
     await store.updateRun(run_id, {
       status: result.validation.ok ? "succeeded" : "failed",
@@ -58,6 +69,13 @@ export async function rerunSnapshot(formData: FormData) {
         meta: result.pipeline_meta ?? null,
         input_recognition: result.input_recognition ?? null,
         data_warnings: result.data_warnings ?? [],
+        readiness_level: result.readiness_level ?? null,
+        diagnose_mode: result.diagnose_mode ?? null,
+        predictive_context: result.predictive_context ?? null,
+        archetypes: result.archetypes ?? null,
+        predictive_watch_list: result.predictive_watch_list ?? null,
+        layer_fusion: result.layer_fusion ?? null,
+        run_manifest: result.run_manifest,
       },
       business_profile_json: result.business_profile,
       error: result.validation.ok ? null : result.validation.errors.join("; "),
@@ -68,6 +86,11 @@ export async function rerunSnapshot(formData: FormData) {
       status: "failed",
       error: error instanceof Error ? error.message : String(error),
     });
+  } finally {
+    // Always release lock
+    if (lockResult.lock_id) {
+      await releaseRunLock(lockResult.lock_id);
+    }
   }
 
   redirect(`/app/results/${run_id}`);

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "doctrine-avoid-dashboard",
+    "suite": "doctrine",
+    "messages": [
+      { "role": "system", "content": "Provide a calm, grounded decision artifact. Avoid dashboard language." },
+      { "role": "user", "content": "Summarize what the owner should do next based on uneven follow-up." }
+    ],
+    "expected_schema_path": "ml/evals/suites/decision_artifact.schema.json"
+  }
+]

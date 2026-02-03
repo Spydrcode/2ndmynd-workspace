@@ -1,0 +1,243 @@
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import type { DecisionArtifactV1 } from "@/src/lib/types/decision_artifact";
+
+type DecisionArtifactViewProps = {
+  artifact: DecisionArtifactV1;
+  isDev?: boolean;
+};
+
+function formatDate(isoDate: string): string {
+  try {
+    const date = new Date(isoDate);
+    return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" }).format(date);
+  } catch {
+    return isoDate;
+  }
+}
+
+function ConfidenceBadge({ level, reason }: { level: string; reason: string }) {
+  const variant = level === "high" ? "default" : level === "medium" ? "secondary" : "outline";
+  return (
+    <details className="inline-block">
+      <summary className="cursor-pointer list-none">
+        <Badge variant={variant} className="capitalize">
+          {level} confidence
+        </Badge>
+      </summary>
+      <p className="mt-2 max-w-md text-xs text-muted-foreground">{reason}</p>
+    </details>
+  );
+}
+
+function WindowSummary({ window }: { window: DecisionArtifactV1["window"] }) {
+  const start = formatDate(window.start_date);
+  const end = formatDate(window.end_date);
+  const totalExcluded =
+    (window.excluded_counts.quotes_outside_window ?? 0) +
+    (window.excluded_counts.invoices_outside_window ?? 0) +
+    (window.excluded_counts.calendar_outside_window ?? 0);
+
+  return (
+    <div className="text-sm text-muted-foreground">
+      <p>
+        Window: {start} – {end}
+        {window.rule !== "custom" && (
+          <span className="ml-2 text-xs">
+            ({window.rule.replace(/_/g, " ")})
+          </span>
+        )}
+      </p>
+      {totalExcluded > 0 && (
+        <p className="text-xs">
+          {totalExcluded} record{totalExcluded !== 1 ? "s" : ""} excluded (outside window)
+        </p>
+      )}
+    </div>
+  );
+}
+
+export function DecisionArtifactView({ artifact, isDev = false }: DecisionArtifactViewProps) {
+  return (
+    <div className="space-y-6">
+      {/* Header: Window + Confidence */}
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <WindowSummary window={artifact.window} />
+        <ConfidenceBadge level={artifact.confidence.level} reason={artifact.confidence.reason} />
+      </div>
+
+      {/* Primary Artifact Content */}
+      <div className="space-y-6">
+        {/* Takeaway - Large */}
+        <Card className="rounded-2xl border-2 border-primary/20 bg-primary/5">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">One clear takeaway</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-base leading-relaxed text-foreground">{artifact.takeaway}</p>
+          </CardContent>
+        </Card>
+
+        {/* Why Heavy - Short */}
+        <Card className="rounded-2xl border border-border/60 bg-background/90">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">Why it likely feels heavy</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">{artifact.why_heavy}</p>
+          </CardContent>
+        </Card>
+
+        {/* Next 7 Days - Bullets */}
+        <Card className="rounded-2xl border border-border/60 bg-background/90">
+          <CardHeader>
+            <CardTitle className="text-base font-semibold">What to do next (7 days)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc space-y-2 pl-5 text-sm text-muted-foreground">
+              {artifact.next_7_days.map((step, idx) => (
+                <li key={idx} className="leading-relaxed">
+                  {step}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+
+        {/* Boundary Chip Row */}
+        {artifact.boundary && (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">Boundary:</span>
+            <Badge variant="outline" className="text-sm">
+              {artifact.boundary}
+            </Badge>
+          </div>
+        )}
+      </div>
+
+      {/* Collapsible Sections */}
+      <Accordion type="multiple" className="space-y-4">
+        {/* Pressure Map */}
+        {artifact.pressure_map.length > 0 && (
+          <AccordionItem value="pressure" className="rounded-2xl border border-border/60 bg-background/90 px-6">
+            <AccordionTrigger className="hover:no-underline">
+              <CardTitle className="text-base font-semibold">Pressure points ({artifact.pressure_map.length})</CardTitle>
+            </AccordionTrigger>
+            <AccordionContent className="space-y-4 pb-6">
+              {artifact.pressure_map.map((signal, idx) => (
+                <div key={signal.key} className="space-y-1 border-l-2 border-primary/30 pl-4">
+                  <p className="text-sm font-medium text-foreground">{signal.label}</p>
+                  <p className="text-sm text-muted-foreground">{signal.sentence}</p>
+                  {signal.percentile !== undefined && (
+                    <p className="text-xs text-muted-foreground">
+                      You: {signal.percentile}th percentile vs peers
+                    </p>
+                  )}
+                  <p className="text-xs italic text-muted-foreground">
+                    Recommended: {signal.recommended_move}
+                  </p>
+                  <p className="text-xs text-muted-foreground">Boundary: {signal.boundary}</p>
+                  {idx < artifact.pressure_map.length - 1 && <Separator className="mt-3" />}
+                </div>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        )}
+
+        {/* Benchmarks - "You vs peers" */}
+        {artifact.benchmarks && (
+          <AccordionItem value="benchmarks" className="rounded-2xl border border-border/60 bg-background/90 px-6">
+            <AccordionTrigger className="hover:no-underline">
+              <CardTitle className="text-base font-semibold">
+                You vs peers ({artifact.benchmarks.cohort_label})
+              </CardTitle>
+            </AccordionTrigger>
+            <AccordionContent className="space-y-4 pb-6">
+              <p className="text-xs text-muted-foreground">
+                Cohort: {artifact.benchmarks.cohort_label} ({artifact.benchmarks.version})
+              </p>
+              <div className="space-y-3">
+                {artifact.benchmarks.metrics.map((metric) => {
+                  const isRisk =
+                    (metric.direction === "higher_is_risk" && metric.value > metric.peer_median) ||
+                    (metric.direction === "lower_is_risk" && metric.value < metric.peer_median);
+                  return (
+                    <div key={metric.key} className="space-y-1">
+                      <div className="flex items-baseline justify-between">
+                        <span className="text-sm font-medium text-foreground">{metric.label}</span>
+                        <Badge variant={isRisk ? "destructive" : "outline"} className="ml-2">
+                          {metric.percentile}th percentile
+                        </Badge>
+                      </div>
+                      <div className="flex items-baseline gap-4 text-xs text-muted-foreground">
+                        <span>
+                          You: {metric.value}
+                          {metric.unit}
+                        </span>
+                        <span>
+                          Peer median: {metric.peer_median}
+                          {metric.unit}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
+
+        {/* Data Coverage */}
+        <AccordionItem value="coverage" className="rounded-2xl border border-border/60 bg-background/90 px-6">
+          <AccordionTrigger className="hover:no-underline">
+            <CardTitle className="text-base font-semibold">Data coverage</CardTitle>
+          </AccordionTrigger>
+          <AccordionContent className="space-y-2 pb-6 text-sm text-muted-foreground">
+            <div className="flex items-center justify-between">
+              <span>Window start</span>
+              <span className="text-foreground">{formatDate(artifact.window.start_date)}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Window end</span>
+              <span className="text-foreground">{formatDate(artifact.window.end_date)}</span>
+            </div>
+            <Separator className="my-2" />
+            <div className="flex items-center justify-between">
+              <span>Quotes excluded</span>
+              <span className="text-foreground">{artifact.window.excluded_counts.quotes_outside_window}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Invoices excluded</span>
+              <span className="text-foreground">{artifact.window.excluded_counts.invoices_outside_window}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Calendar excluded</span>
+              <span className="text-foreground">{artifact.window.excluded_counts.calendar_outside_window}</span>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
+
+        {/* Technical Details - Dev Only */}
+        {isDev && (
+          <AccordionItem value="technical" className="rounded-2xl border border-border/60 bg-background/90 px-6">
+            <AccordionTrigger className="hover:no-underline">
+              <CardTitle className="text-base font-semibold">Technical details (dev only)</CardTitle>
+            </AccordionTrigger>
+            <AccordionContent className="pb-6">
+              <pre className="overflow-x-auto rounded-lg border border-border/60 bg-muted/20 p-3 font-mono text-xs text-foreground">
+                {JSON.stringify(artifact, null, 2)}
+              </pre>
+            </AccordionContent>
+          </AccordionItem>
+        )}
+      </Accordion>
+    </div>
+  );
+}
