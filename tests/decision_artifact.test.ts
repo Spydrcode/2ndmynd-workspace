@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { buildDecisionArtifact } from "@/src/lib/present/build_decision_artifact";
-import type { SnapshotV2 } from "@/src/lib/decision/v2/types";
+import type { SnapshotV2 } from "@/lib/decision/v2/conclusion_schema_v2";
 import type { ConclusionV2 } from "@/src/lib/intelligence/run_adapter";
-import type { LayerFusionResult } from "@/src/lib/intelligence/layer_fusion";
+import type { LayerFusionResult } from "@/src/lib/intelligence/layer_fusion/types";
 import type { BusinessProfile } from "@/src/lib/intelligence/run_adapter";
 
 describe("buildDecisionArtifact", () => {
@@ -58,12 +58,15 @@ describe("buildDecisionArtifact", () => {
   };
 
   const mockConclusion: ConclusionV2 = {
+    conclusion_version: "conclusion_v2",
+    pattern_id: "test_pattern",
     one_sentence_pattern: "Test pattern",
     decision: "Test decision",
     why_this_now: "Test why",
     boundary: "Test boundary",
     confidence: "high",
     evidence_signals: [],
+    season_context: "neutral",
     optional_next_steps: ["Step 1", "Step 2", "Step 3"],
   };
 
@@ -195,7 +198,7 @@ describe("buildDecisionArtifact", () => {
       mapping_confidence: "high",
     });
 
-    const pressureWithBenchmark = result.pressure_map.find((p) => p.benchmark_ref);
+    const pressureWithBenchmark = result.pressure_map.find((p: { benchmark_ref?: string }) => p.benchmark_ref);
     
     // Pressure map should exist when layer_fusion has patterns
     expect(result.pressure_map.length).toBeGreaterThan(0);

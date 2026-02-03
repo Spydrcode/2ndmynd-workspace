@@ -121,7 +121,8 @@ describe("Scenarios", () => {
   });
 });
 
-function calculateCustomerRevenueConcentration(dataset: any): number {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+function _calculateCustomerRevenueConcentration(dataset: any): number {
   // Build map of customer ID -> total revenue
   const customerRevenue = new Map<string, number>();
   

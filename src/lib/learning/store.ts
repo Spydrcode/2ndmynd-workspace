@@ -94,6 +94,7 @@ export function listExamples(filters: DatasetFilters = {}): TrainingExampleV1[] 
   const db = getDatabase();
   
   let query = "SELECT * FROM training_examples WHERE 1=1";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const params: any[] = [];
   
   if (filters.source) {
@@ -123,6 +124,7 @@ export function listExamples(filters: DatasetFilters = {}): TrainingExampleV1[] 
   query += " ORDER BY created_at DESC";
   
   const stmt = db.prepare(query);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const rows = stmt.all(...params) as any[];
   
   db.close();
@@ -137,6 +139,7 @@ export function getExample(id: string): TrainingExampleV1 | null {
   const db = getDatabase();
   
   const stmt = db.prepare("SELECT * FROM training_examples WHERE id = ?");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const row = stmt.get(id) as any;
   
   db.close();
@@ -215,6 +218,7 @@ export function getStatistics(): {
 /**
  * Convert database row to TrainingExampleV1
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function rowToExample(row: any): TrainingExampleV1 {
   return {
     id: row.id,

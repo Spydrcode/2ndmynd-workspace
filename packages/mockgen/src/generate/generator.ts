@@ -224,7 +224,8 @@ export async function generateDataset(options: GenerationOptions): Promise<Gener
         // Add materials
         const numMaterials = rng.int(1, Math.min(3, jobType.materialsPool.length));
         for (let m = 0; m < numMaterials; m++) {
-          const material = rng.pick(jobType.materialsPool);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const material: any = rng.pick(jobType.materialsPool);
           const qty = material.qtyRange ? rng.int(material.qtyRange[0], material.qtyRange[1]) : 1;
           invoice_items.push({
             invoice_id: invoiceId,
@@ -268,7 +269,8 @@ export async function generateDataset(options: GenerationOptions): Promise<Gener
   };
 }
 
-function generateCustomer(id: number, rng: SeededRNG, template: any): Customer {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function generateCustomer(id: number, rng: SeededRNG, __template: unknown): Customer {
   const firstNames = ["John", "Mary", "Robert", "Patricia", "Michael", "Linda", "William", "Barbara", 
     "David", "Elizabeth", "Richard", "Jennifer", "Joseph", "Maria", "Thomas", "Susan"];
   const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis",
@@ -300,7 +302,8 @@ function inferScenarioFromSeed(rng: SeededRNG): ScenarioFlags {
   return { seasonal_low: true };
 }
 
-function calculateCustomerWeights(count: number, distribution: "pareto" | "normal", rng: SeededRNG): number[] {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function calculateCustomerWeights(count: number, distribution: "pareto" | "normal", __rng: SeededRNG): number[] {
   if (distribution === "pareto") {
     // Top 20% get 80% of weight
     const weights: number[] = [];
@@ -325,8 +328,10 @@ function getSeason(month: number): "summer" | "winter" | "shoulder" {
   return "shoulder";
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function pickJobType(jobTypes: any[], season: string, rng: SeededRNG): any {
-  const weights = jobTypes.map((jt) => jt.baseWeightBySeason[season]);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const weights = jobTypes.map((jt: any) => jt.baseWeightBySeason[season]);
   return rng.weightedPick(jobTypes, weights);
 }
 

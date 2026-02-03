@@ -7,6 +7,7 @@ export type VectorDoc = {
   industry_key: IndustryKey;
   created_at: string;
   embedding_model: string;
+  embedding_dim: number;
   embedding: number[];
   metadata: Record<string, string | number | boolean | null | string[]>;
   summary: string;
@@ -18,6 +19,8 @@ export type SimilarVectorResult = {
   industry_key: IndustryKey;
   created_at: string;
   score: number;
+  embedding_model?: string;
+  embedding_dim?: number;
   pressure_keys?: string[];
   boundary_class?: string;
 };

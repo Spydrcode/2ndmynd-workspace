@@ -5,7 +5,7 @@
  */
 
 import { NextRequest, NextResponse } from "next/server";
-import { readJobStatus } from "@/lib/internal/testing/run_mock_pipeline";
+import { readJobStatus } from "@/src/lib/internal/testing/run_mock_pipeline";
 
 // Same guardrails as main route
 function isInternalTestingAllowed(req: NextRequest): boolean {

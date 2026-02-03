@@ -1,4 +1,4 @@
-import type { SnapshotV2, VolatilityBand } from "@/lib/decision/v2/conclusion_schema_v2";
+import type { VolatilityBand } from "@/lib/decision/v2/conclusion_schema_v2";
 import { parseFlexibleTimestamp } from "@/src/lib/intelligence/dates";
 
 import type { BuildLayerFusionArgs, LayerFusionPressurePattern, LayerFusionResult } from "./types";

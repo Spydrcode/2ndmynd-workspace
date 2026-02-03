@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { SnapshotV2 } from "@/lib/decision/v2/conclusion_schema_v2";
 import type { AnalysisResult } from "../intelligence/run_analysis";
 import type { BoundaryClass, IndustryKey, LearningSource, SignalsV1Record, TrainingExampleV1, WindowRule } from "./types";

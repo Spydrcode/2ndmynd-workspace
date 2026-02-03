@@ -90,6 +90,7 @@
     "learning:train:pressure": "python src/lib/learning/train.py --model pressure_selector --dataset ./runs/learning.db --output ./models/",
     "learning:train:boundary": "python src/lib/learning/train.py --model boundary_classifier --dataset ./runs/learning.db --output ./models/",
     "learning:evaluate": "python src/lib/learning/evaluate.py --models ./models/ --dataset ./runs/learning.db --output ./eval_out/",
+    "learning:backfill:vectors": "tsx scripts/learning/backfill_vectors_to_supabase.ts",
     "mcp:server": "tsx mcp/server.ts",
     "mcp:selftest": "npx tsx mcp/server.ts --selftest",
     "intelligence:smoke": "npx tsx scripts/mcp_smoke.ts",

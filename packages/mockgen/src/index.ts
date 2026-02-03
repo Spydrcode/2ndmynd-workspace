@@ -96,6 +96,7 @@ program
     
     console.log(`\n🔄 Running suite: ${industries.length} industries...\n`);
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const results: any[] = [];
     for (let i = 0; i < industries.length; i++) {
       const industry = industries[i];
@@ -156,6 +157,7 @@ program
     
     console.log(`\n🔄 Sweeping ${industry}: ${seedCount} seeds...\n`);
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const results: any[] = [];
     for (let i = 0; i < seedCount; i++) {
       const seed = Date.now() + i * 1000;
@@ -196,7 +198,8 @@ program
   .command("run")
   .description("Run analysis on existing bundle zip")
   .requiredOption("-z, --zip <path>", "Path to bundle zip file")
-  .action(async (options) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  .action(async (_options) => {
     console.log("❌ Not implemented yet. Use 'one --no-pipeline' to generate without analysis.");
     process.exit(1);
   });

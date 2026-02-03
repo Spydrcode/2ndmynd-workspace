@@ -2,7 +2,7 @@ import { DataPackStats, DataPackV0, DataPackStatus } from "./data_pack_v0";
 import { ParsedFile } from "./file_parsers";
 import { parseFlexibleTimestampToISO } from "./dates";
 import { parseFile } from "./file_parsers";
-import { inferFileTypes, type InferredFileType } from "./file_inference";
+import { inferFileTypes } from "./file_inference";
 import {
   CompanyPack,
   createEmptyCompanyPack,

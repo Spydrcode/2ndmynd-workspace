@@ -156,12 +156,15 @@ describe("Signals v1 extraction", () => {
   };
 
   it("is deterministic for the same analysis result", () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const a = extractSignalsV1(analysis as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const b = extractSignalsV1(analysis as any);
     expect(a).toEqual(b);
   });
 
   it("extracts expected targets and features", () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { features, targets } = extractSignalsV1(analysis as any);
     expect(features.industry_key).toBe("hvac");
     expect(features.source).toBe("mock");
@@ -172,6 +175,7 @@ describe("Signals v1 extraction", () => {
   });
 
   it("forces boundary_class to confirm_mappings on low mapping confidence", () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { targets } = extractSignalsV1(analysis as any);
     expect(targets.boundary_class).toBe("confirm_mappings");
   });
@@ -182,6 +186,7 @@ describe("Signals v1 extraction", () => {
       source: "mock",
       window_rule: "last_90_days",
       bad_value: "user@example.com",
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
     expect(() => guardAgainstPII(features)).toThrow();
   });

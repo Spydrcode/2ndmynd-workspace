@@ -2,7 +2,7 @@
  * Export invoices to CSV matching pack_normalizer format
  */
 
-import type { Invoice, InvoiceItem, Job, Quote, Customer, GeneratedDataset } from "../../types";
+import type { InvoiceItem, Job, Quote, Customer, GeneratedDataset } from "../../types";
 
 export function exportInvoicesCSV(dataset: GeneratedDataset): string {
   const { invoices, invoice_items, jobs, quotes, customers } = dataset;

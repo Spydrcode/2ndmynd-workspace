@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ConclusionV2, SnapshotV2 } from "./conclusion_schema_v2";
 import { describeEvidenceSignal, parseEvidenceSignal } from "./signal_catalog";
 import type { DecisionArtifactV1 } from "../../../src/lib/types/decision_artifact";

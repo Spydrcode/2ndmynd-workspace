@@ -4,7 +4,7 @@
 
 import type { SnapshotV2 } from "@/lib/decision/v2/conclusion_schema_v2";
 import type { BenchmarkMetric, BenchmarkResult, CohortMetrics } from "./types";
-import { selectCohort, COHORT_DEFINITIONS } from "./cohorts";
+import { selectCohort } from "./cohorts";
 
 const BENCHMARK_VERSION = "v1.0.0";
 
@@ -160,7 +160,8 @@ export function computeBenchmarks(input: BenchmarkInput): BenchmarkResult {
 
   // Extract or compute metrics from snapshot and optional pack data
   const {
-    snapshot,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    snapshot: __snapshot,
     invoiceTotals = [],
     weeklyInvoiceCounts = [],
     quoteAges = [],

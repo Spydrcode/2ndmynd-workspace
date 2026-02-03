@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /**
  * INTERNAL ONLY - Testing infrastructure
  * 
@@ -95,7 +96,7 @@ export async function runMockPipelineJob(
       progress: { step: "scraping website for context", pct: 30 },
     });
 
-    const scrapeResult = await scrapeSite(siteResult.url);
+    const _scrapeResult = await scrapeSite(siteResult.url);
 
     // Step 4: Generate bundle
     await statusWriter.update({

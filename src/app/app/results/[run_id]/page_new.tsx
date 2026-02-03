@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck - Experimental alternative results page with incomplete types
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Download, RefreshCw, ChevronDown } from "lucide-react";

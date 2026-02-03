@@ -17,7 +17,7 @@ import {
   runMockPipelineJob,
   createFileStatusWriter,
   type MockPipelineParams,
-} from "@/lib/internal/testing/run_mock_pipeline";
+} from "@/src/lib/internal/testing/run_mock_pipeline";
 
 // Guardrails
 function isInternalTestingAllowed(req: NextRequest): boolean {
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
       runMockPipelineJob(
         { industry, seed, days: days ?? 90, capture_learning, auto_label },
         statusWriter
-      ).catch((error) => {
+      ).catch((error: unknown) => {
         console.error("Job error:", error);
       });
     } else {

@@ -281,7 +281,7 @@ export async function runAnalysisFromPack(params: {
   try {
     decision_artifact = buildDecisionArtifact({
       snapshot,
-      conclusion: conclusion as any,
+      conclusion: conclusion as ConclusionV2,
       layer_fusion,
       business_profile,
       readiness_level,

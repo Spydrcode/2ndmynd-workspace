@@ -422,7 +422,6 @@ export default async function ResultsPage({
             </Alert>
           ) : null}
         </div>
-        </div>
       )}
     </div>
   );

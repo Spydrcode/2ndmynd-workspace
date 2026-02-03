@@ -2,7 +2,7 @@
  * Export quotes to CSV matching pack_normalizer format
  */
 
-import type { Quote, Customer, GeneratedDataset } from "../../types";
+import type { Customer, GeneratedDataset } from "../../types";
 
 export function exportQuotesCSV(dataset: GeneratedDataset): string {
   const { quotes, customers } = dataset;

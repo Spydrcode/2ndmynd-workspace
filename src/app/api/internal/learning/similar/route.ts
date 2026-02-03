@@ -3,6 +3,7 @@ import { listExamples } from "@/lib/learning/store_jsonl";
 import type { TrainingExampleV1 } from "@/lib/learning/types";
 import { buildVectorDoc } from "@/lib/learning/vector_index/build_vector_doc";
 import { embedSummary, querySimilar } from "@/lib/learning/vector_index/index_client";
+import { sanitizeSimilarResults } from "@/lib/learning/vector_index/similar_sanitize";
 
 function isInternalAllowed(request: NextRequest): { ok: boolean; status: number } {
   if (process.env.NODE_ENV === "production" && process.env.ALLOW_INTERNAL_TESTING !== "true") {
@@ -40,8 +41,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    if (request.nextUrl.searchParams.get("internal") !== "1") {
+      return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
     const body = await request.json();
     const topK = body?.topK ?? 5;
+    const filterModel =
+      typeof body?.filter_model === "string" && body.filter_model.trim().length > 0
+        ? body.filter_model.trim()
+        : undefined;
     let example: TrainingExampleV1 | null = null;
 
     if (body?.run_id) {
@@ -56,12 +64,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "run_id or features required" }, { status: 400 });
     }
 
-    const doc = buildVectorDoc(example);
+    const doc = buildVectorDoc(example, filterModel);
     const embedding = await embedSummary(doc.summary, doc.embedding_model);
-    const results = await querySimilar({ summary: doc.summary, embedding, topK });
+    const results = await querySimilar({ summary: doc.summary, embedding, topK, filter_model: filterModel });
     const filtered = results.filter((item) => item.run_id !== example?.run_id);
 
-    return NextResponse.json({ ok: true, results: filtered });
+    const sanitized = sanitizeSimilarResults(filtered);
+    return NextResponse.json({ ok: true, results: sanitized });
   } catch (error) {
     console.error("[LEARNING API] Error:", error);
     return NextResponse.json(

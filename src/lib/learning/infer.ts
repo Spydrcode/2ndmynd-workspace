@@ -85,7 +85,7 @@ async function runPythonInference(features: SignalsV1Record, modelsDir: string):
       try {
         const result = JSON.parse(stdout);
         resolve(result);
-      } catch (error) {
+      } catch (_error) {
         reject(new Error(`Failed to parse inference output: ${stdout}`));
       }
     });

@@ -35,7 +35,7 @@ JOB-003,2025-11-05,13:00,2025-11-05,16:00,Scheduled`;
 
       // All files should be attempted
       expect(pack.files_attempted.length).toBe(3);
-      expect(pack.files_attempted.every((f) => f.status !== "error")).toBe(true);
+      expect(pack.files_attempted.every((f: { status: string }) => f.status !== "error")).toBe(true);
     });
 
     it("should populate all layers from multiple files", () => {

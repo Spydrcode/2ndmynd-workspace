@@ -8,7 +8,7 @@ import evalResultSchema from "./eval_result.schema.json";
 import ragDocSchema from "./rag_doc.schema.json";
 import modelEntrySchema from "./model_entry.schema.json";
 
-const ajv = new Ajv({ allErrors: true, strict: true });
+const ajv = new Ajv({ allErrors: true, strict: true, allowUnionTypes: true });
 addFormats(ajv);
 
 export const validateLLMLogRecord = ajv.compile(llmLogSchema);

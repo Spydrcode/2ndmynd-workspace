@@ -1,5 +1,6 @@
 import type { TrainingExampleV1 } from "../types";
 import type { VectorDoc } from "./vector_types";
+import { sanitizeMetadata } from "./metadata";
 
 function formatNumber(value: number | null) {
   if (value === null || !Number.isFinite(value)) return "na";
@@ -21,7 +22,20 @@ export function buildVectorSummary(example: TrainingExampleV1) {
   ].join("; ");
 }
 
-export function buildVectorDoc(example: TrainingExampleV1, embedding_model = "text-embedding-3-small"): VectorDoc {
+function resolveEmbeddingModel() {
+  return process.env.LEARNING_EMBEDDING_MODEL ?? "text-embedding-3-small";
+}
+
+function resolveEmbeddingDim(model: string) {
+  if (model === "text-embedding-3-small") return 1536;
+  if (model === "text-embedding-3-large") return 3072;
+  return 1536;
+}
+
+export function buildVectorDoc(
+  example: TrainingExampleV1,
+  embedding_model = resolveEmbeddingModel()
+): VectorDoc {
   const summary = buildVectorSummary(example);
   const metadata: VectorDoc["metadata"] = {
     source: example.source,
@@ -31,6 +45,7 @@ export function buildVectorDoc(example: TrainingExampleV1, embedding_model = "te
     pressure_keys: example.targets.pressure_keys,
     boundary_class: example.targets.boundary_class,
   };
+  const { clean } = sanitizeMetadata(metadata as Record<string, unknown>);
 
   return {
     id: example.id,
@@ -39,8 +54,9 @@ export function buildVectorDoc(example: TrainingExampleV1, embedding_model = "te
     industry_key: example.industry_key,
     created_at: example.created_at,
     embedding_model,
+    embedding_dim: resolveEmbeddingDim(embedding_model),
     embedding: [],
-    metadata,
+    metadata: clean,
     summary,
   };
 }

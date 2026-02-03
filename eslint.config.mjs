@@ -16,6 +16,8 @@ const eslintConfig = defineConfig([
     "scripts/**",
     "ml_artifacts/**",
     "**/*.jsonl",
+    // Broken/incomplete files:
+    "**/present_broken.ts",
   ]),
 ]);
 

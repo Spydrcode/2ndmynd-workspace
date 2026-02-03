@@ -32,6 +32,7 @@
     "lib/**/*.ts",
     "lib/**/*.tsx",
     "ml/**/*.ts",
+    "tests/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],

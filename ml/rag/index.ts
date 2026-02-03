@@ -1,3 +1,4 @@
+import { retrieveContext } from "./retrieve";
 export type { RagDoc, RagChunk, RagContext } from "./types";
 export { ingestDocs, ingestFromJsonl } from "./ingest";
 export { retrieveContext } from "./retrieve";

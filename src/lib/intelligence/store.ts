@@ -56,7 +56,7 @@ function hasSupabaseConfig() {
 }
 
 function getSqlite() {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const Database = require("better-sqlite3");
   const dbPath = path.resolve("tmp", "intelligence.db");
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
@@ -180,6 +180,7 @@ const sqliteStore: Store = {
     const rows = db
       .prepare("select * from runs where workspace_id = ? order by created_at desc")
       .all(workspaceId);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return rows.map((row: any) => ({
       ...row,
       results_json: row.results_json ? JSON.parse(row.results_json) : null,

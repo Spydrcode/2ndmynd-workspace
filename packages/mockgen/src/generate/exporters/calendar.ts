@@ -2,7 +2,7 @@
  * Export calendar events to CSV matching pack_normalizer format
  */
 
-import type { CalendarEvent, GeneratedDataset } from "../../types";
+import type { GeneratedDataset } from "../../types";
 
 export function exportCalendarCSV(dataset: GeneratedDataset): string {
   const { calendar_events } = dataset;
@@ -31,7 +31,7 @@ export function exportCalendarCSV(dataset: GeneratedDataset): string {
   // Convert to CSV
   const csvLines = [headers.join(",")];
   for (const row of rows) {
-    csvLines.push(row.map((v) => escapeCSV(v)).join(","));
+    csvLines.push(row.map((v) => escapeCSV(v ?? "")).join(","));
   }
   
   return csvLines.join("\n");

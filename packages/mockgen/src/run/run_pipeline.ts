@@ -109,6 +109,7 @@ export async function runPipeline(options: PipelineOptions): Promise<PipelineRes
   console.log(`[mockgen] Bundle created: ${zipPath}`);
   
   // 8. Run analysis if requested
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let analysisResult: any;
   let error: string | undefined;
   
@@ -118,7 +119,7 @@ export async function runPipeline(options: PipelineOptions): Promise<PipelineRes
       // Import analysis function dynamically to avoid Next.js imports
       // User's existing analysis function should be in lib/intelligence/run_analysis.ts
       // We'll invoke it via Node.js dynamic import
-      const { runAnalysisFromPack } = await import("../../../lib/intelligence/run_analysis");
+      const { runAnalysisFromPack } = await import("../../../src/lib/intelligence/run_analysis");
       
       const result = await runAnalysisFromPack({
         quotesPath: path.join(bundleDir, "quotes_export.csv"),
@@ -163,6 +164,7 @@ export async function runPipeline(options: PipelineOptions): Promise<PipelineRes
 
 function generateSummary(
   manifest: BundleManifest,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   analysisResult: any,
   durationMs: number
 ): string {

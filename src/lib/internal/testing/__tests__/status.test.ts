@@ -36,7 +36,7 @@ describe("Internal Testing - Status Management", () => {
   });
 
   it("should create status file with initial state", async () => {
-    const writer = createFileStatusWriter(TEST_JOB_ID);
+    const _writer = createFileStatusWriter(TEST_JOB_ID);
     
     const status = readJobStatus(TEST_JOB_ID);
     

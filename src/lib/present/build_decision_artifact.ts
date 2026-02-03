@@ -35,7 +35,8 @@ type BuildArtifactInput = {
 /**
  * Build window metadata with exclusions
  */
-function buildWindow(snapshot: SnapshotV2, layer_fusion?: LayerFusionResult | null): SnapshotWindowV1 {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function buildWindow(snapshot: SnapshotV2, _layer_fusion?: LayerFusionResult | null): SnapshotWindowV1 {
   const lookback = snapshot.window.lookback_days;
   let rule: SnapshotWindowV1["rule"] = "last_90_days";
   if (lookback === 365) rule = "last_12_months";
@@ -366,9 +367,9 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
   const pressure_map = buildPressureMap(layer_fusion ?? null, benchmarks);
 
   // Build narrative components
-  const takeaway = buildTakeaway(layer_fusion ?? null, conclusion, snapshot, benchmarks);
-  const why_heavy = buildWhyHeavy(layer_fusion ?? null, conclusion, benchmarks);
-  const boundary = buildBoundary(layer_fusion ?? null, conclusion, mapping_confidence);
+  const takeaway = buildTakeaway(layer_fusion ?? null, conclusion ?? null, snapshot, benchmarks);
+  const why_heavy = buildWhyHeavy(layer_fusion ?? null, conclusion ?? null, benchmarks);
+  const boundary = buildBoundary(layer_fusion ?? null, conclusion ?? null, mapping_confidence);
 
   // Build next steps
   let next_7_days: string[];

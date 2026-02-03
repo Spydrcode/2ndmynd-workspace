@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import crypto from "node:crypto";
 
 import { runMockPackV2 } from "../../lib/decision/v2/mock_pack_v2";

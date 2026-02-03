@@ -75,10 +75,18 @@ interface DatasetStats {
   latest_date?: string;
 }
 
+interface ReportMeta {
+  path: string;
+  url: string;
+  model_name?: string;
+  updated_at?: string;
+}
+
 export default function TestingPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isEnabled, setIsEnabled] = useState(false);
+  const [internalToken, setInternalToken] = useState<string | null>(null);
 
   // Form state
   const [industry, setIndustry] = useState<string>("hvac");
@@ -98,8 +106,10 @@ export default function TestingPage() {
   const [isPollingLearning, setIsPollingLearning] = useState(false);
   const [captureLearning, setCaptureLearning] = useState(false);
   const [autoLabel, setAutoLabel] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [similarResults, setSimilarResults] = useState<any[]>([]);
   const [isSearchingSimilar, setIsSearchingSimilar] = useState(false);
+  const [latestReports, setLatestReports] = useState<ReportMeta[]>([]);
 
   // Check if internal testing is enabled
   useEffect(() => {
@@ -107,11 +117,14 @@ export default function TestingPage() {
     const hasInternalParam = searchParams.get("internal") === "1";
     
     setIsEnabled(enabled || hasInternalParam);
+    setInternalToken(localStorage.getItem("internal_token"));
     
     // Load dataset stats on mount
     if (enabled || hasInternalParam) {
       fetchDatasetStats();
+      fetchLatestReports();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   // Poll for status updates
@@ -120,7 +133,9 @@ export default function TestingPage() {
 
     const poll = async () => {
       try {
-        const response = await fetch(`/api/internal/mock-run/status?job_id=${jobId}`);
+        const response = await fetch(`/api/internal/mock-run/status?job_id=${jobId}`, {
+          headers: internalToken ? { "x-2ndmynd-internal": internalToken } : undefined,
+        });
         
         if (!response.ok) {
           throw new Error(`Status check failed: ${response.statusText}`);
@@ -147,7 +162,7 @@ export default function TestingPage() {
     const interval = setInterval(poll, 2000); // Poll every 2 seconds
 
     return () => clearInterval(interval);
-  }, [jobId, isPolling]);
+  }, [jobId, isPolling, internalToken]);
 
   // Poll for learning job status
   useEffect(() => {
@@ -155,7 +170,9 @@ export default function TestingPage() {
 
     const poll = async () => {
       try {
-        const response = await fetch(`/api/internal/learning/status?job_id=${learningJobId}`);
+        const response = await fetch(`/api/internal/learning/status?job_id=${learningJobId}`, {
+          headers: internalToken ? { "x-2ndmynd-internal": internalToken } : undefined,
+        });
         
         if (!response.ok) {
           throw new Error(`Status check failed: ${response.statusText}`);
@@ -179,18 +196,34 @@ export default function TestingPage() {
     poll();
     const interval = setInterval(poll, 2000);
     return () => clearInterval(interval);
-  }, [learningJobId, isPollingLearning]);
+  }, [learningJobId, isPollingLearning, internalToken]);
 
   // Fetch dataset stats
   const fetchDatasetStats = async () => {
     try {
-      const response = await fetch("/api/internal/learning/dataset");
+      const response = await fetch("/api/internal/learning/dataset", {
+        headers: internalToken ? { "x-2ndmynd-internal": internalToken } : undefined,
+      });
       if (response.ok) {
         const data = await response.json();
         setDatasetStats(data);
       }
     } catch (err) {
       console.error("Failed to fetch dataset stats:", err);
+    }
+  };
+
+  const fetchLatestReports = async () => {
+    try {
+      const response = await fetch("/api/internal/learning/reports/latest?internal=1", {
+        headers: internalToken ? { "x-2ndmynd-internal": internalToken } : undefined,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setLatestReports(data.reports ?? []);
+      }
+    } catch (err) {
+      console.error("Failed to fetch reports:", err);
     }
   };
 
@@ -205,6 +238,7 @@ export default function TestingPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(internalToken ? { "x-2ndmynd-internal": internalToken } : {}),
         },
         body: JSON.stringify({
           industry,
@@ -238,6 +272,7 @@ export default function TestingPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...(internalToken ? { "x-2ndmynd-internal": internalToken } : {}),
         },
         body: JSON.stringify({}),
       });
@@ -267,9 +302,12 @@ export default function TestingPage() {
     if (!status?.run_id) return;
     setIsSearchingSimilar(true);
     try {
-      const response = await fetch("/api/internal/learning/similar", {
+      const response = await fetch("/api/internal/learning/similar?internal=1", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(internalToken ? { "x-2ndmynd-internal": internalToken } : {}),
+        },
         body: JSON.stringify({ run_id: status.run_id, topK: 5 }),
       });
       if (!response.ok) {
@@ -563,6 +601,7 @@ export default function TestingPage() {
                 <div className="space-y-2 text-sm">
                   <Label>Similar Examples</Label>
                   <div className="space-y-2">
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                     {similarResults.map((item: any) => (
                       <div key={item.id} className="rounded border p-2">
                         <div className="flex justify-between">
@@ -749,6 +788,29 @@ export default function TestingPage() {
                       <AlertDescription>{learningStatus.error}</AlertDescription>
                     </Alert>
                   )}
+                </div>
+              </div>
+            )}
+
+            {latestReports.length > 0 && (
+              <div className="space-y-2">
+                <Label>Latest Evaluation Reports</Label>
+                <div className="space-y-2">
+                  {latestReports.map((report) => (
+                    <div key={report.path} className="flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground text-xs">
+                        {report.model_name ?? "model"} â€¢ {report.updated_at ?? ""}
+                      </span>
+                      <a
+                        href={report.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-sm underline"
+                      >
+                        Open report
+                      </a>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
