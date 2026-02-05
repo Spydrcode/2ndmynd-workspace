@@ -8,6 +8,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { DecisionArtifactV1 } from "@/src/lib/types/decision_artifact";
+import { formatBenchmarkInsight } from "@/src/lib/present/benchmark_narratives";
+import { getIndustryGroupFromCohort } from "@/src/lib/intelligence/industry_groups";
 import { EvidenceCharts } from "./EvidenceCharts";
 
 type DecisionArtifactViewProps = {
@@ -16,6 +18,8 @@ type DecisionArtifactViewProps = {
   showInternal?: boolean;
 };
 
+type BenchmarkMetric = NonNullable<DecisionArtifactV1["benchmarks"]>["metrics"][number];
+
 function formatDate(isoDate: string): string {
   try {
     const date = new Date(isoDate);
@@ -23,6 +27,20 @@ function formatDate(isoDate: string): string {
   } catch {
     return isoDate;
   }
+}
+
+function formatMetricValue(metric: BenchmarkMetric) {
+  if (metric.unit === "%") return `${Math.round(metric.value)}%`;
+  if (metric.unit === "days") return `${Math.round(metric.value)} days`;
+  if (metric.unit === "ratio") return metric.value.toFixed(1);
+  return `${metric.value}${metric.unit}`;
+}
+
+function formatPeerMedian(metric: BenchmarkMetric) {
+  if (metric.unit === "%") return `${Math.round(metric.peer_median)}%`;
+  if (metric.unit === "days") return `${Math.round(metric.peer_median)} days`;
+  if (metric.unit === "ratio") return metric.peer_median.toFixed(1);
+  return `${metric.peer_median}${metric.unit}`;
 }
 
 function ConfidenceBadge({ level, reason }: { level: string; reason: string }) {
@@ -238,32 +256,29 @@ export function DecisionArtifactView({
                 You vs peers ({artifact.benchmarks.cohort_label})
               </CardTitle>
             </AccordionTrigger>
-            <AccordionContent className="space-y-4 pb-6">
-              <p className="text-xs text-muted-foreground">
-                Cohort: {artifact.benchmarks.cohort_label} ({artifact.benchmarks.version})
-              </p>
-              <div className="space-y-3">
-                {artifact.benchmarks.metrics.map((metric) => {
-                  const isRisk =
-                    (metric.direction === "higher_is_risk" && metric.value > metric.peer_median) ||
-                    (metric.direction === "lower_is_risk" && metric.value < metric.peer_median);
+          <AccordionContent className="space-y-4 pb-6">
+            <p className="text-xs text-muted-foreground">
+              Cohort: {artifact.benchmarks.cohort_label} ({artifact.benchmarks.version})
+            </p>
+            <div className="space-y-3">
+              {artifact.benchmarks.metrics.map((metric) => {
+                  const industryGroup = getIndustryGroupFromCohort(artifact.benchmarks.cohort_label);
+                  const insight = formatBenchmarkInsight({
+                    metric_key: metric.key,
+                    value: metric.value,
+                    peer_median: metric.peer_median,
+                    percentile: metric.percentile,
+                    direction: metric.direction,
+                    industry_group: industryGroup,
+                  });
+
                   return (
                     <div key={metric.key} className="space-y-1">
-                      <div className="flex items-baseline justify-between">
-                        <span className="text-sm font-medium text-foreground">{metric.label}</span>
-                        <Badge variant={isRisk ? "destructive" : "outline"} className="ml-2">
-                          {metric.percentile}th percentile
-                        </Badge>
-                      </div>
-                      <div className="flex items-baseline gap-4 text-xs text-muted-foreground">
-                        <span>
-                          You: {metric.value}
-                          {metric.unit}
-                        </span>
-                        <span>
-                          Peer median: {metric.peer_median}
-                          {metric.unit}
-                        </span>
+                      <p className="text-sm font-medium text-foreground">{insight.headline}</p>
+                      <p className="text-xs text-muted-foreground">{insight.so_what}</p>
+                      <div className="text-xs text-muted-foreground">
+                        You: {formatMetricValue(metric)} | Peer median: {formatPeerMedian(metric)} | {metric.percentile}
+                        th percentile
                       </div>
                     </div>
                   );

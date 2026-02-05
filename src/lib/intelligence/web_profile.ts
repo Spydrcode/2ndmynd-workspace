@@ -1,4 +1,4 @@
-import { ingestRagDoc } from "@/lib/rag";
+import { ingestRagDoc } from "../../lib/rag";
 
 export type BusinessProfile = {
   name_guess: string | null;

@@ -16,7 +16,7 @@ import { findBusinessSite } from "../../../../packages/mockgen/src/web/find_site
 import { scrapeSite } from "../../../../packages/mockgen/src/web/scrape_site";
 import { runPipeline } from "../../../../packages/mockgen/src/run/run_pipeline";
 import type { IndustryKey } from "../../../../packages/mockgen/src/types";
-import { pickCuratedWebsite } from "./mock_websites";
+import { pickCuratedWebsite, getMockWebsiteForIndustry, getDefaultMockWebsite } from "./mock_websites";
 
 export interface MockPipelineParams {
   industry: IndustryKey | "random";
@@ -74,7 +74,7 @@ export async function runMockPipelineJob(
       progress: { step: "selecting industry", pct: 5 },
     });
 
-    // Step 2: Find website
+    // Step 2: Find website (always ensure we have one)
     await statusWriter.update({
       progress: { step: "searching for business website", pct: 15 },
     });
@@ -85,21 +85,37 @@ export async function runMockPipelineJob(
         : `https://${params.website_url}`
       : null;
 
+    // Try curated website for this industry
     const curated = !normalizedUrl ? pickCuratedWebsite(industry, params.seed) : null;
-    const selectedUrl = normalizedUrl ?? curated ?? null;
-
-    let siteUrl = selectedUrl;
+    
+    // Fallback to industry-specific mock website
+    const industryFallback = !normalizedUrl && !curated ? getMockWebsiteForIndustry(industry) : null;
+    
+    // Ultimate fallback to default mock website
+    const defaultFallback = getDefaultMockWebsite();
+    
+    let siteUrl = normalizedUrl ?? curated ?? industryFallback ?? null;
+    let usedFallback = false;
+    
+    // Try to find a real business website if no URL provided
     if (!siteUrl) {
-      const siteResult = await findBusinessSite(
-        industry,
-        "Phoenix, AZ", // Default service area
-        process.env.SERP_API_KEY
-      );
-      siteUrl = siteResult?.url ?? null;
+      try {
+        const siteResult = await findBusinessSite(
+          industry,
+          "Phoenix, AZ", // Default service area  
+          process.env.SERP_API_KEY
+        );
+        siteUrl = siteResult?.url ?? null;
+      } catch (error) {
+        console.warn("Failed to find business website:", error);
+      }
     }
 
+    // Ensure we ALWAYS have a website URL (use default fallback if all else fails)
     if (!siteUrl) {
-      throw new Error("Could not find business website");
+      siteUrl = defaultFallback;
+      usedFallback = true;
+      console.warn(`No website found or provided - using fallback: ${siteUrl}`);
     }
 
     await statusWriter.update({

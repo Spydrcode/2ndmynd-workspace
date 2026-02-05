@@ -112,6 +112,17 @@ export default function TestingPage() {
   const [isSearchingSimilar, setIsSearchingSimilar] = useState(false);
   const [latestReports, setLatestReports] = useState<ReportMeta[]>([]);
 
+  // Runtime health state
+  interface RuntimeHealth {
+    ok: boolean;
+    node: { version: string; tsx: boolean; vitest: boolean; next: boolean };
+    python: { exists: boolean; version?: string; sklearn: boolean; numpy: boolean; pandas: boolean; matplotlib: boolean };
+    env: Record<string, boolean | string | undefined>;
+    warnings: string[];
+  }
+  const [runtimeHealth, setRuntimeHealth] = useState<RuntimeHealth | null>(null);
+  const [isLoadingHealth, setIsLoadingHealth] = useState(false);
+
   // Check if internal testing is enabled
   useEffect(() => {
     const enabled = process.env.NEXT_PUBLIC_INTERNAL_TESTING === "true";
@@ -120,10 +131,11 @@ export default function TestingPage() {
     setIsEnabled(enabled || hasInternalParam);
     setInternalToken(localStorage.getItem("internal_token"));
     
-    // Load dataset stats on mount
+    // Load dataset stats and runtime health on mount
     if (enabled || hasInternalParam) {
       fetchDatasetStats();
       fetchLatestReports();
+      fetchRuntimeHealth();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
@@ -226,6 +238,23 @@ export default function TestingPage() {
       }
     } catch (err) {
       console.error("Failed to fetch reports:", err);
+    }
+  };
+
+  const fetchRuntimeHealth = async () => {
+    setIsLoadingHealth(true);
+    try {
+      const response = await fetch("/api/internal/runtime?internal=1", {
+        headers: internalToken ? { "x-2ndmynd-internal": internalToken } : undefined,
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setRuntimeHealth(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch runtime health:", err);
+    } finally {
+      setIsLoadingHealth(false);
     }
   };
 
@@ -355,6 +384,117 @@ export default function TestingPage() {
           </p>
           <Badge variant="destructive" className="mt-2">INTERNAL ONLY</Badge>
         </div>
+
+        {/* Runtime Health Card */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              Runtime Health
+              {isLoadingHealth && <Loader2 className="h-4 w-4 animate-spin" />}
+            </CardTitle>
+            <CardDescription>
+              Dependency status for intelligence features
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {runtimeHealth ? (
+              <div className="space-y-4">
+                {!runtimeHealth.ok && (
+                  <Alert>
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription>
+                      Some intelligence features may be degraded until dependencies are installed.
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Node.js dependencies */}
+                  <div>
+                    <h4 className="text-sm font-medium mb-2">Node.js ({runtimeHealth.node.version})</h4>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex items-center gap-2">
+                        {runtimeHealth.node.tsx ? <CheckCircle2 className="h-4 w-4 text-green-600" /> : <XCircle className="h-4 w-4 text-red-600" />}
+                        <span>tsx</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {runtimeHealth.node.vitest ? <CheckCircle2 className="h-4 w-4 text-green-600" /> : <XCircle className="h-4 w-4 text-red-600" />}
+                        <span>vitest</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {runtimeHealth.node.next ? <CheckCircle2 className="h-4 w-4 text-green-600" /> : <XCircle className="h-4 w-4 text-red-600" />}
+                        <span>next</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Python dependencies */}
+                  <div>
+                    <h4 className="text-sm font-medium mb-2">
+                      Python {runtimeHealth.python.version ? `(${runtimeHealth.python.version})` : "(not found)"}
+                    </h4>
+                    <div className="space-y-1 text-sm">
+                      <div className="flex items-center gap-2">
+                        {runtimeHealth.python.sklearn ? <CheckCircle2 className="h-4 w-4 text-green-600" /> : <XCircle className="h-4 w-4 text-red-600" />}
+                        <span>scikit-learn</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {runtimeHealth.python.numpy ? <CheckCircle2 className="h-4 w-4 text-green-600" /> : <XCircle className="h-4 w-4 text-red-600" />}
+                        <span>numpy</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {runtimeHealth.python.pandas ? <CheckCircle2 className="h-4 w-4 text-green-600" /> : <XCircle className="h-4 w-4 text-red-600" />}
+                        <span>pandas</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        {runtimeHealth.python.matplotlib ? <CheckCircle2 className="h-4 w-4 text-green-600" /> : <XCircle className="h-4 w-4 text-red-600" />}
+                        <span>matplotlib</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Install instructions if missing */}
+                {runtimeHealth.warnings.length > 0 && (
+                  <details className="text-sm">
+                    <summary className="cursor-pointer font-medium mb-2">Install Instructions</summary>
+                    <div className="bg-muted p-3 rounded-md space-y-2">
+                      {(!runtimeHealth.node.tsx || !runtimeHealth.node.vitest || !runtimeHealth.node.next) && (
+                        <div>
+                          <p className="font-medium">Node.js dependencies:</p>
+                          <code className="block bg-background p-2 rounded mt-1">npm install</code>
+                        </div>
+                      )}
+                      {!runtimeHealth.python.exists && (
+                        <div>
+                          <p className="font-medium">Python:</p>
+                          <code className="block bg-background p-2 rounded mt-1">
+                            # Windows: winget install Python.Python.3.11<br />
+                            # macOS: brew install python<br />
+                            # Linux: sudo apt install python3
+                          </code>
+                        </div>
+                      )}
+                      {runtimeHealth.python.exists && (!runtimeHealth.python.sklearn || !runtimeHealth.python.numpy) && (
+                        <div>
+                          <p className="font-medium">Python packages:</p>
+                          <code className="block bg-background p-2 rounded mt-1">
+                            python -m venv .venv<br />
+                            .venv\Scripts\activate  # Windows<br />
+                            source .venv/bin/activate  # macOS/Linux<br />
+                            pip install scikit-learn numpy pandas matplotlib
+                          </code>
+                        </div>
+                      )}
+                    </div>
+                  </details>
+                )}
+              </div>
+            ) : (
+              <div className="text-sm text-muted-foreground">Loading runtime health...</div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Configuration Form */}
         <Card>

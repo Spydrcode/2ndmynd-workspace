@@ -78,6 +78,7 @@
     "ml:ft:watchdog:4o-mini": "cross-env FT_BASE_MODEL=gpt-4o-mini-2024-07-18 tsx scripts/ml/create_or_watchdog.ts",
     "ml:log:smoketest": "tsx scripts/ml_log_smoketest.ts",
     "ml:curate:weekly": "tsx scripts/ml_curate_weekly.ts",
+    "wiring:check": "tsx scripts/audit/wiring_check.ts",
     "ml:finetune:prepare": "tsx ml/finetune/prepare_train.ts",
     "ml:finetune:train": "tsx scripts/ml_finetune_train.ts",
     "ml:finetune:status": "tsx ml/finetune/status.ts",
