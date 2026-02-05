@@ -468,6 +468,22 @@ export async function runAnalysisFromPack(params: {
   }
   void rag_context;
 
+  // Infer cohort (augmentative only)
+  let cohort_inference: import("../../lib/cohort_engine/types").CohortInference | null = null;
+  if (snapshot) {
+    try {
+      const { extractSignalsV1 } = await import("../learning/signals_v1");
+      const { inferCohort } = await import("../cohort_engine/infer");
+      const signals = extractSignalsV1({ run_id: params.run_id, result: { snapshot, layer_fusion, business_profile, conclusion } });
+      if (signals) {
+        cohort_inference = await inferCohort(signals);
+      }
+    } catch (error) {
+      console.warn("[Cohort Engine] Inference failed (non-blocking):", error);
+      cohort_inference = null;
+    }
+  }
+
   // Build decision artifact (client-facing output)
   let decision_artifact: DecisionArtifactV1 | undefined;
   try {
@@ -480,6 +496,7 @@ export async function runAnalysisFromPack(params: {
       diagnose_mode,
       mapping_confidence,
       benchmarks,
+      cohort_inference,
     });
   } catch (error) {
     logger.logEvent("decision_artifact_error", { error: RunLogger.serializeError(error) });

@@ -5,12 +5,13 @@ import * as path from "path";
 import type { VectorDoc, SimilarVectorResult } from "./vector_types";
 import { sanitizeMetadata } from "./metadata";
 
-type Backend = "openai" | "pinecone" | "supabase" | "none";
+type Backend = "openai" | "pinecone" | "supabase" | "local" | "none";
 const SUPABASE_DIM = 1536;
+const LOCAL_DIM = 384;
 
 function getBackend(): Backend {
   const value = process.env.LEARNING_VECTOR_BACKEND;
-  if (value === "openai" || value === "pinecone" || value === "supabase" || value === "none") return value;
+  if (value === "openai" || value === "pinecone" || value === "supabase" || value === "local" || value === "none") return value;
   return "none";
 }
 
@@ -46,6 +47,35 @@ async function embedTexts(texts: string[], model: string) {
 }
 
 async function ensureEmbeddings(docs: VectorDoc[]) {
+  const backend = getBackend();
+  
+  // Use local embeddings if backend is "local"
+  if (backend === "local") {
+    const { generateBatchEmbeddings } = await import("./local_embed");
+    const toEmbed = docs.filter((doc) => doc.embedding.length === 0);
+    if (toEmbed.length === 0) return docs;
+    
+    const items = toEmbed.map((doc) => ({ id: doc.id, text: doc.summary }));
+    const results = await generateBatchEmbeddings(items);
+    
+    if (results) {
+      const embedMap = new Map(results.map((r) => [r.id, r.embedding]));
+      toEmbed.forEach((doc) => {
+        const embedding = embedMap.get(doc.id);
+        if (embedding) {
+          doc.embedding = embedding;
+          doc.embedding_model = "sentence-transformers/all-MiniLM-L6-v2";
+          doc.embedding_dim = LOCAL_DIM;
+        }
+      });
+    } else {
+      console.warn("[Vector Index] Local embeddings failed, falling back to JSONL storage");
+    }
+    
+    return docs;
+  }
+  
+  // Use OpenAI embeddings (original behavior)
   const model = docs[0]?.embedding_model ?? resolveEmbeddingModel();
   const dim = resolveEmbeddingDim(model);
   const toEmbed = docs.filter((doc) => doc.embedding.length === 0);

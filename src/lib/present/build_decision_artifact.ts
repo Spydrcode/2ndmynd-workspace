@@ -36,6 +36,7 @@ type BuildArtifactInput = {
   diagnose_mode?: boolean;
   mapping_confidence?: "low" | "medium" | "high" | null;
   benchmarks?: BenchmarkResult | null;
+  cohort_inference?: import("../cohort_engine/types").CohortInference | null;
 };
 
 /**
@@ -435,7 +436,7 @@ function buildBoundary(
  * Main builder function
  */
 export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifactV1 {
-  const { snapshot, conclusion, layer_fusion, business_profile, readiness_level, diagnose_mode, mapping_confidence } =
+  const { snapshot, conclusion, layer_fusion, business_profile, readiness_level, diagnose_mode, mapping_confidence, cohort_inference } =
     input;
 
   // Build window
@@ -595,6 +596,14 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
     ? buildWebsiteOpportunities(business_profile, business_profile.industry_bucket)
     : undefined;
 
+  // Build cohort context (augmentative only)
+  const cohort_context = cohort_inference ? {
+    cohort_id: cohort_inference.cohort_id,
+    cohort_label: cohort_inference.cohort_label,
+    confidence: cohort_inference.confidence,
+    expected_ranges: cohort_inference.expected_ranges,
+  } : undefined;
+
   return {
     version: "v1",
     takeaway,
@@ -605,6 +614,7 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
     confidence,
     pressure_map,
     benchmarks,
+    cohort_context,
     evidence_summary,
     visuals_summary,
     website_opportunities,

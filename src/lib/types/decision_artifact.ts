@@ -76,6 +76,26 @@ export type LearningNoteV1 = {
   };
 };
 
+/**
+ * Cohort Context (Augmentative)
+ * 
+ * Adds business shape classification + expected ranges.
+ * NEVER overwrites computed metrics.
+ */
+export type CohortContextV1 = {
+  cohort_id: number;
+  cohort_label: string;
+  confidence: number;
+  expected_ranges: {
+    metric_key: string;
+    min: number;
+    max: number;
+    median: number;
+    p25: number;
+    p75: number;
+  }[];
+};
+
 export type DecisionArtifactV1 = {
   version: "v1";
   takeaway: string;
@@ -86,6 +106,7 @@ export type DecisionArtifactV1 = {
   confidence: { level: ConfidenceLevel; reason: string };
   pressure_map: PressureSignalV1[];
   benchmarks?: BenchmarkPackV1;
+  cohort_context?: CohortContextV1;
   evidence_summary?: EvidenceSummaryV1;
   website_opportunities?: WebsiteOpportunityV1[];
   visuals_summary?: VisualsSummaryV1;
