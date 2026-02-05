@@ -18,6 +18,7 @@ export interface PipelineOptions extends GenerationOptions {
   runAnalysis: boolean;
   outputDir: string;
   searchApiKey?: string;
+  websiteUrl?: string;
 }
 
 /**
@@ -31,7 +32,15 @@ export async function runPipeline(options: PipelineOptions): Promise<PipelineRes
   
   // 1. Find website
   const serviceArea = template.serviceAreas[0];
-  const siteResult = await findBusinessSite(options.industry, serviceArea, options.searchApiKey);
+  const normalizedWebsite =
+    options.websiteUrl && options.websiteUrl.trim().length > 0
+      ? options.websiteUrl.startsWith("http")
+        ? options.websiteUrl
+        : `https://${options.websiteUrl}`
+      : null;
+  const siteResult = normalizedWebsite
+    ? { url: normalizedWebsite }
+    : await findBusinessSite(options.industry, serviceArea, options.searchApiKey);
   let websiteContext: WebsiteContext | undefined;
   
   if (siteResult) {
@@ -133,6 +142,7 @@ export async function runPipeline(options: PipelineOptions): Promise<PipelineRes
         run_id: `mock_${Date.now()}`,
         pack,
         workspace_id: "mock_workspace",
+        website_url: siteResult?.url ?? normalizedWebsite ?? null,
         ctx: { learning_source: "mock" },
       });
       

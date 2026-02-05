@@ -2,7 +2,7 @@
  * INTERNAL ONLY - Start mock pipeline job
  * 
  * POST /api/internal/mock-run
- * Body: { industry, seed?, days? }
+ * Body: { industry, seed?, days?, website_url? }
  * 
  * Guardrails:
  * - Blocks in production unless ALLOW_INTERNAL_TESTING=true
@@ -44,7 +44,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { industry, seed, days, capture_learning, auto_label } = body as MockPipelineParams;
+    const { industry, seed, days, capture_learning, auto_label, website_url } =
+      body as MockPipelineParams;
 
     // Validate industry
     const validIndustries = ["hvac", "plumbing", "electrical", "landscaping", "cleaning", "random"];
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
     if (process.env.RUN_JOBS_SYNC === "true") {
       // Run synchronously (blocks API response but simpler for dev)
       runMockPipelineJob(
-        { industry, seed, days: days ?? 90, capture_learning, auto_label },
+        { industry, seed, days: days ?? 90, capture_learning, auto_label, website_url },
         statusWriter
       ).catch((error: unknown) => {
         console.error("Job error:", error);
@@ -89,6 +90,7 @@ export async function POST(req: NextRequest) {
           String(days ?? 90),
           String(capture_learning ?? false),
           String(auto_label ?? false),
+          String(website_url ?? ""),
         ],
         {
           detached: true,
@@ -104,7 +106,7 @@ export async function POST(req: NextRequest) {
     // Return job info immediately
     return NextResponse.json({
       job_id,
-      status_url: `/api/internal/mock-run/status?job_id=${job_id}`,
+      status_url: `/api/internal/mock-run/status?job_id=${job_id}&internal=1`,
     });
   } catch (error) {
     console.error("Mock run error:", error);

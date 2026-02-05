@@ -1,6 +1,7 @@
 import { callTool } from "@/mcp/tool_registry";
 import { hashInput } from "@/lib/decision/v2/run_context";
 import { RunLogger } from "@/lib/intelligence/run_logger";
+import { ingestRagDoc, getRagContext } from "@/lib/rag";
 
 import { DataPackStats, DataPackV0 } from "./data_pack_v0";
 import { buildSnapshotFromPack, InputRecognitionReport } from "./snapshot_from_pack";
@@ -27,6 +28,97 @@ import type { BenchmarkResult } from "../benchmarks/types";
 import type { DecisionArtifactV1 } from "../types/decision_artifact";
 import { buildDecisionArtifact } from "../present/build_decision_artifact";
 import type { RunContext } from "./run_context";
+import type { SnapshotV2 } from "../../../lib/decision/v2/conclusion_schema_v2";
+
+/**
+ * Ingest business profile + snapshot context to RAG.
+ * 
+ * Creates a high-level context document containing:
+ * - Business summary
+ * - Service mix
+ * - Geography (if available)
+ * - Detected pressures (keys only, not prose)
+ * - Benchmark cohort
+ * 
+ * This allows RAG to "remember" the business across runs
+ * WITHOUT storing raw data.
+ * 
+ * This is CONTEXT ONLY and never used for deterministic signals.
+ */
+async function ingestBusinessContextToRag(params: {
+  workspace_id: string;
+  run_id: string;
+  business_profile: BusinessProfile;
+  snapshot: SnapshotV2;
+  layer_fusion?: LayerFusionResult;
+  benchmarks?: BenchmarkResult;
+}) {
+  const { workspace_id, run_id, business_profile, snapshot, layer_fusion, benchmarks } = params;
+
+  try {
+    // Build high-level context doc
+    const contextParts: string[] = [];
+
+    // Business summary
+    contextParts.push(`# Business Context`);
+    contextParts.push(``);
+    contextParts.push(`Industry: ${business_profile.industry_bucket}`);
+    contextParts.push(`Services: ${business_profile.services.join(", ") || "General services"}`);
+    if (business_profile.domain) {
+      contextParts.push(`Website: ${business_profile.domain}`);
+    }
+    contextParts.push(``);
+    contextParts.push(business_profile.summary);
+
+    // Service mix & activity
+    if (snapshot.activity_signals) {
+      contextParts.push(``);
+      contextParts.push(`## Activity Overview`);
+      contextParts.push(
+        `- Invoices (${snapshot.window.lookback_days}d): ${snapshot.activity_signals.invoices.invoices_count}`
+      );
+      contextParts.push(
+        `- Quotes (${snapshot.window.lookback_days}d): ${snapshot.activity_signals.quotes.quotes_count}`
+      );
+      if (snapshot.activity_signals.invoices.revenue_sum) {
+        contextParts.push(`- Revenue: $${Math.round(snapshot.activity_signals.invoices.revenue_sum).toLocaleString()}`);
+      }
+    }
+
+    // Detected pressures (keys only)
+    if (layer_fusion?.pressure_patterns && layer_fusion.pressure_patterns.length > 0) {
+      contextParts.push(``);
+      contextParts.push(`## Pressure Patterns Detected`);
+      layer_fusion.pressure_patterns.forEach((pattern) => {
+        contextParts.push(`- ${pattern.pattern_key}: ${pattern.severity}`);
+      });
+    }
+
+    // Benchmark cohort
+    if (benchmarks?.cohort_id) {
+      contextParts.push(``);
+      contextParts.push(`Benchmark Cohort: ${benchmarks.cohort_id}`);
+    }
+
+    const ragText = contextParts.join("\n");
+
+    // Ingest to RAG
+    await ingestRagDoc({
+      text: ragText,
+      metadata: {
+        workspace_id,
+        industry_key: business_profile.industry_bucket,
+        doc_type: "business_profile",
+        source: "internal",
+        created_at: new Date().toISOString(),
+        run_id,
+      },
+    });
+  } catch (error) {
+    // Fail gracefully - RAG is advisory only
+    console.warn("Failed to ingest business context to RAG:", error);
+  }
+}
 
 export type AnalysisResult = {
   run_id: string;
@@ -92,7 +184,10 @@ export async function runAnalysisFromPack(params: {
   logger.logEvent("web_profile_start", { website_url: params.website_url ?? null });
   let business_profile: BusinessProfile;
   try {
-    business_profile = await buildBusinessProfile(params.website_url);
+    business_profile = await buildBusinessProfile(params.website_url, {
+      workspace_id: params.workspace_id,
+      run_id: params.run_id,
+    });
     manifest = markStepSuccess(
       manifest,
       "build_business_profile",
@@ -112,6 +207,16 @@ export async function runAnalysisFromPack(params: {
       industry_bucket: "other",
       domain: params.website_url ? new URL(params.website_url).hostname : null,
       found_contact: false,
+      website_present: false,
+      opportunity_signals: {
+        has_phone: false,
+        has_email: false,
+        has_booking_cta: false,
+        has_financing: false,
+        has_reviews: false,
+        has_service_pages: false,
+        has_maintenance_plan: false,
+      },
     };
     manifest = markStepError(
       manifest,
@@ -190,15 +295,65 @@ export async function runAnalysisFromPack(params: {
   try {
     const { computeBenchmarks } = await import("../benchmarks/benchmark_engine");
     const industryTags = [business_profile.industry_bucket, ...business_profile.services].filter(Boolean);
+    const expandBucketSeries = (buckets: Array<{ bucket: string; count: number }>, midpoints: Record<string, number>) => {
+      const values: number[] = [];
+      const maxValues = 200;
+      for (const bucket of buckets) {
+        const midpoint = midpoints[bucket.bucket];
+        if (!Number.isFinite(midpoint) || bucket.count <= 0) continue;
+        const repeats = Math.min(bucket.count, Math.max(1, Math.floor(maxValues / buckets.length)));
+        for (let i = 0; i < repeats; i += 1) {
+          values.push(midpoint);
+        }
+      }
+      return values;
+    };
+
+    const invoiceTotals = snapshot.invoice_size_buckets
+      ? expandBucketSeries(snapshot.invoice_size_buckets, {
+          "<250": 125,
+          "250-500": 375,
+          "500-1k": 750,
+          "1k-2k": 1500,
+          "2k+": 3000,
+        })
+      : [];
+
+    const quoteAges = snapshot.quote_age_buckets
+      ? expandBucketSeries(snapshot.quote_age_buckets, {
+          "0-2d": 1,
+          "3-7d": 5,
+          "8-14d": 11,
+          "15-30d": 22,
+          "30d+": 45,
+        })
+      : [];
+
+    const weeklyInvoiceCounts =
+      snapshot.weekly_volume_series?.map((point) => point.invoices).filter((count) => Number.isFinite(count)) ?? [];
+
+    const approvedToScheduledDays = layer_fusion?.timing?.approved_to_scheduled_p50_days
+      ? [layer_fusion.timing.approved_to_scheduled_p50_days]
+      : [];
+    const invoicedToPaidDays = layer_fusion?.timing?.invoiced_to_paid_p50_days
+      ? [layer_fusion.timing.invoiced_to_paid_p50_days]
+      : [];
+
+    const quoteToJobConversionRate =
+      layer_fusion?.linkage?.quote_to_job_match_rate ??
+      (snapshot.activity_signals.quotes.quotes_count > 0
+        ? snapshot.activity_signals.quotes.quotes_approved_count / snapshot.activity_signals.quotes.quotes_count
+        : undefined);
+
     benchmarks = computeBenchmarks({
       snapshot,
       industryTags,
-      // These would ideally come from pack aggregates; for now use defaults
-      invoiceTotals: [],
-      weeklyInvoiceCounts: [],
-      quoteAges: [],
-      approvedToScheduledDays: [],
-      invoicedToPaidDays: [],
+      invoiceTotals,
+      weeklyInvoiceCounts,
+      quoteAges,
+      approvedToScheduledDays,
+      invoicedToPaidDays,
+      quoteToJobConversionRate,
     });
     manifest = markStepSuccess(manifest, "compute_benchmarks", [benchmarks.cohort_id]);
   } catch (error) {
@@ -209,6 +364,19 @@ export async function runAnalysisFromPack(params: {
     );
     benchmarks = undefined;
   }
+
+  // Ingest business profile + snapshot context to RAG
+  // Fire and forget - don't block on RAG ingestion
+  ingestBusinessContextToRag({
+    workspace_id: params.workspace_id,
+    run_id: params.run_id,
+    business_profile,
+    snapshot,
+    layer_fusion,
+    benchmarks,
+  }).catch((err) => {
+    console.warn("Business context RAG ingestion failed (non-blocking):", err);
+  });
 
   // Compute mapping confidence based on layer fusion warnings
   const mapping_confidence: "low" | "medium" | "high" = layer_fusion.linkage.linkage_weak
@@ -279,6 +447,29 @@ export async function runAnalysisFromPack(params: {
   manifest = finalizeManifest(manifest);
   logger.logEvent("run_complete", { ok: validationResult.ok });
 
+  // Retrieve RAG context for narrative enrichment
+  // This is ADVISORY ONLY and never affects deterministic signals
+  let rag_context;
+  try {
+    rag_context = await getRagContext({
+      query: `
+        Business: ${business_profile.industry_bucket}
+        Focus: services, website gaps, growth blockers, clarity improvements
+        Context needed for: narrative building, opportunity suggestions, website analysis
+      `,
+      filters: {
+        workspace_id: params.workspace_id,
+        industry_key: business_profile.industry_bucket,
+        doc_type: ["website_scan", "business_profile", "industry_baseline", "tool_playbook"],
+      },
+      limit: 6,
+    });
+  } catch (error) {
+    // Fail gracefully - RAG is advisory only
+    console.warn("RAG context retrieval failed (non-blocking):", error);
+    rag_context = undefined;
+  }
+
   // Build decision artifact (client-facing output)
   let decision_artifact: DecisionArtifactV1 | undefined;
   try {
@@ -290,6 +481,9 @@ export async function runAnalysisFromPack(params: {
       readiness_level,
       diagnose_mode,
       mapping_confidence,
+      benchmarks,
+      workspace_id: params.workspace_id,
+      rag_context,
     });
   } catch (error) {
     logger.logEvent("decision_artifact_error", { error: RunLogger.serializeError(error) });

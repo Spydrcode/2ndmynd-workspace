@@ -22,6 +22,19 @@ export type SnapshotV2 = {
     invoices_outside_window_count: number;
     calendar_outside_window_count: number;
   };
+  weekly_volume_series?: Array<{
+    week_start: string;
+    quotes: number;
+    invoices: number;
+  }>;
+  invoice_size_buckets?: Array<{
+    bucket: string;
+    count: number;
+  }>;
+  quote_age_buckets?: Array<{
+    bucket: string;
+    count: number;
+  }>;
   activity_signals: {
     quotes: {
       quotes_count: number;

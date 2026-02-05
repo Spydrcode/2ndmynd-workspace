@@ -45,6 +45,37 @@ export type SnapshotWindowV1 = {
   };
 };
 
+export type EvidenceSummaryV1 = {
+  quotes_count: number;
+  invoices_count: number;
+  calendar_count: number;
+  paid_invoices_count: number;
+  window_start: string;
+  window_end: string;
+};
+
+export type WebsiteOpportunityV1 = {
+  title: string;
+  why: string;
+  suggested_tool?: string;
+};
+
+export type VisualsSummaryV1 = {
+  weekly_volume_series?: Array<{ week_start: string; quotes: number; invoices: number }>;
+  invoice_size_buckets?: Array<{ bucket: string; count: number }>;
+  quote_age_buckets?: Array<{ bucket: string; count: number }>;
+};
+
+export type LearningNoteV1 = {
+  applied: boolean;
+  changes: string[];
+  model_versions?: {
+    pressure_selector?: string;
+    boundary_classifier?: string;
+    calibrator?: string;
+  };
+};
+
 export type DecisionArtifactV1 = {
   version: "v1";
   takeaway: string;
@@ -55,4 +86,8 @@ export type DecisionArtifactV1 = {
   confidence: { level: ConfidenceLevel; reason: string };
   pressure_map: PressureSignalV1[];
   benchmarks?: BenchmarkPackV1;
+  evidence_summary?: EvidenceSummaryV1;
+  website_opportunities?: WebsiteOpportunityV1[];
+  visuals_summary?: VisualsSummaryV1;
+  learning_note?: LearningNoteV1;
 };

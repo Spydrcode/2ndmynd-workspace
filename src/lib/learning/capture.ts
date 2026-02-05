@@ -1,3 +1,20 @@
+/**
+ * Learning Capture - Training Example Creation
+ * 
+ * CRITICAL: RAG is EXCLUDED from learning capture by design.
+ * 
+ * This module captures training examples containing only:
+ * - Deterministic signals from signals_v1
+ * - Snapshot math and metrics
+ * - Business profile basics (industry, services)
+ * 
+ * RAG content is NEVER captured because:
+ * - It's advisory context only
+ * - It's non-deterministic
+ * - It would contaminate training data
+ * 
+ * extractSignalsV1 already excludes RAG - this is enforced at the source.
+ */
 import * as fs from "fs";
 import * as path from "path";
 import { nanoid } from "nanoid";

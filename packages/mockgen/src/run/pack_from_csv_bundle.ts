@@ -46,8 +46,21 @@ function normalizeStatus(raw?: string): DataPackStatus {
 
 function parseNumber(value?: string): number | undefined {
   if (!value) return undefined;
-  const num = parseFloat(value);
+  const cleaned = value.replace(/[^0-9.-]/g, "");
+  const num = parseFloat(cleaned);
   return Number.isFinite(num) ? num : undefined;
+}
+
+function parseDate(value?: string): string | undefined {
+  if (!value) return undefined;
+  return value.trim() || undefined;
+}
+
+function pickValue(...values: (string | undefined)[]): string | undefined {
+  for (const v of values) {
+    if (v && v.trim()) return v.trim();
+  }
+  return undefined;
 }
 
 /**
@@ -66,43 +79,55 @@ export function packFromCSVBundle(bundleDir: string): DataPackV0 {
   const customersRows = parseCSVFile(customersPath);
 
   // Map quotes
-  const quotes = quotesRows.map((row) => ({
-    id: row.id || row.quote_id,
-    status: normalizeStatus(row.status),
-    created_at: row.created_at || row.date,
-    approved_at: row.approved_at,
-    total: parseNumber(row.total || row.amount),
-  }));
+  const quotes = quotesRows.map((row, index) => {
+    const id = pickValue(row.id, row.quote_id) ?? `mock_quote_${index}_${parseDate(pickValue(row.created_at, row.date)) || "unknown"}`;
+    return {
+      id,
+      status: normalizeStatus(row.status),
+      created_at: parseDate(pickValue(row.created_at, row.date)),
+      approved_at: parseDate(row.approved_at),
+      total: parseNumber(pickValue(row.total, row.amount)),
+    };
+  });
 
   // Map invoices
-  const invoices = invoicesRows.map((row) => ({
-    id: row.id || row.invoice_id,
-    status: normalizeStatus(row.status),
-    issued_at: row.issued_at || row.date || row.created_at,
-    paid_at: row.paid_at,
-    total: parseNumber(row.total || row.amount),
-    related_quote_id: row.related_quote_id || row.quote_id,
-  }));
+  const invoices = invoicesRows.map((row, index) => {
+    const id = pickValue(row.id, row.invoice_id) ?? `mock_invoice_${index}_${parseDate(pickValue(row.issued_at, row.date, row.created_at)) || "unknown"}`;
+    return {
+      id,
+      status: normalizeStatus(row.status),
+      issued_at: parseDate(pickValue(row.issued_at, row.date, row.created_at)),
+      paid_at: parseDate(row.paid_at),
+      total: parseNumber(pickValue(row.total, row.amount)),
+      related_quote_id: pickValue(row.related_quote_id, row.quote_id),
+    };
+  });
 
   // Map calendar events to jobs (calendar represents scheduled work)
-  const jobs = calendarRows.map((row) => ({
-    id: row.id || row.event_id,
-    status: normalizeStatus(row.status),
-    scheduled_at: row.scheduled_at || row.start_time || row.date,
-    completed_at: row.completed_at || row.end_time,
-    total: parseNumber(row.total || row.amount),
-    related_quote_id: row.related_quote_id || row.quote_id,
-  }));
+  const jobs = calendarRows.map((row, index) => {
+    const id = pickValue(row.id, row.event_id) ?? `mock_job_${index}_${parseDate(pickValue(row.scheduled_at, row.start_time, row.date)) || "unknown"}`;
+    return {
+      id,
+      status: normalizeStatus(row.status),
+      scheduled_at: parseDate(pickValue(row.scheduled_at, row.start_time, row.date)),
+      completed_at: parseDate(pickValue(row.completed_at, row.end_time)),
+      total: parseNumber(pickValue(row.total, row.amount)),
+      related_quote_id: pickValue(row.related_quote_id, row.quote_id),
+    };
+  });
 
   // Map customers if present
-  const customers = customersRows.map((row) => ({
-    id: row.id || row.customer_id,
-    name: row.name || row.customer_name,
-    status: normalizeStatus(row.status),
-    created_at: row.created_at || row.date,
-    city: row.city,
-    state: row.state,
-  }));
+  const customers = customersRows.map((row, index) => {
+    const id = pickValue(row.id, row.customer_id) ?? `mock_customer_${index}`;
+    return {
+      id,
+      name: pickValue(row.name, row.customer_name),
+      status: normalizeStatus(row.status),
+      created_at: parseDate(pickValue(row.created_at, row.date)),
+      city: row.city?.trim(),
+      state: row.state?.trim(),
+    };
+  });
 
   const pack: DataPackV0 = {
     version: "data_pack_v0",

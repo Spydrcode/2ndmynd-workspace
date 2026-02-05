@@ -91,4 +91,42 @@ describe("pack_from_csv_bundle", () => {
       fs.rmSync(tempDir, { recursive: true, force: true });
     }
   });
+  
+  it("should parse currency strings in amounts", () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "test-currency-bundle-"));
+    
+    try {
+      fs.writeFileSync(
+        path.join(tempDir, "invoices_export.csv"),
+        'id,status,issued_at,total\nI1,paid,2024-01-05,"$1,234.56"\nI2,open,2024-01-06,$2000.00\n'
+      );
+      
+      const pack = packFromCSVBundle(tempDir);
+      
+      expect(pack.invoices?.[0].total).toBeCloseTo(1234.56, 2);
+      expect(pack.invoices?.[1].total).toBe(2000);
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+  
+  it("should generate deterministic fallback IDs when id is missing", () => {
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "test-fallback-id-bundle-"));
+    
+    try {
+      fs.writeFileSync(
+        path.join(tempDir, "quotes_export.csv"),
+        "status,created_at,total\ndraft,2024-01-01,1000\napproved,2024-01-02,2000\n"
+      );
+      
+      const pack = packFromCSVBundle(tempDir);
+      
+      expect(pack.quotes?.[0].id).toMatch(/^mock_quote_0_/);
+      expect(pack.quotes?.[1].id).toMatch(/^mock_quote_1_/);
+      // IDs should be deterministic (contain date)
+      expect(pack.quotes?.[0].id).toContain("2024-01-01");
+    } finally {
+      fs.rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
 });

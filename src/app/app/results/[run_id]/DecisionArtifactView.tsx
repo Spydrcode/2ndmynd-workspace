@@ -8,10 +8,12 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { DecisionArtifactV1 } from "@/src/lib/types/decision_artifact";
+import { EvidenceCharts } from "./EvidenceCharts";
 
 type DecisionArtifactViewProps = {
   artifact: DecisionArtifactV1;
   isDev?: boolean;
+  showInternal?: boolean;
 };
 
 function formatDate(isoDate: string): string {
@@ -64,7 +66,16 @@ function WindowSummary({ window }: { window: DecisionArtifactV1["window"] }) {
   );
 }
 
-export function DecisionArtifactView({ artifact, isDev = false }: DecisionArtifactViewProps) {
+export function DecisionArtifactView({
+  artifact,
+  isDev = false,
+  showInternal = false,
+}: DecisionArtifactViewProps) {
+  const evidence = artifact.evidence_summary;
+  const visuals = artifact.visuals_summary;
+  const opportunities = artifact.website_opportunities ?? [];
+  const learningNote = artifact.learning_note;
+
   return (
     <div className="space-y-6">
       {/* Header: Window + Confidence */}
@@ -124,6 +135,53 @@ export function DecisionArtifactView({ artifact, isDev = false }: DecisionArtifa
 
       {/* Collapsible Sections */}
       <Accordion type="multiple" className="space-y-4">
+        {/* Evidence + Visuals */}
+        {(evidence || visuals) && (
+          <AccordionItem value="evidence" className="rounded-2xl border border-border/60 bg-background/90 px-6">
+            <AccordionTrigger className="hover:no-underline">
+              <CardTitle className="text-base font-semibold">Evidence</CardTitle>
+            </AccordionTrigger>
+            <AccordionContent className="space-y-6 pb-6">
+              {evidence && (
+                <div className="grid gap-3 text-sm text-muted-foreground md:grid-cols-2">
+                  <div className="flex items-center justify-between">
+                    <span>Quotes</span>
+                    <span className="text-foreground">{evidence.quotes_count}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Invoices</span>
+                    <span className="text-foreground">{evidence.invoices_count}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Paid invoices</span>
+                    <span className="text-foreground">{evidence.paid_invoices_count}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Calendar items</span>
+                    <span className="text-foreground">{evidence.calendar_count}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Window start</span>
+                    <span className="text-foreground">{formatDate(evidence.window_start)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Window end</span>
+                    <span className="text-foreground">{formatDate(evidence.window_end)}</span>
+                  </div>
+                </div>
+              )}
+
+              {visuals && (
+                <EvidenceCharts
+                  weeklyVolumeSeries={visuals.weekly_volume_series}
+                  invoiceSizeBuckets={visuals.invoice_size_buckets}
+                  quoteAgeBuckets={visuals.quote_age_buckets}
+                />
+              )}
+            </AccordionContent>
+          </AccordionItem>
+        )}
+
         {/* Pressure Map */}
         {artifact.pressure_map.length > 0 && (
           <AccordionItem value="pressure" className="rounded-2xl border border-border/60 bg-background/90 px-6">
@@ -145,6 +203,27 @@ export function DecisionArtifactView({ artifact, isDev = false }: DecisionArtifa
                   </p>
                   <p className="text-xs text-muted-foreground">Boundary: {signal.boundary}</p>
                   {idx < artifact.pressure_map.length - 1 && <Separator className="mt-3" />}
+                </div>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        )}
+
+        {/* Website Opportunities */}
+        {opportunities.length > 0 && (
+          <AccordionItem value="website" className="rounded-2xl border border-border/60 bg-background/90 px-6">
+            <AccordionTrigger className="hover:no-underline">
+              <CardTitle className="text-base font-semibold">Website opportunities</CardTitle>
+            </AccordionTrigger>
+            <AccordionContent className="space-y-4 pb-6">
+              {opportunities.map((item, idx) => (
+                <div key={`${item.title}-${idx}`} className="space-y-1 border-l-2 border-primary/30 pl-4">
+                  <p className="text-sm font-medium text-foreground">{item.title}</p>
+                  <p className="text-sm text-muted-foreground">{item.why}</p>
+                  {item.suggested_tool && (
+                    <p className="text-xs text-muted-foreground">Suggested tool: {item.suggested_tool}</p>
+                  )}
+                  {idx < opportunities.length - 1 && <Separator className="mt-3" />}
                 </div>
               ))}
             </AccordionContent>
@@ -190,6 +269,35 @@ export function DecisionArtifactView({ artifact, isDev = false }: DecisionArtifa
                   );
                 })}
               </div>
+            </AccordionContent>
+          </AccordionItem>
+        )}
+
+        {/* Learning - Internal Only */}
+        {showInternal && learningNote && (
+          <AccordionItem value="learning" className="rounded-2xl border border-border/60 bg-background/90 px-6">
+            <AccordionTrigger className="hover:no-underline">
+              <CardTitle className="text-base font-semibold">Learning (internal)</CardTitle>
+            </AccordionTrigger>
+            <AccordionContent className="space-y-3 pb-6 text-sm text-muted-foreground">
+              <p>{learningNote.applied ? "Learning adjustments applied." : "Learning models ran with no changes."}</p>
+              {learningNote.changes.length > 0 && (
+                <ul className="list-disc space-y-1 pl-5">
+                  {learningNote.changes.map((change) => (
+                    <li key={change}>{change}</li>
+                  ))}
+                </ul>
+              )}
+              {learningNote.model_versions && (
+                <div className="space-y-1 text-xs text-muted-foreground">
+                  <p className="font-medium text-foreground">Model versions</p>
+                  {Object.entries(learningNote.model_versions).map(([key, value]) => (
+                    <p key={key}>
+                      {key}: {value ?? "n/a"}
+                    </p>
+                  ))}
+                </div>
+              )}
             </AccordionContent>
           </AccordionItem>
         )}

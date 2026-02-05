@@ -1,0 +1,44 @@
+{
+  "cohort_id": "home_services_v1",
+  "cohort_label": "Home Services",
+  "version": "v1",
+  "sample_size": 180,
+  "created_at": "2026-02-04T00:00:00.000Z",
+  "industry_bucket": "home_services",
+  "typical_services": ["HVAC", "Plumbing", "Electrical", "Roofing", "Landscaping"],
+  "job_value_distribution": {
+    "under_500": 0.15,
+    "500_2000": 0.35,
+    "2000_5000": 0.28,
+    "5000_15000": 0.18,
+    "over_15000": 0.04
+  },
+  "decision_lag_distribution": {
+    "same_day": 0.08,
+    "1_3_days": 0.22,
+    "4_7_days": 0.32,
+    "8_14_days": 0.21,
+    "15_30_days": 0.12,
+    "over_30_days": 0.05
+  },
+  "quote_to_invoice_flow": {
+    "approved": 0.48,
+    "stalled": 0.38,
+    "dropped": 0.14
+  },
+  "revenue_concentration": {
+    "top_5_jobs_share": 0.42,
+    "top_10_jobs_share": 0.61,
+    "gini_coefficient": 0.52
+  },
+  "cycle_time_medians": {
+    "quote_to_job_days": 7,
+    "job_duration_days": 3,
+    "invoice_to_paid_days": 21
+  },
+  "volatility_metrics": {
+    "weekly_volume_cv": 0.42,
+    "seasonal_factor": "high"
+  },
+  "notes": "High seasonality (weather-driven). Revenue swings week-to-week. Trust-based selling."
+}

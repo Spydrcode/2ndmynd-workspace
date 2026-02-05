@@ -92,6 +92,7 @@ export default function TestingPage() {
   const [industry, setIndustry] = useState<string>("hvac");
   const [seed, setSeed] = useState<string>("");
   const [days, setDays] = useState<string>("90");
+  const [websiteUrl, setWebsiteUrl] = useState<string>("");
 
   // Job state
   const [jobId, setJobId] = useState<string | null>(null);
@@ -247,6 +248,7 @@ export default function TestingPage() {
           days: parseInt(days),
           capture_learning: captureLearning,
           auto_label: autoLabel,
+          website_url: websiteUrl.trim() ? websiteUrl.trim() : undefined,
         }),
       });
 
@@ -406,6 +408,21 @@ export default function TestingPage() {
                   disabled={isPolling}
                 />
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="website">Website URL (optional)</Label>
+              <Input
+                id="website"
+                type="url"
+                placeholder="https://example.com"
+                value={websiteUrl}
+                onChange={(e) => setWebsiteUrl(e.target.value)}
+                disabled={isPolling}
+              />
+              <p className="text-xs text-muted-foreground">
+                If provided, the mock run will use this website instead of searching.
+              </p>
             </div>
 
             <div className="space-y-2">

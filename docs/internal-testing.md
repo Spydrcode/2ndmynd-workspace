@@ -116,6 +116,7 @@ Navigate to: `http://localhost:3000/app/testing?internal=1`
    - Select industry (hvac, plumbing, electrical, landscaping, cleaning, or random)
    - Optionally set seed (for deterministic generation)
    - Set days of data (default: 90)
+   - Optional website URL to override the search (useful for deterministic testing)
 
 2. **Start Job**:
    - Click "Run Full Mock Test"
@@ -265,6 +266,22 @@ Tests cover:
 - Production guardrails
 - Development mode allowance
 
+## Snapshot Evidence Plots (Internal)
+
+Use the internal plotting script to generate PNGs for quick validation:
+
+```bash
+npm run plots:run -- --run_id mock_<bundle_name>
+```
+
+Or pass CSV paths directly:
+
+```bash
+npm run plots:run -- --quotes mock_runs/<bundle>/quotes_export.csv --invoices mock_runs/<bundle>/invoices_export.csv
+```
+
+Plots are written to `runs/<run_id>/plots/` (or `runs/adhoc/plots` if no run_id is provided).
+
 ## Troubleshooting
 
 ### "Internal testing is not enabled"
@@ -312,7 +329,7 @@ Tests cover:
 - Falls back to curated list automatically
 - Check internet connectivity
 - Optionally add SERP_API_KEY for live search
-- Review curated sites in `packages/mockgen/src/web/find_site.ts`
+- Review curated sites in `src/lib/internal/testing/mock_websites.ts`
 
 ## Production Deployment (Advanced)
 
@@ -360,7 +377,8 @@ Start a new mock pipeline job.
 {
   "industry": "hvac" | "plumbing" | "electrical" | "landscaping" | "cleaning" | "random",
   "seed": 12345,        // optional, random if omitted
-  "days": 90            // optional, default 90
+  "days": 90,           // optional, default 90
+  "website_url": "https://example.com" // optional override
 }
 ```
 

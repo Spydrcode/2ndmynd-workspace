@@ -13,10 +13,12 @@ import {
 } from "./run_mock_pipeline";
 
 async function main() {
-  const [, , job_id, industry, seed, days, capture_learning, auto_label] = process.argv;
+  const [, , job_id, industry, seed, days, capture_learning, auto_label, website_url] = process.argv;
 
   if (!job_id || !industry) {
-    console.error("Usage: node run_job.ts <job_id> <industry> [seed] [days] [capture_learning] [auto_label]");
+    console.error(
+      "Usage: node run_job.ts <job_id> <industry> [seed] [days] [capture_learning] [auto_label] [website_url]"
+    );
     process.exit(1);
   }
 
@@ -26,6 +28,7 @@ async function main() {
     days: days ? parseInt(days) : 90,
     capture_learning: capture_learning === "true",
     auto_label: auto_label === "true",
+    website_url: website_url && website_url.trim() ? website_url.trim() : undefined,
   };
 
   const statusWriter = createFileStatusWriter(job_id);

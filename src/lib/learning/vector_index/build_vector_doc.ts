@@ -1,3 +1,16 @@
+/**
+ * Vector Document Builder for Learning Layer
+ * 
+ * CRITICAL: RAG is EXCLUDED from vector learning docs by design.
+ * 
+ * This module builds vector documents from TrainingExampleV1, which:
+ * - Contains only signals_v1 features (deterministic)
+ * - Never includes RAG context
+ * - Is used for similarity search in the learning layer
+ * 
+ * RAG context lives in ml/rag/* and is separate from learning vectors.
+ * Do not confuse RAG embeddings with learning layer embeddings.
+ */
 import type { TrainingExampleV1 } from "../types";
 import type { VectorDoc } from "./vector_types";
 import { sanitizeMetadata } from "./metadata";

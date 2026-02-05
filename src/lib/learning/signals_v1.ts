@@ -1,4 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/**
+ * Signals V1 - Deterministic Feature Extraction
+ * 
+ * CRITICAL: RAG is EXCLUDED from signals_v1 by design.
+ * 
+ * This module extracts deterministic, reproducible features from:
+ * - SnapshotV2 (math, counts, distributions)
+ * - Business profile (industry, services)
+ * - Layer fusion (linkage metrics)
+ * 
+ * RAG content is NEVER included because:
+ * - It's advisory context only
+ * - It's non-deterministic
+ * - It would contaminate training data
+ * 
+ * Any attempt to add RAG fields to signals_v1 should be rejected.
+ */
 import type { SnapshotV2 } from "@/lib/decision/v2/conclusion_schema_v2";
 import type { AnalysisResult } from "../intelligence/run_analysis";
 import type { BoundaryClass, IndustryKey, LearningSource, SignalsV1Record, TrainingExampleV1, WindowRule } from "./types";

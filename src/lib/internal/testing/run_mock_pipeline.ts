@@ -16,6 +16,7 @@ import { findBusinessSite } from "../../../../packages/mockgen/src/web/find_site
 import { scrapeSite } from "../../../../packages/mockgen/src/web/scrape_site";
 import { runPipeline } from "../../../../packages/mockgen/src/run/run_pipeline";
 import type { IndustryKey } from "../../../../packages/mockgen/src/types";
+import { pickCuratedWebsite } from "./mock_websites";
 
 export interface MockPipelineParams {
   industry: IndustryKey | "random";
@@ -23,6 +24,7 @@ export interface MockPipelineParams {
   days?: number;
   capture_learning?: boolean;
   auto_label?: boolean;
+  website_url?: string;
 }
 
 export interface MockPipelineStatus {
@@ -77,18 +79,31 @@ export async function runMockPipelineJob(
       progress: { step: "searching for business website", pct: 15 },
     });
 
-    const siteResult = await findBusinessSite(
-      industry,
-      "Phoenix, AZ", // Default service area
-      process.env.SERP_API_KEY
-    );
+    const normalizedUrl = params.website_url
+      ? params.website_url.startsWith("http")
+        ? params.website_url
+        : `https://${params.website_url}`
+      : null;
 
-    if (!siteResult) {
+    const curated = !normalizedUrl ? pickCuratedWebsite(industry, params.seed) : null;
+    const selectedUrl = normalizedUrl ?? curated ?? null;
+
+    let siteUrl = selectedUrl;
+    if (!siteUrl) {
+      const siteResult = await findBusinessSite(
+        industry,
+        "Phoenix, AZ", // Default service area
+        process.env.SERP_API_KEY
+      );
+      siteUrl = siteResult?.url ?? null;
+    }
+
+    if (!siteUrl) {
       throw new Error("Could not find business website");
     }
 
     await statusWriter.update({
-      website: siteResult.url,
+      website: siteUrl,
     });
 
     // Step 3: Scrape website
@@ -96,7 +111,7 @@ export async function runMockPipelineJob(
       progress: { step: "scraping website for context", pct: 30 },
     });
 
-    await scrapeSite(siteResult.url);
+    await scrapeSite(siteUrl);
 
     // Step 4: Generate bundle
     await statusWriter.update({
@@ -129,6 +144,7 @@ export async function runMockPipelineJob(
       runAnalysis: true,
       outputDir,
       searchApiKey: process.env.SERP_API_KEY,
+      websiteUrl: siteUrl,
     });
 
     if (previousCapture === undefined) {

@@ -20,6 +20,8 @@ import type {
   ConfidenceLevel,
 } from "../types/decision_artifact";
 import { computeBenchmarks } from "../benchmarks/benchmark_engine";
+import { translatePressure, type PressureKey, normalizePressureKey, resolvePressureTranslation } from "../pressures";
+import { getIndustryAnchor, getIndustryGroup } from "../industry";
 
 type BuildArtifactInput = {
   snapshot: SnapshotV2;
@@ -43,11 +45,11 @@ function buildWindow(snapshot: SnapshotV2, _layer_fusion?: LayerFusionResult | n
   else if (lookback === 90) rule = "last_90_days";
   else rule = "custom";
 
-  // Get exclusions from layer fusion or default to 0
+  // Get exclusions from snapshot
   const excluded_counts = {
-    quotes_outside_window: 0,
-    invoices_outside_window: 0,
-    calendar_outside_window: 0,
+    quotes_outside_window: snapshot.exclusions?.quotes_outside_window_count ?? 0,
+    invoices_outside_window: snapshot.exclusions?.invoices_outside_window_count ?? 0,
+    calendar_outside_window: snapshot.exclusions?.calendar_outside_window_count ?? 0,
   };
 
   return {
@@ -100,7 +102,9 @@ function buildConfidence(
 
 /**
  * Map layer fusion focus to next steps
+ * Reserved for future use when layer_fusion is fully integrated
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function focusToNextSteps(focus: LayerFusionResult["recommended_focus"]): string[] {
   switch (focus) {
     case "follow_up":
@@ -136,35 +140,48 @@ function focusToNextSteps(focus: LayerFusionResult["recommended_focus"]): string
 
 /**
  * Build pressure map from layer fusion or heuristics
+ * Uses industry-aware pressure translations for owner-felt language
  */
 function buildPressureMap(
   layer_fusion: LayerFusionResult | null,
-  benchmarks: BenchmarkPackV1 | undefined
+  snapshot: SnapshotV2,
+  benchmarks: BenchmarkPackV1 | undefined,
+  evidence_summary: string,
+  visuals_summary: string,
+  industry: IndustryBucket | null,
+  industry_key?: string | null,
+  cohort_label?: string
 ): PressureSignalV1[] {
   if (!layer_fusion || layer_fusion.pressure_patterns.length === 0) {
     return [];
   }
 
-  // Map layer fusion patterns to pressure signals (max 3)
+  // Get industry group for resolution
+  const industry_group = getIndustryGroup(industry_key ?? cohort_label);
+
+  // Map layer fusion patterns to pressure signals (max 3) using industry-aware translation
   const pressureMap: PressureSignalV1[] = [];
 
   for (const pattern of layer_fusion.pressure_patterns.slice(0, 3)) {
-    let key: PressureSignalV1["key"] = "rhythm_volatility";
-    let recommended_move = "Monitor and track patterns.";
-    let boundary = "Do not act until patterns stabilize.";
+    // Resolve pressure translation with industry awareness
+    const resolved = resolvePressureTranslation({
+      pressure_key: pattern.pressure_key as PressureKey,
+      industry_key,
+      industry_group,
+      cohort_label,
+    });
 
-    if (pattern.id === "followup_drift") {
+    // Normalize pressure key for mapping
+    const canonicalKey = normalizePressureKey(pattern.pressure_key as PressureKey);
+    
+    // Map canonical key to PressureSignalV1 key (for backward compatibility)
+    let key: PressureSignalV1["key"] = "rhythm_volatility";
+    if (canonicalKey === "follow_up_drift") {
       key = "follow_up_drift";
-      recommended_move = "Assign one owner and set a 48-hour follow-up rhythm.";
-      boundary = "If most quotes are seasonal inquiries, maintain light touch.";
-    } else if (pattern.id === "capacity_pressure") {
+    } else if (canonicalKey === "capacity_pressure") {
       key = "capacity_squeeze";
-      recommended_move = "Protect a weekly scheduling pass to avoid re-planning loops.";
-      boundary = "If schedule is full by design, this is expected.";
-    } else if (pattern.id === "concentration_risk") {
+    } else if (canonicalKey === "concentration_risk") {
       key = "fragility";
-      recommended_move = "Build repeatable paths to mid-sized jobs.";
-      boundary = "If your model is high-ticket/low-volume, this is expected.";
     }
 
     // Find matching benchmark if available
@@ -188,11 +205,11 @@ function buildPressureMap(
     pressureMap.push({
       key,
       label: pattern.id.replace(/_/g, " "),
-      sentence: pattern.statement,
+      sentence: resolved.owner_felt_line,
       benchmark_ref,
       percentile,
-      recommended_move,
-      boundary,
+      recommended_move: resolved.recommended_move,
+      boundary: resolved.boundary,
     });
   }
 
@@ -201,43 +218,84 @@ function buildPressureMap(
 
 /**
  * Build takeaway with concrete numbers
+ * Format: owner-felt line + quantified evidence with benchmark comparison
  */
 function buildTakeaway(
   layer_fusion: LayerFusionResult | null,
   conclusion: ConclusionV2 | null,
   snapshot: SnapshotV2,
-  benchmarks: BenchmarkPackV1 | undefined
+  benchmarks: BenchmarkPackV1 | undefined,
+  evidence_summary: string,
+  visuals_summary: string,
+  industry: IndustryBucket | null,
+  industry_key?: string | null,
+  cohort_label?: string
 ): string {
-  // Prefer layer fusion when available
-  let takeaway: string | undefined;
+  // Get top pressure from fusion result
+  const topPressure = layer_fusion?.pressure_patterns?.[0];
   
-  // Try layer_fusion.one_sentence first (if present)
-  if (layer_fusion && "one_sentence" in layer_fusion && layer_fusion.one_sentence) {
-    takeaway = layer_fusion.one_sentence as string;
-  } 
-  // Fall back to pressure_patterns[0].statement
-  else if (layer_fusion && layer_fusion.pressure_patterns.length > 0) {
-    takeaway = layer_fusion.pressure_patterns[0].statement;
-  }
-
-  if (takeaway) {
-    // Add benchmark comparison if available
-    if (benchmarks && benchmarks.metrics.length > 0) {
-      const topMetric = benchmarks.metrics.find((m) => m.percentile > 65 || m.percentile < 35);
-      if (topMetric) {
-        const position = topMetric.percentile > 50 ? "higher than most peers" : "better than typical";
-        takeaway += ` Your ${topMetric.label.toLowerCase()} is ${topMetric.percentile}th percentile (${position} in ${benchmarks.cohort_label}).`;
-      }
+  if (topPressure && benchmarks) {
+    // Normalize pressure key
+    const canonicalKey = normalizePressureKey(topPressure.pressure_key as PressureKey);
+    
+    // Get industry group
+    const industry_group = getIndustryGroup(industry_key ?? cohort_label);
+    
+    // Resolve industry-aware pressure translation
+    const resolved = resolvePressureTranslation({
+      pressure_key: topPressure.pressure_key as PressureKey,
+      industry_key,
+      industry_group,
+      cohort_label,
+    });
+    
+    // Map pressure to benchmark metric
+    const metricKeyMap: Record<string, string> = {
+      concentration_risk: "revenue_concentration_top5_share",
+      follow_up_drift: "quote_age_over_14d_share",
+      capacity_pressure: "approved_to_scheduled_p50_days",
+      cashflow_drag: "invoiced_to_paid_p50_days",
+      rhythm_volatility: "weekly_volume_volatility_index",
+      low_conversion: "quote_to_job_conversion_rate",
+      decision_lag: "approved_to_scheduled_p50_days",
+    };
+    
+    const metricKey = metricKeyMap[canonicalKey];
+    const metric = metricKey ? benchmarks.metrics.find((m) => m.key === metricKey) : undefined;
+    
+    // Build quantified evidence clause with benchmark comparison
+    let evidenceClause = "";
+    if (metric) {
+      const valueStr = metric.unit === "%" 
+        ? `~${Math.round(metric.value)}%`
+        : metric.unit === "days"
+        ? `${Math.round(metric.value)} days`
+        : `${metric.value.toFixed(1)}`;
+      
+      const medianStr = metric.unit === "%"
+        ? `~${Math.round(metric.peer_median)}%`
+        : metric.unit === "days"
+        ? `${Math.round(metric.peer_median)} days`
+        : `${metric.peer_median.toFixed(1)}`;
+      
+      const percentileStr = `${Math.round(metric.percentile)}`;
+      
+      evidenceClause = `${valueStr} (peer median ${medianStr}, ${percentileStr}${metric.percentile >= 50 ? 'th' : 'th'} percentile${metric.direction === "higher_is_risk" && metric.percentile > 70 ? ' risk' : ''})`;
     }
-
-    return takeaway;
+    
+    // Combine owner-felt line + quantified evidence
+    if (resolved.owner_felt_line && evidenceClause) {
+      return `${resolved.owner_felt_line} ${evidenceClause}.`;
+    } else if (resolved.owner_felt_line) {
+      return `${resolved.owner_felt_line} ${evidence_summary}.`;
+    }
   }
-
+  
   // Fallback to conclusion
   if (conclusion?.one_sentence_pattern) {
-    return conclusion.one_sentence_pattern;
+    return `${conclusion.one_sentence_pattern.replace(/\s+$/, "")} ${evidence_summary}.`;
   }
-
+  
   // Last resort: snapshot summary
   const quotes = snapshot.activity_signals?.quotes?.quotes_count ?? 0;
   const invoices = snapshot.activity_signals?.invoices?.invoices_count ?? 0;
@@ -246,19 +304,31 @@ function buildTakeaway(
 }
 
 /**
- * Build why_heavy explanation
+ * Build why_heavy explanation with industry anchor
  */
 function buildWhyHeavy(
   layer_fusion: LayerFusionResult | null,
   conclusion: ConclusionV2 | null,
-  benchmarks: BenchmarkPackV1 | undefined
+  benchmarks: BenchmarkPackV1 | undefined,
+  evidence_summary: string,
+  visuals_summary: string,
+  industry: IndustryBucket | null,
+  cohort_label: string | undefined
 ): string {
   if (layer_fusion) {
     const top = layer_fusion.pressure_patterns[0];
     if (top) {
-      let why = top.statement;
+      // Use pressure translation why_line with benchmark binding
+      const translated = translatePressure(top.pressure_key as PressureKey, {
+        evidence_summary,
+        visuals_summary,
+        benchmarks,
+        industry,
+      });
+      
+      let why = translated.why_line || top.statement;
 
-      // Add context about what is NOT the issue from benchmarks
+      // Add disambiguation: what is NOT the issue from benchmarks
       if (benchmarks) {
         const goodMetrics = benchmarks.metrics.filter(
           (m) =>
@@ -269,6 +339,10 @@ function buildWhyHeavy(
           why += ` This is not a ${goodMetrics[0].label.toLowerCase()} issue—that's tracking well.`;
         }
       }
+
+      // Add industry anchor sentence (always)
+      const industryAnchor = getIndustryAnchor(industry, cohort_label);
+      why += ` ${industryAnchor}`;
 
       return why;
     }
@@ -282,19 +356,42 @@ function buildWhyHeavy(
 }
 
 /**
- * Build boundary condition
+ * Build boundary condition from templates
  */
 function buildBoundary(
   layer_fusion: LayerFusionResult | null,
   conclusion: ConclusionV2 | null,
-  mapping_confidence: BuildArtifactInput["mapping_confidence"]
+  mapping_confidence: BuildArtifactInput["mapping_confidence"],
+  evidence_summary: string,
+  visuals_summary: string,
+  benchmarks: BenchmarkPackV1 | undefined,
+  industry: IndustryBucket | null
 ): string {
   if (mapping_confidence === "low") {
-    return "Confirm data mappings before acting.";
+    // Use mapping_low_confidence pressure boundary template
+    const translated = translatePressure("mapping_low_confidence", {
+      evidence_summary,
+      visuals_summary,
+      benchmarks,
+      industry,
+    });
+    return translated.boundary || "Confirm data mappings before acting.";
   }
 
   if (layer_fusion && layer_fusion.warnings.length > 0) {
     return "Review data coverage; linkage between layers may be incomplete.";
+  }
+
+  // Use top pressure boundary template if available
+  if (layer_fusion && layer_fusion.pressure_patterns.length > 0) {
+    const top = layer_fusion.pressure_patterns[0];
+    const translated = translatePressure(top.pressure_key as PressureKey, {
+      evidence_summary,
+      visuals_summary,
+      benchmarks,
+      industry,
+    });
+    return translated.boundary || "Do not act if this conflicts with your direct operational knowledge.";
   }
 
   if (conclusion?.boundary) {
@@ -363,18 +460,82 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
     })),
   } : undefined;
 
-  // Build pressure map
-  const pressure_map = buildPressureMap(layer_fusion ?? null, benchmarks);
+  // Get industry bucket for voice hints
+  const industry = business_profile?.industry_bucket ?? null;
+  const industry_key = business_profile?.industry_key ?? null;
+  const cohort_label = benchmarks?.cohort_label;
 
-  // Build narrative components
-  const takeaway = buildTakeaway(layer_fusion ?? null, conclusion ?? null, snapshot, benchmarks);
-  const why_heavy = buildWhyHeavy(layer_fusion ?? null, conclusion ?? null, benchmarks);
-  const boundary = buildBoundary(layer_fusion ?? null, conclusion ?? null, mapping_confidence);
+  // Build evidence summary for pressure translations
+  const quotes_count = snapshot.activity_signals?.quotes?.quotes_count ?? 0;
+  const invoices_count = snapshot.activity_signals?.invoices?.invoices_count ?? 0;
+  const lookback_days = snapshot.window?.lookback_days ?? 90;
+  const evidence_summary = `Based on ${quotes_count} quotes and ${invoices_count} invoices in the last ${lookback_days} days`;
+  
+  // Build visuals summary
+  const visuals_summary = benchmarks?.metrics
+    .filter(m => m.percentile !== undefined && (m.percentile > 70 || m.percentile < 30))
+    .map(m => `${m.label}: ${m.percentile}th percentile`)
+    .join(", ") || "No significant outliers";
 
-  // Build next steps
+  // Build pressure map with industry awareness
+  const pressure_map = buildPressureMap(layer_fusion ?? null, snapshot, benchmarks, evidence_summary, visuals_summary, industry, industry_key, cohort_label);
+
+  // Build narrative components with industry awareness
+  const takeaway = buildTakeaway(layer_fusion ?? null, conclusion ?? null, snapshot, benchmarks, evidence_summary, visuals_summary, industry, industry_key, cohort_label);
+  const why_heavy = buildWhyHeavy(layer_fusion ?? null, conclusion ?? null, benchmarks, evidence_summary, visuals_summary, industry, cohort_label);
+  const boundary = buildBoundary(layer_fusion ?? null, conclusion ?? null, mapping_confidence, evidence_summary, visuals_summary, benchmarks, industry);
+
+  // Build next steps using industry-aware pressure translations, bind real numbers
   let next_7_days: string[];
-  if (readiness_level === "ready" && layer_fusion) {
-    next_7_days = focusToNextSteps(layer_fusion.recommended_focus);
+  if (readiness_level === "ready" && layer_fusion && layer_fusion.pressure_patterns.length > 0) {
+    // Get industry group for resolution
+    const industry_group = getIndustryGroup(industry_key ?? cohort_label);
+    
+    // Get top 3 pressures and resolve each with industry awareness
+    const actions = layer_fusion.pressure_patterns.slice(0, 3).map((pattern) => {
+      const resolved = resolvePressureTranslation({
+        pressure_key: pattern.pressure_key as PressureKey,
+        industry_key,
+        industry_group,
+        cohort_label,
+      });
+      
+      // Use recommended_move from resolved translation
+      let action = resolved.recommended_move;
+      
+      // Find matching benchmark metric to bind numbers
+      const canonicalKey = normalizePressureKey(pattern.pressure_key as PressureKey);
+      const metricKeyMap: Record<string, string> = {
+        concentration_risk: "revenue_concentration_top5_share",
+        follow_up_drift: "quote_age_over_14d_share",
+        capacity_pressure: "approved_to_scheduled_p50_days",
+        cashflow_drag: "invoiced_to_paid_p50_days",
+        rhythm_volatility: "weekly_volume_volatility_index",
+        low_conversion: "quote_to_job_conversion_rate",
+        decision_lag: "approved_to_scheduled_p50_days",
+      };
+      
+      const metricKey = metricKeyMap[canonicalKey];
+      if (metricKey && benchmarks) {
+        const metric = benchmarks.metrics.find((m) => m.key === metricKey);
+        if (metric) {
+          const valueStr = metric.unit === "%" 
+            ? `${Math.round(metric.value)}%`
+            : metric.unit === "days"
+            ? `${Math.round(metric.value)} days`
+            : `${metric.value.toFixed(1)}`;
+          
+          // Bind number into action if it contains placeholders or append it
+          if (!action.match(/\d+%|\d+ days/)) {
+            // No number in action, append context
+            action = `${action} (current: ${valueStr})`;
+          }
+        }
+      }
+      
+      return action;
+    });
+    next_7_days = actions;
   } else if (conclusion?.optional_next_steps && conclusion.optional_next_steps.length > 0) {
     next_7_days = conclusion.optional_next_steps.slice(0, 3);
   } else {

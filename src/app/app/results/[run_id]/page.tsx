@@ -129,6 +129,10 @@ export default async function ResultsPage({
   const { run_id } = await params;
   const sp = searchParams ? await searchParams : {};
   const quiet = String(sp?.quiet ?? "") === "1";
+  const internal = String(sp?.internal ?? "") === "1";
+  const internalAllowed =
+    internal &&
+    (process.env.NODE_ENV !== "production" || process.env.ALLOW_INTERNAL_TESTING === "true");
 
   const run = await getRun(run_id);
   if (!run) {
@@ -226,7 +230,7 @@ export default async function ResultsPage({
       {!conclusion && !artifact.diagnose_mode ? (
         <SnapshotSkeleton />
       ) : hasDecisionArtifact ? (
-        <DecisionArtifactView artifact={decision_artifact!} isDev={!quiet} />
+        <DecisionArtifactView artifact={decision_artifact!} isDev={!quiet} showInternal={internalAllowed} />
       ) : (
         <div className="space-y-6">
           <Card className="rounded-2xl border border-border/60 bg-background/90">
@@ -322,7 +326,7 @@ export default async function ResultsPage({
                         </details>
                       ))
                     ) : (
-                      <p className="text-sm text-muted-foreground">Evidence is still loading.</p>
+                      <p className="text-sm text-muted-foreground">Evidence is not available for this run.</p>
                     )}
                   </div>
 

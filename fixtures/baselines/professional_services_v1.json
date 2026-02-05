@@ -1,0 +1,44 @@
+{
+  "cohort_id": "professional_services_v1",
+  "cohort_label": "Professional Services",
+  "version": "v1",
+  "sample_size": 220,
+  "created_at": "2026-02-04T00:00:00.000Z",
+  "industry_bucket": "professional_services",
+  "typical_services": ["Consulting", "Accounting", "Legal", "Marketing", "Design"],
+  "job_value_distribution": {
+    "under_2000": 0.12,
+    "2000_10000": 0.28,
+    "10000_25000": 0.32,
+    "25000_50000": 0.18,
+    "over_50000": 0.10
+  },
+  "decision_lag_distribution": {
+    "same_day": 0.03,
+    "1_3_days": 0.08,
+    "4_7_days": 0.18,
+    "8_14_days": 0.24,
+    "15_30_days": 0.28,
+    "over_30_days": 0.19
+  },
+  "quote_to_invoice_flow": {
+    "approved": 0.38,
+    "stalled": 0.42,
+    "dropped": 0.20
+  },
+  "revenue_concentration": {
+    "top_5_jobs_share": 0.52,
+    "top_10_jobs_share": 0.72,
+    "gini_coefficient": 0.61
+  },
+  "cycle_time_medians": {
+    "quote_to_job_days": 14,
+    "job_duration_days": 30,
+    "invoice_to_paid_days": 30
+  },
+  "volatility_metrics": {
+    "weekly_volume_cv": 0.28,
+    "seasonal_factor": "low"
+  },
+  "notes": "Long sales cycles. Relationship-driven. Often retainer or project-based engagements."
+}

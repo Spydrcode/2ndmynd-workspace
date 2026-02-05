@@ -129,7 +129,7 @@ describe("buildLayerFusion", () => {
     expect(fusion.recommended_focus).toBe("invoicing");
   });
 
-  it("works end-to-end from upload buffers (quotes + invoices + calendar) and produces at least one pattern", () => {
+  it("works end-to-end from upload buffers (quotes + invoices + calendar) and produces at least one pattern", async () => {
     const quotesCsv = [
       "Quote ID,Created At,Total,Status,Approved At",
       "Q-1,2025-02-03 09:45:00,350.00,Sent,",
@@ -175,7 +175,7 @@ describe("buildLayerFusion", () => {
       "",
     ].join("\n");
 
-    const { pack, stats } = normalizeUploadBuffersToDataPack(
+    const { pack, stats } = await normalizeUploadBuffersToDataPack(
       [
         { filename: "quotes.csv", buffer: Buffer.from(quotesCsv, "utf8") },
         { filename: "invoices.csv", buffer: Buffer.from(invoicesCsv, "utf8") },
@@ -205,4 +205,3 @@ describe("buildLayerFusion", () => {
     expect(fusion.recommended_focus).not.toBe("data_fix");
   });
 });
-

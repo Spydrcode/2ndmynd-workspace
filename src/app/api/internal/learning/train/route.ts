@@ -83,6 +83,16 @@ export async function POST(request: NextRequest) {
       }
     );
 
+    child.on("error", (err) => {
+      const errorStatus = {
+        ...initialStatus,
+        status: "error",
+        error_message: `Failed to start Python process: ${err.message}. Ensure Python and dependencies are installed.`,
+        completed_at: new Date().toISOString(),
+      };
+      fs.writeFileSync(statusPath, JSON.stringify(errorStatus, null, 2));
+    });
+
     fs.writeFileSync(
       statusPath,
       JSON.stringify(
@@ -106,6 +116,10 @@ export async function POST(request: NextRequest) {
         completed_at: new Date().toISOString(),
         exit_code: code,
       };
+
+      if (code !== 0) {
+        finalStatus.error_message = "Training failed. Check that Python environment has scikit-learn installed: pip install -r src/lib/learning/requirements.txt";
+      }
 
       if (code === 0) {
         const summaryPath = path.join(modelsDir, "training_summary.json");
@@ -135,7 +149,7 @@ export async function POST(request: NextRequest) {
       model: "all",
       source: source ?? "all",
       examples_count: exportResult.count,
-      status_url: `/api/internal/learning/status?job_id=${jobId}`,
+      status_url: `/api/internal/learning/status?job_id=${jobId}&internal=1`,
     });
 
   } catch (error) {

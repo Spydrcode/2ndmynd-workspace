@@ -72,7 +72,7 @@ export async function runUploadAction(_: UploadState, formData: FormData): Promi
   let pack: DataPackV0 | undefined;
   let stats: DataPackStats | undefined;
   try {
-    const normalized = normalizeUploadBuffersToDataPack(buffers, sourceTool);
+    const normalized = await normalizeUploadBuffersToDataPack(buffers, sourceTool);
     pack = normalized.pack;
     stats = normalized.stats;
     const validation = validateDataPackV0(pack);

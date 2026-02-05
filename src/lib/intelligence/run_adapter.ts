@@ -25,6 +25,16 @@ export type BusinessProfile = {
   location_mentions?: string[];
   domain?: string | null;
   found_contact?: boolean;
+  website_present?: boolean;
+  opportunity_signals?: {
+    has_phone?: boolean;
+    has_email?: boolean;
+    has_booking_cta?: boolean;
+    has_financing?: boolean;
+    has_reviews?: boolean;
+    has_service_pages?: boolean;
+    has_maintenance_plan?: boolean;
+  };
 };
 
 export type ConclusionV2 = {

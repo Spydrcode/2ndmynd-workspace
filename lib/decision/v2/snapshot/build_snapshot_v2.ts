@@ -47,6 +47,20 @@ function toISODate(d: Date) {
   return d.toISOString().slice(0, 10);
 }
 
+function startOfWeekUTC(d: Date) {
+  const base = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  const day = base.getUTCDay();
+  const diff = (day === 0 ? -6 : 1) - day; // Monday as start of week
+  base.setUTCDate(base.getUTCDate() + diff);
+  return base;
+}
+
+function addDaysUTC(d: Date, days: number) {
+  const next = new Date(d.getTime());
+  next.setUTCDate(next.getUTCDate() + days);
+  return next;
+}
+
 function clampBand(x: number, thresholds: [number, number, number, number]): VolatilityBand {
   if (x <= thresholds[0]) return "very_low";
   if (x <= thresholds[1]) return "low";
@@ -79,6 +93,83 @@ function bucketByWeek(dates: Date[]) {
   }
   const keys = Array.from(counts.keys()).sort();
   return keys.map((key) => counts.get(key) ?? 0);
+}
+
+function buildWeeklyVolumeSeries(params: {
+  sliceStart: Date;
+  sliceEnd: Date;
+  quoteDates: Date[];
+  invoiceDates: Date[];
+}) {
+  const start = startOfWeekUTC(params.sliceStart);
+  const end = startOfWeekUTC(params.sliceEnd);
+  const weekStarts: Date[] = [];
+  for (let cursor = start; cursor <= end; cursor = addDaysUTC(cursor, 7)) {
+    weekStarts.push(cursor);
+    if (weekStarts.length > 60) break; // safety cap
+  }
+
+  // Keep last 52 points at most
+  const trimmed =
+    weekStarts.length > 52 ? weekStarts.slice(weekStarts.length - 52) : weekStarts;
+
+  const buckets = new Map<string, { quotes: number; invoices: number }>();
+  for (const week of trimmed) {
+    buckets.set(toISODate(week), { quotes: 0, invoices: 0 });
+  }
+
+  for (const date of params.quoteDates) {
+    const week = toISODate(startOfWeekUTC(date));
+    const bucket = buckets.get(week);
+    if (bucket) bucket.quotes += 1;
+  }
+
+  for (const date of params.invoiceDates) {
+    const week = toISODate(startOfWeekUTC(date));
+    const bucket = buckets.get(week);
+    if (bucket) bucket.invoices += 1;
+  }
+
+  return Array.from(buckets.entries()).map(([week_start, counts]) => ({
+    week_start,
+    quotes: counts.quotes,
+    invoices: counts.invoices,
+  }));
+}
+
+function buildInvoiceSizeBuckets(totals: number[]) {
+  const buckets = [
+    { label: "<250", min: 0, max: 250 },
+    { label: "250-500", min: 250, max: 500 },
+    { label: "500-1k", min: 500, max: 1000 },
+    { label: "1k-2k", min: 1000, max: 2000 },
+    { label: "2k+", min: 2000, max: Number.POSITIVE_INFINITY },
+  ];
+  const counts = buckets.map((bucket) => ({ bucket: bucket.label, count: 0 }));
+  for (const total of totals) {
+    if (!Number.isFinite(total) || total <= 0) continue;
+    const idx = buckets.findIndex((b) => total > b.min && total <= b.max);
+    if (idx >= 0) counts[idx].count += 1;
+  }
+  return counts;
+}
+
+function buildQuoteAgeBuckets(params: { quoteDates: Date[]; reportDate: Date }) {
+  const buckets = [
+    { label: "0-2d", min: 0, max: 2 },
+    { label: "3-7d", min: 3, max: 7 },
+    { label: "8-14d", min: 8, max: 14 },
+    { label: "15-30d", min: 15, max: 30 },
+    { label: "30d+", min: 31, max: Number.POSITIVE_INFINITY },
+  ];
+  const counts = buckets.map((bucket) => ({ bucket: bucket.label, count: 0 }));
+  for (const date of params.quoteDates) {
+    const ageDays = (params.reportDate.getTime() - date.getTime()) / (24 * 60 * 60 * 1000);
+    if (!Number.isFinite(ageDays) || ageDays < 0) continue;
+    const idx = buckets.findIndex((b) => ageDays >= b.min && ageDays <= b.max);
+    if (idx >= 0) counts[idx].count += 1;
+  }
+  return counts;
 }
 
 function computeSeason(buckets: number[]) {
@@ -216,6 +307,18 @@ export function buildSnapshotV2(input: BuildSnapshotV2Input): SnapshotV2 {
   ] as Date[];
   const season = computeSeason(bucketByWeek(activityDates));
 
+  const weekly_volume_series = buildWeeklyVolumeSeries({
+    sliceStart,
+    sliceEnd,
+    quoteDates: quoteItems.map((q) => q.created).filter(Boolean) as Date[],
+    invoiceDates: invoiceItems.map((i) => i.issued).filter(Boolean) as Date[],
+  });
+  const invoice_size_buckets = buildInvoiceSizeBuckets(invoiceTotals);
+  const quote_age_buckets = buildQuoteAgeBuckets({
+    quoteDates: quoteItems.map((q) => q.created).filter(Boolean) as Date[],
+    reportDate: reportDate,
+  });
+
   const totalSignals = quotesCount + invoicesCount;
   const sampleConfidence = totalSignals >= 50 ? "high" : totalSignals >= 20 ? "medium" : "low";
 
@@ -255,6 +358,9 @@ export function buildSnapshotV2(input: BuildSnapshotV2Input): SnapshotV2 {
         payment_lag_band_distribution: paymentLagDist,
       },
     },
+    weekly_volume_series,
+    invoice_size_buckets,
+    quote_age_buckets,
     volatility_band: volatilityBand,
     season,
     input_costs: (input.input_costs ?? []).slice(0, 5),

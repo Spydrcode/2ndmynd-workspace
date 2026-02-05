@@ -1,0 +1,44 @@
+{
+  "cohort_id": "construction_v1",
+  "cohort_label": "Construction",
+  "version": "v1",
+  "sample_size": 150,
+  "created_at": "2026-02-04T00:00:00.000Z",
+  "industry_bucket": "construction",
+  "typical_services": ["General contracting", "Commercial build-out", "Remodeling", "Site work"],
+  "job_value_distribution": {
+    "under_10000": 0.08,
+    "10000_50000": 0.28,
+    "50000_150000": 0.32,
+    "150000_300000": 0.22,
+    "over_300000": 0.10
+  },
+  "decision_lag_distribution": {
+    "same_day": 0.01,
+    "1_3_days": 0.04,
+    "4_7_days": 0.08,
+    "8_14_days": 0.14,
+    "15_30_days": 0.32,
+    "over_30_days": 0.41
+  },
+  "quote_to_invoice_flow": {
+    "approved": 0.32,
+    "stalled": 0.48,
+    "dropped": 0.20
+  },
+  "revenue_concentration": {
+    "top_5_jobs_share": 0.68,
+    "top_10_jobs_share": 0.84,
+    "gini_coefficient": 0.72
+  },
+  "cycle_time_medians": {
+    "quote_to_job_days": 30,
+    "job_duration_days": 60,
+    "invoice_to_paid_days": 45
+  },
+  "volatility_metrics": {
+    "weekly_volume_cv": 0.52,
+    "seasonal_factor": "medium"
+  },
+  "notes": "Long cycles, milestone billing. High concentration risk. Cash flow management critical."
+}

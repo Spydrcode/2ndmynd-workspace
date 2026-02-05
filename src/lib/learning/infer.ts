@@ -1,7 +1,19 @@
 /**
  * Learning Layer - Model Inference
  * 
- * Applies learned models to enhance decision pipeline outputs
+ * Applies learned models to enhance decision pipeline outputs.
+ * 
+ * CRITICAL: RAG is EXCLUDED from model inference by design.
+ * 
+ * This module:
+ * - Takes signals_v1 features as input (which already exclude RAG)
+ * - Applies trained ML models
+ * - Returns predictions for pressure keys, boundary class, etc.
+ * 
+ * RAG content is NEVER used in inference because:
+ * - Models are trained on deterministic signals_v1 only
+ * - RAG is advisory context, not a feature
+ * - Including RAG would break model assumptions
  * 
  * Feature flag: LEARNING_INFERENCE=true
  */
@@ -18,6 +30,12 @@ export interface LearnedOutputs {
   pressure_keys?: string[];
   boundary_class?: BoundaryClass;
   confidence?: number;
+  calibrated_percentiles?: { avg?: number };
+  model_versions?: {
+    pressure_selector?: string;
+    boundary_classifier?: string;
+    calibrator?: string;
+  };
 }
 
 /**
@@ -102,6 +120,7 @@ export function augmentDecisionArtifact(params: {
   }
 
   const augmented: DecisionArtifactV1 = { ...params.decision_artifact };
+  const changes: string[] = [];
   const mappingLow = params.features.mapping_confidence_level === 0;
 
   if (params.learned_outputs.pressure_keys?.length && augmented.pressure_map?.length) {
@@ -118,7 +137,12 @@ export function augmentDecisionArtifact(params: {
       }
     }
     reordered.push(...byKey.values());
-    augmented.pressure_map = reordered;
+    const before = augmented.pressure_map.map((item) => item.key).join(",");
+    const after = reordered.map((item) => item.key).join(",");
+    if (before !== after) {
+      augmented.pressure_map = reordered;
+      changes.push("Reordered pressure signals based on learned patterns.");
+    }
   }
 
   const boundaryClass = mappingLow ? "confirm_mappings" : params.learned_outputs.boundary_class;
@@ -128,7 +152,14 @@ export function augmentDecisionArtifact(params: {
       level: "low",
       reason: "Mapping confidence is low or learning flagged confirm_mappings.",
     };
+    changes.push("Raised boundary to confirm mappings due to low mapping confidence.");
   }
+
+  augmented.learning_note = {
+    applied: changes.length > 0,
+    changes: changes.slice(0, 3),
+    model_versions: params.learned_outputs.model_versions,
+  };
 
   return augmented;
 }
@@ -136,9 +167,13 @@ export function augmentDecisionArtifact(params: {
 export async function applyLearningToDecisionArtifact(params: {
   analysis_result: AnalysisResult;
   decision_artifact: DecisionArtifactV1;
+  learned_outputs_override?: LearnedOutputs | null;
 }): Promise<DecisionArtifactV1> {
   const { features } = extractSignalsV1(params.analysis_result);
-  const learned_outputs = await applyLearnedModels({ features });
+  const learned_outputs =
+    params.learned_outputs_override !== undefined
+      ? params.learned_outputs_override
+      : await applyLearnedModels({ features });
   return augmentDecisionArtifact({
     decision_artifact: params.decision_artifact,
     learned_outputs,

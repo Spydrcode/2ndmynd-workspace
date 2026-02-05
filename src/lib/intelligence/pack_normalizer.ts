@@ -259,7 +259,7 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
   return { pack, stats };
 }
 
-export function normalizeUploadBuffersToDataPack(
+export async function normalizeUploadBuffersToDataPack(
   files: Array<{ filename: string; buffer: Buffer }>,
   sourceTool: string
 ) {
@@ -268,7 +268,7 @@ export function normalizeUploadBuffersToDataPack(
 
   for (const file of files) {
     try {
-      parsed.push(parseFile(file.filename, file.buffer));
+      parsed.push(await parseFile(file.filename, file.buffer));
     } catch (error) {
       attempted.push({
         filename: file.filename,
@@ -392,7 +392,7 @@ function mapRowToCustomer(row: Record<string, string>, sourceFile: string): Cust
  * Normalize multiple uploaded files into a CompanyPack with layered structure.
  * NEVER short-circuits: processes ALL files even if some fail.
  */
-export function normalizeToCompanyPack(
+export async function normalizeToCompanyPack(
   files: Array<{ filename: string; buffer: Buffer }>,
   sourceTool: string
 ): CompanyPack {
@@ -413,7 +413,7 @@ export function normalizeToCompanyPack(
 
     try {
       // Parse the file
-      const parsed = parseFile(file.filename, file.buffer);
+      const parsed = await parseFile(file.filename, file.buffer);
       const headers = parsed.rows[0] ? Object.keys(parsed.rows[0]) : [];
 
       // Infer file types

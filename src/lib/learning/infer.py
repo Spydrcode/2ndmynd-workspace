@@ -30,6 +30,8 @@ def load_models(models_dir: Path):
     if calibrator_path and (calibrator_path / "model.pkl").exists():
         models["calibrator"] = {
             "model": joblib.load(calibrator_path / "model.pkl"),
+            "version": (json.load(open(calibrator_path / "metadata.json"))["version"]
+                        if (calibrator_path / "metadata.json").exists() else calibrator_path.name),
         }
 
     pressure_path = latest_model_dir(models_dir, "pressure_selector")
@@ -37,6 +39,8 @@ def load_models(models_dir: Path):
         models["pressure_selector"] = {
             "model": joblib.load(pressure_path / "model.pkl"),
             "pressure_keys": json.load(open(pressure_path / "pressure_keys.json")),
+            "version": (json.load(open(pressure_path / "metadata.json"))["version"]
+                        if (pressure_path / "metadata.json").exists() else pressure_path.name),
         }
 
     boundary_path = latest_model_dir(models_dir, "boundary_classifier")
@@ -44,6 +48,8 @@ def load_models(models_dir: Path):
         models["boundary_classifier"] = {
             "model": joblib.load(boundary_path / "model.pkl"),
             "class_names": json.load(open(boundary_path / "class_names.json")),
+            "version": (json.load(open(boundary_path / "metadata.json"))["version"]
+                        if (boundary_path / "metadata.json").exists() else boundary_path.name),
         }
 
     return models
@@ -68,6 +74,7 @@ def main():
     models = load_models(models_dir)
     
     results = {}
+    model_versions = {}
     
     # Calibrator
     if "calibrator" in models:
@@ -75,6 +82,7 @@ def main():
         X = features_to_array(features)
         pred = m["model"].predict(X)[0]
         results["calibrated_percentiles"] = {"avg": float(pred)}
+        model_versions["calibrator"] = m.get("version")
     
     # Pressure selector
     if "pressure_selector" in models:
@@ -87,6 +95,7 @@ def main():
         top_indices = np.argsort(scores)[-3:][::-1]
         suggested = [m["pressure_keys"][i] for i in top_indices]
         results["pressure_keys"] = suggested
+        model_versions["pressure_selector"] = m.get("version")
     
     # Boundary classifier
     if "boundary_classifier" in models:
@@ -97,6 +106,10 @@ def main():
             pred_proba = m["model"].predict_proba(X)[0]
             results["confidence"] = float(max(pred_proba))
         results["boundary_class"] = m["class_names"][pred]
+        model_versions["boundary_classifier"] = m.get("version")
+
+    if model_versions:
+        results["model_versions"] = model_versions
     
     # Output JSON
     print(json.dumps(results))
