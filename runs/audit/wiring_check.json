@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-02-05T12:13:06.927Z",
+  "timestamp": "2026-02-05T14:02:10.611Z",
   "passed": 4,
   "failed": 0,
   "skipped": 0,
@@ -9,36 +9,36 @@
       "command": "npx vitest run mcp/__tests__/tool_registry.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.0.18 \u001b[39m\u001b[90mC:/Users/dusti/git/2ndmynd-workspace\u001b[39m\n\n \u001b[32m✓\u001b[39m mcp/__tests__/tool_registry.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 5\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m5 passed\u001b[39m\u001b[22m\u001b[90m (5)\u001b[39m\n\u001b[2m   Start at \u001b[22m 05:12:58\n\u001b[2m   Duration \u001b[22m 849ms\u001b[2m (transform 168ms, setup 0ms, import 710ms, tests 5ms, environment 0ms)\u001b[22m\n\n",
+      "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.0.18 \u001b[39m\u001b[90mC:/Users/dusti/git/2ndmynd-workspace\u001b[39m\n\n \u001b[32m✓\u001b[39m mcp/__tests__/tool_registry.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 4\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m5 passed\u001b[39m\u001b[22m\u001b[90m (5)\u001b[39m\n\u001b[2m   Start at \u001b[22m 07:01:59\n\u001b[2m   Duration \u001b[22m 1.14s\u001b[2m (transform 178ms, setup 0ms, import 1.01s, tests 4ms, environment 0ms)\u001b[22m\n\n",
       "stderr": "",
-      "duration": 1736
+      "duration": 2038
     },
     {
       "name": "RAG Safety Invariants",
       "command": "npx vitest run src/lib/rag/__tests__/integration.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.0.18 \u001b[39m\u001b[90mC:/Users/dusti/git/2ndmynd-workspace\u001b[39m\n\n \u001b[32m✓\u001b[39m src/lib/rag/__tests__/integration.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 3259\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should ingest website scan when website_url provided \u001b[33m 960\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should ingest business profile context \u001b[33m 385\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should retrieve context when workspace_id and query provided \u001b[33m 448\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should enforce size limits on RAG documents \u001b[33m 958\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m10 passed\u001b[39m\u001b[22m\u001b[90m (10)\u001b[39m\n\u001b[2m   Start at \u001b[22m 05:12:59\n\u001b[2m   Duration \u001b[22m 4.05s\u001b[2m (transform 143ms, setup 0ms, import 660ms, tests 3.26s, environment 0ms)\u001b[22m\n\n",
+      "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.0.18 \u001b[39m\u001b[90mC:/Users/dusti/git/2ndmynd-workspace\u001b[39m\n\n \u001b[32m✓\u001b[39m src/lib/rag/__tests__/integration.test.ts \u001b[2m(\u001b[22m\u001b[2m10 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 5221\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should ingest website scan when website_url provided \u001b[33m 1229\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should ingest business profile context \u001b[33m 820\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should retrieve context when workspace_id and query provided \u001b[33m 927\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should enforce size limits on RAG documents \u001b[33m 1185\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should fail gracefully when RAG retrieval errors \u001b[33m 695\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m10 passed\u001b[39m\u001b[22m\u001b[90m (10)\u001b[39m\n\u001b[2m   Start at \u001b[22m 07:02:01\n\u001b[2m   Duration \u001b[22m 6.36s\u001b[2m (transform 153ms, setup 0ms, import 998ms, tests 5.22s, environment 0ms)\u001b[22m\n\n",
       "stderr": "\u001b[90mstderr\u001b[2m | src/lib/rag/__tests__/integration.test.ts\u001b[2m > \u001b[22m\u001b[2mRAG Integration\u001b[2m > \u001b[22m\u001b[2mRAG Context Retrieval\u001b[2m > \u001b[22m\u001b[2mshould return empty context when workspace_id is missing\n\u001b[22m\u001b[39mgetRagContext called without workspace_id filter\n\n\u001b[90mstderr\u001b[2m | src/lib/rag/__tests__/integration.test.ts\u001b[2m > \u001b[22m\u001b[2mRAG Integration\u001b[2m > \u001b[22m\u001b[2mRAG Guardrails\u001b[2m > \u001b[22m\u001b[2mshould enforce size limits on RAG documents\n\u001b[22m\u001b[39mRAG document too large (100000 chars), truncating to 50000\n\n",
-      "duration": 4947
+      "duration": 7261
     },
     {
       "name": "E2E Mock Run Pipeline",
       "command": "npx vitest run src/lib/intelligence/__tests__/run_analysis.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.0.18 \u001b[39m\u001b[90mC:/Users/dusti/git/2ndmynd-workspace\u001b[39m\n\n \u001b[32m✓\u001b[39m src/lib/intelligence/__tests__/run_analysis.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 612\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should have required mock pipeline functions exported \u001b[33m 607\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m5 passed\u001b[39m\u001b[22m\u001b[90m (5)\u001b[39m\n\u001b[2m   Start at \u001b[22m 05:13:04\n\u001b[2m   Duration \u001b[22m 890ms\u001b[2m (transform 155ms, setup 0ms, import 142ms, tests 612ms, environment 0ms)\u001b[22m\n\n",
+      "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.0.18 \u001b[39m\u001b[90mC:/Users/dusti/git/2ndmynd-workspace\u001b[39m\n\n \u001b[32m✓\u001b[39m src/lib/intelligence/__tests__/run_analysis.test.ts \u001b[2m(\u001b[22m\u001b[2m5 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 598\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m✓\u001b[22m\u001b[39m should have required mock pipeline functions exported \u001b[33m 594\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m5 passed\u001b[39m\u001b[22m\u001b[90m (5)\u001b[39m\n\u001b[2m   Start at \u001b[22m 07:02:08\n\u001b[2m   Duration \u001b[22m 928ms\u001b[2m (transform 164ms, setup 0ms, import 197ms, tests 598ms, environment 0ms)\u001b[22m\n\n",
       "stderr": "",
-      "duration": 1807
+      "duration": 1842
     },
     {
       "name": "E2E Learning Smoke Test",
       "command": "npx vitest run src/lib/learning/__tests__/build_training_example_v1.test.ts",
       "status": "PASS",
       "exitCode": 0,
-      "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.0.18 \u001b[39m\u001b[90mC:/Users/dusti/git/2ndmynd-workspace\u001b[39m\n\n \u001b[32m✓\u001b[39m src/lib/learning/__tests__/build_training_example_v1.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 169\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m4 passed\u001b[39m\u001b[22m\u001b[90m (4)\u001b[39m\n\u001b[2m   Start at \u001b[22m 05:13:06\n\u001b[2m   Duration \u001b[22m 341ms\u001b[2m (transform 67ms, setup 0ms, import 37ms, tests 169ms, environment 0ms)\u001b[22m\n\n",
+      "stdout": "\n\u001b[1m\u001b[46m RUN \u001b[49m\u001b[22m \u001b[36mv4.0.18 \u001b[39m\u001b[90mC:/Users/dusti/git/2ndmynd-workspace\u001b[39m\n\n \u001b[32m✓\u001b[39m src/lib/learning/__tests__/build_training_example_v1.test.ts \u001b[2m(\u001b[22m\u001b[2m4 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[32m 210\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m4 passed\u001b[39m\u001b[22m\u001b[90m (4)\u001b[39m\n\u001b[2m   Start at \u001b[22m 07:02:10\n\u001b[2m   Duration \u001b[22m 416ms\u001b[2m (transform 67ms, setup 0ms, import 71ms, tests 210ms, environment 0ms)\u001b[22m\n\n",
       "stderr": "",
-      "duration": 1223
+      "duration": 1313
     }
   ],
   "warnings": [],

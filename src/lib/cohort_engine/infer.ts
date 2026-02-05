@@ -57,8 +57,16 @@ export async function inferCohort(features: SignalsV1Record): Promise<CohortInfe
     proc.on("close", (code) => {
       if (code === 0) {
         try {
-          const result: CohortInference = JSON.parse(stdout);
-          resolve(result);
+          const result = JSON.parse(stdout);
+          
+          // Check for schema_mismatch or other errors
+          if (result.error) {
+            console.error(`[Cohort Engine] ${result.error}: ${result.message}`);
+            resolve(null);
+            return;
+          }
+          
+          resolve(result as CohortInference);
         } catch (err) {
           console.error("[Cohort Engine] Failed to parse inference result:", err);
           resolve(null);

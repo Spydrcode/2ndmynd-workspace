@@ -203,13 +203,25 @@ export function guardAgainstPII(features: SignalsV1Record): void {
   const allowedStrings = new Set<string>([...WINDOW_RULES, ...SOURCES, ...INDUSTRIES]);
   const emailPattern = /@/;
   const phonePattern = /\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/;
+  // Address patterns - conservative to avoid false positives
+  const streetSuffixPattern = /\b\d+\s+\w+\s+(st|street|ave|avenue|rd|road|blvd|boulevard|dr|drive|ln|lane|ct|court|way|pl|place)\b/i;
+  const poBoxPattern = /\bP\.?O\.?\s*Box\s+\d+/i;
+  const zipWithStreetPattern = /\d{5}(-\d{4})?\b.*\b(st|street|ave|avenue|rd|road|blvd|boulevard|dr|drive)\b/i;
+  
   for (const value of Object.values(features)) {
     if (typeof value !== "string") continue;
-    if (!allowedStrings.has(value)) {
-      throw new Error(`Unexpected string value in features: ${value}`);
-    }
+    
+    // Check PII/address patterns first (before allowlist check)
     if (emailPattern.test(value) || phonePattern.test(value)) {
       throw new Error(`PII detected in feature string: ${value}`);
+    }
+    if (streetSuffixPattern.test(value) || poBoxPattern.test(value) || zipWithStreetPattern.test(value)) {
+      throw new Error(`Address detected in feature string: ${value}`);
+    }
+    
+    // Then check allowlist
+    if (!allowedStrings.has(value)) {
+      throw new Error(`Unexpected string value in features: ${value}`);
     }
   }
 }

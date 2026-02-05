@@ -239,7 +239,7 @@ describe("buildDecisionArtifact", () => {
       benchmarks: null,
     });
 
-    // Verify all expected fields exist
+    // Verify all critical fields exist
     expect(artifact).toHaveProperty("version");
     expect(artifact).toHaveProperty("takeaway");
     expect(artifact).toHaveProperty("why_heavy");
@@ -253,8 +253,20 @@ describe("buildDecisionArtifact", () => {
     expect(artifact).toHaveProperty("visuals_summary");
     expect(artifact).toHaveProperty("website_opportunities");
 
-    // Verify no new fields added
-    const keys = Object.keys(artifact);
-    expect(keys.length).toBe(12);
+    // Verify invariants (no exact key count - allows optional fields like cohort_context)
+    expect(Array.isArray(artifact.next_7_days)).toBe(true);
+    expect(artifact.next_7_days.length).toBeGreaterThan(0);
+    expect(artifact.next_7_days.length).toBeLessThanOrEqual(7);
+    
+    expect(Array.isArray(artifact.pressure_map)).toBe(true);
+    expect(artifact.pressure_map.length).toBeLessThanOrEqual(10);
+    
+    // Numeric fields must never be invented (should be null/undefined if absent)
+    if (artifact.benchmarks?.metrics) {
+      for (const metric of artifact.benchmarks.metrics) {
+        expect(typeof metric.value === "number" || metric.value === null).toBe(true);
+        expect(typeof metric.peer_median === "number" || metric.peer_median === null).toBe(true);
+      }
+    }
   });
 });

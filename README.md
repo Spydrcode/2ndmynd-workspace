@@ -24,6 +24,20 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Offline/CI Build Mode
+
+For CI environments or offline builds without external network access:
+
+```bash
+export NEXT_OFFLINE_BUILD=true
+npm run build
+```
+
+This skips Google Fonts fetching and uses system font stack instead. Useful for:
+- CI/CD pipelines with restrictive network policies
+- Air-gapped environments
+- Faster builds without external dependencies
+
 ## Decision Lab
 
 The Decision Lab offers a simple way to send a snapshot to the decision model and see a conclusion.

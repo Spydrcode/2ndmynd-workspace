@@ -474,9 +474,24 @@ export async function runAnalysisFromPack(params: {
     try {
       const { extractSignalsV1 } = await import("../learning/signals_v1");
       const { inferCohort } = await import("../cohort_engine/infer");
-      const signals = extractSignalsV1({ run_id: params.run_id, result: { snapshot, layer_fusion, business_profile, conclusion } });
-      if (signals) {
-        cohort_inference = await inferCohort(signals);
+      
+      // Build minimal AnalysisResult for signals extraction
+      const analysisForSignals: AnalysisResult = {
+        run_id: params.run_id,
+        input_hash: "",
+        snapshot,
+        conclusion: conclusion as ConclusionV2,
+        layer_fusion,
+        business_profile,
+        validation: { ok: true, errors: [] },
+        run_manifest: manifest,
+        input_recognition: undefined,
+        mapping_confidence,
+      };
+      
+      const { features } = extractSignalsV1(analysisForSignals);
+      if (features) {
+        cohort_inference = await inferCohort(features);
       }
     } catch (error) {
       console.warn("[Cohort Engine] Inference failed (non-blocking):", error);

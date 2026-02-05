@@ -53,6 +53,7 @@ export interface CohortEngineConfig {
   modelPath: string;
   pythonScript: string;
   requirePythonWiring: boolean;
+  allowUnsafeModelOverride: boolean;
 }
 
 /**
@@ -60,8 +61,21 @@ export interface CohortEngineConfig {
  */
 export function getCohortEngineConfig(): CohortEngineConfig {
   const enabled = process.env.COHORT_ENGINE_ENABLED === "true";
-  const modelVersion = process.env.COHORT_ENGINE_MODEL_VERSION ?? "latest";
   const requirePythonWiring = process.env.REQUIRE_PYTHON_WIRING === "1";
+  const allowUnsafeOverride = process.env.ALLOW_UNSAFE_MODEL_OVERRIDE === "true" && process.env.NODE_ENV !== "production";
+  
+  // Promotion-only runtime: ONLY allowed model_version is "latest" unless unsafe override enabled
+  let modelVersion = "latest";
+  
+  if (allowUnsafeOverride) {
+    const override = process.env.COHORT_ENGINE_MODEL_VERSION;
+    if (override && override !== "latest") {
+      console.warn(`[Cohort Engine] ⚠️  UNSAFE MODEL OVERRIDE: using ${override} (not promoted)`);
+      modelVersion = override;
+    }
+  } else if (process.env.COHORT_ENGINE_MODEL_VERSION && process.env.COHORT_ENGINE_MODEL_VERSION !== "latest") {
+    console.warn(`[Cohort Engine] Ignoring COHORT_ENGINE_MODEL_VERSION=${process.env.COHORT_ENGINE_MODEL_VERSION}. Only "latest" allowed without ALLOW_UNSAFE_MODEL_OVERRIDE=true`);
+  }
   
   return {
     enabled,
@@ -69,6 +83,7 @@ export function getCohortEngineConfig(): CohortEngineConfig {
     modelPath: `models/cohort_engine/${modelVersion}`,
     pythonScript: "packages/cohort_engine/infer_cohort.py",
     requirePythonWiring,
+    allowUnsafeModelOverride: allowUnsafeOverride,
   };
 }
 

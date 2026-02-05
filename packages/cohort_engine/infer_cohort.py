@@ -4,6 +4,9 @@ Cohort Inference
 
 Loads trained cohort model and predicts cohort_id + expected_ranges.
 
+SCHEMA PARITY: Validates schema_hash match before inference.
+If schema mismatch detected, returns error status.
+
 Usage:
     python infer_cohort.py --model_version=latest --features='{"total_revenue": 150000, ...}'
 
@@ -15,6 +18,12 @@ Outputs JSON:
       "distance_to_centroid": 1.23,
       "expected_ranges": [...]
     }
+    
+    OR on schema mismatch:
+    {
+      "error": "schema_mismatch",
+      "message": "Model schema hash (abc123) != current schema (def456)"
+    }
 """
 
 import argparse
@@ -25,6 +34,35 @@ from pathlib import Path
 from typing import Any, Dict
 
 import numpy as np
+
+
+def load_current_schema() -> Dict[str, Any]:
+    """Load current signals_v1 schema."""
+    schema_path = Path("./ml/schemas/signals_v1_schema.json")
+    
+    if not schema_path.exists():
+        print(
+            json.dumps({
+                "error": "schema_not_found",
+                "message": "ml/schemas/signals_v1_schema.json not found. Run: node scripts/export_signals_schema.mjs"
+            }),
+            file=sys.stderr
+        )
+        sys.exit(1)
+    
+    with open(schema_path, "r") as f:
+        return json.load(f)
+
+
+def load_model_meta(model_dir: str) -> Dict[str, Any]:
+    """Load model metadata."""
+    meta_path = Path(model_dir) / "meta.json"
+    
+    if not meta_path.exists():
+        raise FileNotFoundError(f"meta.json not found: {meta_path}")
+    
+    with open(meta_path, "r") as f:
+        return json.load(f)
 
 
 def load_model(model_dir: str) -> Dict[str, Any]:
@@ -59,12 +97,19 @@ def load_ranges(model_dir: str) -> Dict[int, list]:
 def infer_cohort(features: Dict[str, float], model_version: str, models_dir: str) -> Dict[str, Any]:
     """Predict cohort for given features."""
     
+    # Load current schema
+    current_schema = load_current_schema()
+    current_hash = current_schema["schema_hash"]
+    
     # Resolve model version
     if model_version == "latest":
         latest_path = Path(models_dir) / "LATEST.json"
         
         if not latest_path.exists():
-            raise FileNotFoundError("LATEST.json not found. No promoted model.")
+            return {
+                "error": "no_promoted_model",
+                "message": "LATEST.json not found. No promoted model available."
+            }
         
         with open(latest_path, "r") as f:
             latest = json.load(f)
@@ -74,7 +119,22 @@ def infer_cohort(features: Dict[str, float], model_version: str, models_dir: str
     model_dir = Path(models_dir) / model_version
     
     if not model_dir.exists():
-        raise FileNotFoundError(f"Model directory not found: {model_dir}")
+        return {
+            "error": "model_not_found",
+            "message": f"Model directory not found: {model_dir}"
+        }
+    
+    # Load model metadata and check schema hash
+    meta = load_model_meta(str(model_dir))
+    model_hash = meta.get("schema_hash")
+    
+    if model_hash != current_hash:
+        return {
+            "error": "schema_mismatch",
+            "message": f"Model schema hash ({model_hash}) != current schema ({current_hash}). Retrain model or rollback schema.",
+            "model_hash": model_hash,
+            "current_hash": current_hash
+        }
     
     # Load model and ranges
     model_data = load_model(str(model_dir))

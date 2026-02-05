@@ -8,6 +8,8 @@ Computes evaluation metrics for trained cohort model:
 - Outlier rate (pct of clusters below min size threshold)
 - Min cluster size
 
+SCHEMA PARITY: Uses signals_v1_schema.json for feature loading.
+
 Usage:
     python evaluate_cohorts.py --model_version=v20260205_120000 --data_path=./data/learning/train
 
@@ -24,6 +26,20 @@ from typing import Dict, Any
 import numpy as np
 from sklearn.metrics import silhouette_score, adjusted_rand_score
 from sklearn.model_selection import train_test_split
+
+
+def load_signals_schema() -> Dict[str, Any]:
+    """Load canonical signals_v1 schema."""
+    schema_path = Path("./ml/schemas/signals_v1_schema.json")
+    
+    if not schema_path.exists():
+        raise FileNotFoundError(
+            f"Schema file not found: {schema_path}\n"
+            "Run: node scripts/export_signals_schema.mjs"
+        )
+    
+    with open(schema_path, "r") as f:
+        return json.load(f)
 
 
 def load_model(model_dir: str) -> Dict[str, Any]:

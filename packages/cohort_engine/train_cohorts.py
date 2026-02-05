@@ -4,16 +4,20 @@ Train Cohort Engine (KMeans)
 
 Clusters business signals into k cohorts and computes expected ranges.
 
+SCHEMA PARITY: Uses EXACT feature keys from signals_v1_schema.json (TypeScript source of truth).
+Any schema mismatch will cause training/inference to fail.
+
 Usage:
     python train_cohorts.py --data_path=./data/learning/train --out_dir=./models/cohort_engine --k=8
 
 Outputs:
     - model.pkl (KMeans model)
     - ranges.json (expected ranges per cohort)
-    - meta.json (metadata including silhouette, outlier_rate)
+    - meta.json (metadata including silhouette, outlier_rate, schema_hash)
 """
 
 import argparse
+import hashlib
 import json
 import pickle
 from datetime import datetime
@@ -25,6 +29,37 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
+
+
+def load_signals_schema() -> Dict[str, Any]:
+    """Load canonical signals_v1 schema from JSON."""
+    schema_path = Path("./ml/schemas/signals_v1_schema.json")
+    
+    if not schema_path.exists():
+        raise FileNotFoundError(
+            f"Schema file not found: {schema_path}\n"
+            "Run: node scripts/export_signals_schema.mjs"
+        )
+    
+    with open(schema_path, "r") as f:
+        schema = json.load(f)
+    
+    return schema
+
+
+# Load canonical schema
+SCHEMA = load_signals_schema()
+SCHEMA_HASH = SCHEMA["schema_hash"]
+ALL_FEATURE_KEYS = SCHEMA["feature_keys"]
+
+# String keys (excluded from clustering)
+STRING_KEYS = ["industry_key", "source", "window_rule"]
+
+# Numeric keys for clustering (filter out string keys)
+FEATURE_KEYS = [key for key in ALL_FEATURE_KEYS if key not in STRING_KEYS]
+
+print(f"[Schema] Loaded {len(ALL_FEATURE_KEYS)} features (hash: {SCHEMA_HASH})")
+print(f"[Schema] Using {len(FEATURE_KEYS)} numeric features for clustering")
 
 # Benchmarkable metrics (must match types.ts)
 BENCHMARKABLE_METRICS = [
@@ -40,28 +75,6 @@ BENCHMARKABLE_METRICS = [
     "pct_jobs_with_followup",
     "avg_items_per_job",
     "revenue_concentration_top3",
-]
-
-# Feature keys for clustering (numeric signals only)
-FEATURE_KEYS = [
-    "total_revenue",
-    "total_jobs",
-    "avg_job_value",
-    "total_quoted_amount",
-    "total_quoted_jobs",
-    "pct_quoted_won",
-    "avg_quote_to_win_days",
-    "avg_days_to_invoice",
-    "avg_payment_lag_days",
-    "pct_jobs_paid_on_time",
-    "avg_job_duration_days",
-    "pct_jobs_with_followup",
-    "avg_items_per_job",
-    "revenue_concentration_top3",
-    "pct_revenue_top_client",
-    "window_days",
-    "jobs_per_month_rate",
-    "revenue_per_month_rate",
 ]
 
 
@@ -210,7 +223,8 @@ def train_cohort_engine(data_path: str, out_dir: str, k: int = 8) -> None:
         "trained_at": datetime.utcnow().isoformat() + "Z",
         "n_clusters": k,
         "features_used": FEATURE_KEYS,
-        "schema_hash": "signals_v1",
+        "schema_version": SCHEMA["schema_version"],
+        "schema_hash": SCHEMA_HASH,
         "training_rows": len(df),
         "silhouette_score": float(silhouette),
         "outlier_rate": float(outlier_rate),

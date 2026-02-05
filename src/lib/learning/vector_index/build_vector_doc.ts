@@ -20,19 +20,36 @@ function formatNumber(value: number | null) {
   return value.toFixed(3);
 }
 
+function guardAgainstAddressPatterns(text: string): void {
+  // Conservative address detection - avoid false positives
+  const streetSuffixPattern = /\b\d+\s+\w+\s+(st|street|ave|avenue|rd|road|blvd|boulevard|dr|drive|ln|lane|ct|court|way|pl|place)\b/i;
+  const poBoxPattern = /\bP\.?O\.?\s*Box\s+\d+/i;
+  const zipWithStreetPattern = /\d{5}(-\d{4})?\b.*\b(st|street|ave|avenue|rd|road|blvd|boulevard|dr|drive)\b/i;
+  
+  if (streetSuffixPattern.test(text) || poBoxPattern.test(text) || zipWithStreetPattern.test(text)) {
+    throw new Error(`Address pattern detected in summary text: ${text.substring(0, 50)}`);
+  }
+}
+
 export function buildVectorSummary(example: TrainingExampleV1) {
   const features = example.features;
   const top5 = features.top5_invoice_share as number | null;
   const decisionP50 = features.decision_lag_days_p50 as number | null;
   const pressures = example.targets.pressure_keys.slice(0, 3).join(",") || "none";
   const boundary = example.targets.boundary_class;
-  return [
+  
+  const summary = [
     `industry=${example.industry_key}`,
     `top5_share=${formatNumber(top5)}`,
     `decision_p50=${formatNumber(decisionP50)}`,
     `pressure=${pressures}`,
     `boundary=${boundary}`,
   ].join("; ");
+  
+  // Guard against address patterns leaking into embeddings
+  guardAgainstAddressPatterns(summary);
+  
+  return summary;
 }
 
 function resolveEmbeddingModel() {
