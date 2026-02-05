@@ -156,10 +156,29 @@ async function queryOpenAI(summary: string, topK: number, filterModel?: string):
   if (!client.vectorStores?.search) return [];
   const response = await client.vectorStores.search(storeId, { query: summary, top_k: topK });
   const data = response?.data ?? [];
-  const mapped = data.map((item: any) => ({
+  type OpenAISearchItem = {
+    id: string;
+    score?: number;
+    metadata?: {
+      run_id?: string;
+      industry_key?: string;
+      created_at?: string;
+      embedding_model?: string;
+      embedding_dim?: number;
+      pressure_keys?: string[];
+      boundary_class?: string;
+    };
+  };
+  type MappedResult = Omit<SimilarVectorResult, "run_id" | "industry_key" | "created_at"> & {
+    run_id?: string;
+    industry_key?: SimilarVectorResult["industry_key"];
+    created_at?: string;
+  };
+
+  const mapped: MappedResult[] = (data as OpenAISearchItem[]).map((item) => ({
     id: item.id,
     run_id: item.metadata?.run_id,
-    industry_key: item.metadata?.industry_key,
+    industry_key: item.metadata?.industry_key as SimilarVectorResult["industry_key"] | undefined,
     created_at: item.metadata?.created_at,
     score: item.score ?? 0,
     embedding_model: item.metadata?.embedding_model,
@@ -168,7 +187,12 @@ async function queryOpenAI(summary: string, topK: number, filterModel?: string):
     boundary_class: item.metadata?.boundary_class,
   }));
   const filtered = filterModel ? mapped.filter((item) => item.embedding_model === filterModel) : mapped;
-  return filtered.slice(0, topK);
+  return filtered
+    .filter(
+      (item): item is SimilarVectorResult =>
+        Boolean(item.run_id && item.industry_key && item.created_at)
+    )
+    .slice(0, topK);
 }
 
 async function upsertPinecone(docs: VectorDoc[]) {

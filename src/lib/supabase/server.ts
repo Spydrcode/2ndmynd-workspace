@@ -44,17 +44,17 @@ export async function createSupabaseServerClient() {
 
   return createServerClient(url, key, {
     cookies: {
-      get(name) {
+      get(name: string) {
         return (cookieStore as unknown as { get?: (name: string) => { value?: string } | undefined }).get?.(name)
           ?.value;
       },
-      set(name, value, options) {
+      set(name: string, value: string, options: Record<string, unknown>) {
         const store = cookieStore as unknown as { set?: (args: { name: string; value: string } & Record<string, unknown>) => void };
         if (typeof store.set === "function") {
           store.set({ name, value, ...(options as Record<string, unknown>) });
         }
       },
-      remove(name, options) {
+      remove(name: string, options: Record<string, unknown>) {
         const store = cookieStore as unknown as { set?: (args: { name: string; value: string } & Record<string, unknown>) => void };
         if (typeof store.set === "function") {
           store.set({ name, value: "", ...(options as Record<string, unknown>) });

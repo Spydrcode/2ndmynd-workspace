@@ -65,7 +65,7 @@ export type DataPackStats = {
   files_attempted?: Array<{
     filename: string;
     type_guess: string;
-    status: "success" | "error";
+    status: "success" | "error" | "unknown";
     error?: string;
   }>;
 };

@@ -32,7 +32,7 @@ Leverage layers sit on top of verified wiring and do not change wiring status.
 - Benchmark narratives: `docs/leverage/benchmark_narratives.md`
 
 ## Verification Commands
-- Run `npm run audit:wiring` for the wiring check.
+- Run `npm run audit:wiring` (alias of `npm run wiring:check`) for the wiring check.
 - See `docs/audit/wiring_check.md` for interpretation.
 - See `docs/audit/runbook.md` for setup and operating procedure.
 

@@ -66,7 +66,7 @@ export type RunResults = {
     files_attempted?: Array<{
       filename: string;
       type_guess: string;
-      status: "success" | "error";
+      status: "success" | "error" | "unknown";
       error?: string;
     }>;
     by_type?: Record<string, unknown>;
@@ -79,6 +79,7 @@ export type RunResults = {
   benchmarks?: unknown | null;
   mapping_confidence?: "low" | "medium" | "high" | null;
   run_manifest?: RunManifest | null;
+  decision_artifact?: unknown | null;
   artifacts?: {
     log_path?: string | null;
   } | null;

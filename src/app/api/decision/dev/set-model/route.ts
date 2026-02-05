@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+type Database = {
+  public: {
+    Tables: Record<string, { Row: Record<string, unknown> }>;
+  };
+  ml: {
+    Tables: Record<string, { Row: Record<string, unknown> }>;
+  };
+};
+
 function ensureDevAccess(request: Request) {
   if (process.env.NODE_ENV === "production") {
     return { ok: false, status: 404, message: "Not found." };
@@ -61,7 +70,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = createClient<unknown>(
+  const supabase = createClient<Database>(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE_KEY,
     { auth: { persistSession: false, autoRefreshToken: false } }

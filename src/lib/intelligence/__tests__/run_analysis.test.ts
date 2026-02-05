@@ -66,13 +66,13 @@ describe("E2E Mock Run Pipeline", () => {
   describe("Pipeline Integration", () => {
     it("should have required mock pipeline functions exported", async () => {
       // Verify the mock pipeline module exports the right functions
-      const module = await import("../../internal/testing/run_mock_pipeline");
+      const mockModule = await import("../../internal/testing/run_mock_pipeline");
       
-      expect(module.runMockPipelineJob).toBeDefined();
-      expect(typeof module.runMockPipelineJob).toBe("function");
+      expect(mockModule.runMockPipelineJob).toBeDefined();
+      expect(typeof mockModule.runMockPipelineJob).toBe("function");
       
-      expect(module.createFileStatusWriter).toBeDefined();
-      expect(typeof module.createFileStatusWriter).toBe("function");
+      expect(mockModule.createFileStatusWriter).toBeDefined();
+      expect(typeof mockModule.createFileStatusWriter).toBe("function");
     });
   });
 });

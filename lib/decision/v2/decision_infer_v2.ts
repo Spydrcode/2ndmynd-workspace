@@ -134,8 +134,6 @@ async function callModel(
     model,
     temperature,
     top_p,
-    presence_penalty: 0,
-    frequency_penalty: 0,
     input: [
       { role: "system", content: systemPrompt },
       { role: "user", content: JSON.stringify(userPayload) },

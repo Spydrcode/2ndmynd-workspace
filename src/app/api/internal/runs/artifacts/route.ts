@@ -7,6 +7,48 @@ import type { SnapshotV2, ConclusionV2 } from "@/lib/decision/v2/conclusion_sche
 import type { LayerFusionResult } from "@/lib/intelligence/layer_fusion/types";
 import type { BenchmarkResult } from "@/lib/benchmarks/types";
 import type { BusinessProfile } from "@/lib/intelligence/web_profile";
+import type { InputRecognitionReport } from "@/lib/intelligence/snapshot_from_pack";
+import type { LayerCoverage } from "@/lib/intelligence/company_pack";
+import type { DecisionArtifactV1 } from "@/src/lib/types/decision_artifact";
+
+const DEFAULT_LAYER_COVERAGE: LayerCoverage = {
+  intent: false,
+  billing: false,
+  capacity: false,
+  cash: false,
+  cost: false,
+  crm: false,
+};
+
+const DEFAULT_INPUT_RECOGNITION: InputRecognitionReport = {
+  quotes_detected_count: 0,
+  invoices_detected_count: 0,
+  invoices_paid_detected_count: 0,
+  calendar_detected_count: 0,
+  reasons_dropped: [],
+  files_attempted: [],
+  by_type: {},
+  layer_coverage: DEFAULT_LAYER_COVERAGE,
+  readiness: "blocked",
+};
+
+function normalizeInputRecognition(
+  input: InputRecognitionReport | undefined
+): InputRecognitionReport | undefined {
+  if (!input) return undefined;
+  return {
+    ...DEFAULT_INPUT_RECOGNITION,
+    ...input,
+    layer_coverage: input.layer_coverage ?? DEFAULT_LAYER_COVERAGE,
+    readiness: input.readiness ?? "blocked",
+  };
+}
+
+function isDecisionArtifact(input: unknown): input is DecisionArtifactV1 {
+  if (!input || typeof input !== "object") return false;
+  const candidate = input as { version?: unknown; takeaway?: unknown; next_7_days?: unknown };
+  return candidate.version === "v1" && typeof candidate.takeaway === "string" && Array.isArray(candidate.next_7_days);
+}
 
 function isInternalAllowed(request: NextRequest): { ok: boolean; status: number } {
   if (process.env.NODE_ENV === "production" && process.env.ALLOW_INTERNAL_TESTING !== "true") {
@@ -26,15 +68,18 @@ function buildAnalysisResult(runId: string, artifact: ReturnType<typeof buildRes
   const layerFusion = (artifact.layer_fusion ?? null) as LayerFusionResult | null;
   const benchmarks = (artifact.benchmarks ?? null) as BenchmarkResult | null;
   const businessProfile = (artifact.business_profile ?? {}) as BusinessProfile;
+  const inputRecognition = normalizeInputRecognition(artifact.input_recognition as InputRecognitionReport | undefined);
 
   return {
     run_id: runId,
     input_hash: "internal",
     snapshot,
     conclusion,
-    validation: artifact.validation ?? { ok: true, errors: [] },
+    validation: artifact.validation
+      ? { ok: artifact.validation.ok, errors: artifact.validation.errors ?? [] }
+      : { ok: true, errors: [] },
     business_profile: businessProfile,
-    input_recognition: artifact.input_recognition ?? undefined,
+    input_recognition: inputRecognition ?? undefined,
     data_warnings: artifact.data_warnings ?? [],
     predictive_context: artifact.predictive_context ?? undefined,
     archetypes: artifact.archetypes ?? undefined,
@@ -45,7 +90,7 @@ function buildAnalysisResult(runId: string, artifact: ReturnType<typeof buildRes
     layer_fusion: layerFusion ?? undefined,
     benchmarks: benchmarks ?? undefined,
     mapping_confidence: artifact.mapping_confidence ?? undefined,
-    decision_artifact: artifact.decision_artifact ?? undefined,
+    decision_artifact: isDecisionArtifact(artifact.decision_artifact) ? artifact.decision_artifact : undefined,
   };
 }
 

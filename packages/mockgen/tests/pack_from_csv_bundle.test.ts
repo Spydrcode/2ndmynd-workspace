@@ -48,7 +48,7 @@ describe("pack_from_csv_bundle", () => {
       // Verify invoice mapping
       expect(pack.invoices?.[0].id).toBe("I1");
       expect(pack.invoices?.[0].status).toBe("paid");
-      expect(pack.invoices?.[0].paid_at).toBe("2024-01-10");
+      expect(pack.invoices?.[0].paid_at).toBe("2024-01-10T00:00:00.000Z");
       
       // Verify calendar to jobs mapping
       expect(pack.jobs?.[0].id).toBe("E1");

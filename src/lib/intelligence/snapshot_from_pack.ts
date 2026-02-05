@@ -17,7 +17,7 @@ export type InputRecognitionReport = {
   files_attempted: Array<{
     filename: string;
     type_guess: string;
-    status: "success" | "error";
+    status: "success" | "error" | "unknown";
     error?: string;
   }>;
   by_type: Record<
@@ -52,12 +52,13 @@ function pickTopReasons(counts: Map<string, number>, limit: number) {
 }
 
 function inferReportDateFromDataPack(pack: DataPackV0): string | undefined {
-  let max: Date | null = null;
+  let maxTimestamp: number | null = null;
   const consider = (value?: string) => {
     if (!value) return;
     const d = parseFlexibleTimestamp(value);
     if (!d) return;
-    if (!max || d.getTime() > max.getTime()) max = d;
+    const ts = d.getTime();
+    if (maxTimestamp === null || ts > maxTimestamp) maxTimestamp = ts;
   };
 
   for (const q of pack.quotes ?? []) {
@@ -76,16 +77,17 @@ function inferReportDateFromDataPack(pack: DataPackV0): string | undefined {
     consider(c.created_at);
   }
 
-  return max ? max.toISOString() : undefined;
+  return maxTimestamp !== null ? new Date(maxTimestamp).toISOString() : undefined;
 }
 
 function inferReportDateFromCompanyPack(companyPack: CompanyPack): string | undefined {
-  let max: Date | null = null;
+  let maxTimestamp: number | null = null;
   const consider = (value?: string) => {
     if (!value) return;
     const d = parseFlexibleTimestamp(value);
     if (!d) return;
-    if (!max || d.getTime() > max.getTime()) max = d;
+    const ts = d.getTime();
+    if (maxTimestamp === null || ts > maxTimestamp) maxTimestamp = ts;
   };
 
   for (const q of companyPack.layers.intent_quotes ?? []) {
@@ -104,7 +106,7 @@ function inferReportDateFromCompanyPack(companyPack: CompanyPack): string | unde
     consider(c.created_at);
   }
 
-  return max ? max.toISOString() : undefined;
+  return maxTimestamp !== null ? new Date(maxTimestamp).toISOString() : undefined;
 }
 
 export function buildSnapshotFromPack(

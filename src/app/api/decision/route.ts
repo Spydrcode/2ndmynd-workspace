@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import { getDecisionConclusion } from "@/lib/decisionModel";
 import { inferDecisionV2 } from "@/lib/decision/v2/decision_infer_v2";
+import type { SnapshotV2 } from "@/lib/decision/v2/conclusion_schema_v2";
 
 type RateLimitEntry = {
   count: number;
@@ -43,7 +44,7 @@ function checkRateLimit(request: Request) {
   return null;
 }
 
-function isSnapshotV2(input: unknown) {
+function isSnapshotV2(input: unknown): input is SnapshotV2 {
   if (!input || typeof input !== "object") return false;
   const candidate = input as {
     snapshot_version?: unknown;

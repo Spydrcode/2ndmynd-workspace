@@ -13,15 +13,15 @@ import { describe, it, expect } from "vitest";
 describe("E2E Learning Smoke Test", () => {
   describe("Learning Capture Module", () => {
     it("should have capture module with captureTrainingExample", async () => {
-      const module = await import("../capture");
-      expect(module.captureTrainingExample).toBeDefined();
-      expect(typeof module.captureTrainingExample).toBe("function");
+      const captureModule = await import("../capture");
+      expect(captureModule.captureTrainingExample).toBeDefined();
+      expect(typeof captureModule.captureTrainingExample).toBe("function");
     });
     
     it("should have signals_v1 extractor", async () => {
-      const module = await import("../signals_v1");
-      expect(module.extractSignalsV1).toBeDefined();
-      expect(typeof module.extractSignalsV1).toBe("function");
+      const signalsModule = await import("../signals_v1");
+      expect(signalsModule.extractSignalsV1).toBeDefined();
+      expect(typeof signalsModule.extractSignalsV1).toBe("function");
     });
   });
   

@@ -1,6 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import OpenAI from "openai";
+import type { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import type { EvalCase, EvalResult } from "../logging/log_types";
 import { validateEvalCase, validateEvalResult, assertValid } from "../schemas/validators";
 import { gradeSchema } from "./graders/grade_schema";
@@ -59,13 +60,24 @@ async function runModel(modelId: string, evalCase: EvalCase): Promise<ModelRunOu
   const start = Date.now();
   const response = await client.chat.completions.create({
     model: modelId,
-    messages: evalCase.messages,
+    messages: evalCase.messages as ChatCompletionMessageParam[],
   });
   const latency_ms = Date.now() - start;
   const message = response.choices[0]?.message;
   const output_text = message?.content ?? "";
   const output_json = extractJson(output_text);
-  const tool_calls = message?.tool_calls?.map((call) => call.function.name) ?? [];
+  const tool_calls =
+    message?.tool_calls
+      ?.map((call) => {
+        if ("function" in call && call.function) {
+          return call.function.name;
+        }
+        if ("name" in call && typeof call.name === "string") {
+          return call.name;
+        }
+        return "";
+      })
+      .filter((name) => name.length > 0) ?? [];
   return { output_text, output_json, tool_calls, latency_ms };
 }
 

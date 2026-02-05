@@ -249,9 +249,12 @@ describe("buildDecisionArtifact", () => {
     expect(artifact).toHaveProperty("confidence");
     expect(artifact).toHaveProperty("pressure_map");
     expect(artifact).toHaveProperty("benchmarks");
+    expect(artifact).toHaveProperty("evidence_summary");
+    expect(artifact).toHaveProperty("visuals_summary");
+    expect(artifact).toHaveProperty("website_opportunities");
 
     // Verify no new fields added
     const keys = Object.keys(artifact);
-    expect(keys.length).toBe(9);
+    expect(keys.length).toBe(12);
   });
 });

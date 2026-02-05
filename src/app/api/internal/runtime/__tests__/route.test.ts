@@ -4,7 +4,7 @@
  * Verifies internal guard properly blocks/allows access.
  */
 
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 
 describe("Runtime Endpoint Guard", () => {
   let originalEnv: NodeJS.ProcessEnv;
@@ -19,9 +19,6 @@ describe("Runtime Endpoint Guard", () => {
 
   it("should require internal=1 in dev mode", async () => {
     process.env.NODE_ENV = "development";
-    
-    // Mock request without internal=1
-    const request = new Request("http://localhost:3000/api/internal/runtime");
     
     // Import and test (would need to mock NextRequest properly)
     // This is a placeholder for the actual test structure

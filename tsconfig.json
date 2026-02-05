@@ -9,6 +9,7 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    "baseUrl": ".",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -19,6 +20,13 @@
       }
     ],
     "paths": {
+      "@/lib/learning/*": ["./src/lib/learning/*"],
+      "@/lib/present/*": ["./src/lib/present/*"],
+      "@/lib/rag": ["./src/lib/rag/index.ts"],
+      "@/lib/rag/*": ["./src/lib/rag/*"],
+      "@/lib/intelligence/*": ["./src/lib/intelligence/*"],
+      "@/lib/benchmarks/*": ["./src/lib/benchmarks/*"],
+      "@/lib/internal/*": ["./src/lib/internal/*"],
       "@/lib/snapshot/*": ["./src/lib/snapshot/*"],
       "@/*": ["./*"]
     }
@@ -36,5 +44,13 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "scripts", "seed", "supabase", "ml_artifacts", "ml_review"]
+  "exclude": [
+    "node_modules",
+    "scripts",
+    "seed",
+    "supabase",
+    "ml_artifacts",
+    "ml_review",
+    "lib/decision/v2/present_broken.ts"
+  ]
 }

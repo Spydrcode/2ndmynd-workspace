@@ -1,4 +1,4 @@
-/**
+ï»¿/**
  * Benchmark Narrative Formatter
  *
  * Converts peer comparisons into owner-felt, non-dashboard language.
@@ -23,7 +23,7 @@ const GROUP_NOUNS: Record<IndustryGroup, { unit: string; rhythm: string }> = {
 
 function clampLength(text: string, max: number): string {
   if (text.length <= max) return text;
-  return `${text.slice(0, max - 1).trim()}…`;
+  return `${text.slice(0, max - 3).trim()}...`;
 }
 
 function missingPeerContext(industry_group: IndustryGroup): BenchmarkInsight {
@@ -67,7 +67,7 @@ export function formatBenchmarkInsight(params: {
       so_what = "Run a 48-hour follow-up rhythm on mid-ticket work and close aging quotes first.";
       break;
     case "approved_to_scheduled_p50_days":
-      headline = `Work takes longer to land on the calendar than most peers.`;
+      headline = "Work takes longer to land on the calendar than most peers.";
       so_what = "Protect a weekly scheduling pass so approved work lands cleanly and the backlog does not stack.";
       break;
     case "invoiced_to_paid_p50_days":

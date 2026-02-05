@@ -58,7 +58,8 @@ function buildHeaderNames(headerRow: ExcelJS.Row, columnCount: number) {
 
 export async function parseXlsxFile(filename: string, buffer: Buffer): Promise<ParsedFile> {
   const workbook = new ExcelJS.Workbook();
-  await workbook.xlsx.load(buffer);
+  const payload = buffer as unknown as Parameters<typeof workbook.xlsx.load>[0];
+  await workbook.xlsx.load(payload);
   const sheet = workbook.worksheets[0];
   if (!sheet) {
     return { filename, rows: [] };

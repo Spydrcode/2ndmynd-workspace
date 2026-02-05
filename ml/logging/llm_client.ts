@@ -65,9 +65,15 @@ function estimateCost(usage: { input_tokens: number; output_tokens: number }) {
   return ((usage.input_tokens * inputRate) + (usage.output_tokens * outputRate)) / 1000;
 }
 
+function normalizeRole(role: ChatCompletionMessageParam["role"]): LoggedMessage["role"] {
+  if (role === "developer") return "system";
+  if (role === "function") return "tool";
+  return role;
+}
+
 function toLoggedMessages(messages: ChatCompletionMessageParam[]): LoggedMessage[] {
   return messages.map((msg) => ({
-    role: msg.role,
+    role: normalizeRole(msg.role),
     content: typeof msg.content === "string" ? msg.content : JSON.stringify(msg.content ?? ""),
   }));
 }
@@ -150,7 +156,17 @@ export async function runLoggedCompletion(params: LoggedCompletionParams): Promi
       system_prompt_hash: hashText(params.system_prompt ?? ""),
       model,
       messages: redactedMessages,
-      tools_available: (params.tools ?? []).map((tool) => tool.function.name),
+      tools_available: (params.tools ?? [])
+        .map((tool) => {
+          if ("function" in tool && tool.function) {
+            return tool.function.name;
+          }
+          if ("name" in tool && typeof tool.name === "string") {
+            return tool.name;
+          }
+          return "";
+        })
+        .filter((name) => name.length > 0),
       rag_context_ids: ragContextIds,
     },
     response: {

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+﻿import { describe, expect, it } from "vitest";
 import { normalizeToCompanyPack, companyPackToDataPack } from "@/src/lib/intelligence/pack_normalizer";
 import { buildSnapshotFromCompanyPack } from "@/src/lib/intelligence/snapshot_from_pack";
 
@@ -24,28 +24,28 @@ JOB-002,2025-11-03,09:00,2025-11-03,11:30,Completed
 JOB-003,2025-11-05,13:00,2025-11-05,16:00,Scheduled`;
 
   describe("normalizeToCompanyPack", () => {
-    it("should process ALL files without short-circuiting", () => {
+    it("should process ALL files without short-circuiting", async () => {
       const files = [
         { filename: "quotes.csv", buffer: createCsvBuffer(quotesCSV) },
         { filename: "invoices.csv", buffer: createCsvBuffer(invoicesCSV) },
         { filename: "calendar.csv", buffer: createCsvBuffer(calendarCSV) },
       ];
 
-      const pack = normalizeToCompanyPack(files, "test");
+      const pack = await normalizeToCompanyPack(files, "test");
 
       // All files should be attempted
       expect(pack.files_attempted.length).toBe(3);
       expect(pack.files_attempted.every((f: { status: string }) => f.status !== "error")).toBe(true);
     });
 
-    it("should populate all layers from multiple files", () => {
+    it("should populate all layers from multiple files", async () => {
       const files = [
         { filename: "quotes.csv", buffer: createCsvBuffer(quotesCSV) },
         { filename: "invoices.csv", buffer: createCsvBuffer(invoicesCSV) },
         { filename: "calendar.csv", buffer: createCsvBuffer(calendarCSV) },
       ];
 
-      const pack = normalizeToCompanyPack(files, "test");
+      const pack = await normalizeToCompanyPack(files, "test");
 
       // All layers should be populated
       expect(pack.layers.intent_quotes?.length).toBe(3);
@@ -53,7 +53,7 @@ JOB-003,2025-11-05,13:00,2025-11-05,16:00,Scheduled`;
       expect(pack.layers.schedule_events?.length).toBe(3);
     });
 
-    it("should continue processing even if first file fails", () => {
+    it("should continue processing even if first file fails", async () => {
       const badCSV = "not,valid,csv,format\nwith,broken,data";
       const files = [
         { filename: "bad.csv", buffer: createCsvBuffer(badCSV) },
@@ -61,7 +61,7 @@ JOB-003,2025-11-05,13:00,2025-11-05,16:00,Scheduled`;
         { filename: "invoices.csv", buffer: createCsvBuffer(invoicesCSV) },
       ];
 
-      const pack = normalizeToCompanyPack(files, "test");
+      const pack = await normalizeToCompanyPack(files, "test");
 
       // All files should be attempted
       expect(pack.files_attempted.length).toBe(3);
@@ -70,13 +70,13 @@ JOB-003,2025-11-05,13:00,2025-11-05,16:00,Scheduled`;
       expect((pack.layers.billing_invoices?.length ?? 0) > 0).toBe(true);
     });
 
-    it("should track recognition summary by type", () => {
+    it("should track recognition summary by type", async () => {
       const files = [
         { filename: "quotes.csv", buffer: createCsvBuffer(quotesCSV) },
         { filename: "invoices.csv", buffer: createCsvBuffer(invoicesCSV) },
       ];
 
-      const pack = normalizeToCompanyPack(files, "test");
+      const pack = await normalizeToCompanyPack(files, "test");
 
       expect(pack.recognition_summary.by_type.quotes.files_seen).toBe(1);
       expect(pack.recognition_summary.by_type.invoices.files_seen).toBe(1);
@@ -84,18 +84,18 @@ JOB-003,2025-11-05,13:00,2025-11-05,16:00,Scheduled`;
       expect(pack.recognition_summary.by_type.invoices.rows_parsed).toBe(3);
     });
 
-    it("should compute readiness as 'ready' when intent+billing present", () => {
+    it("should compute readiness as 'ready' when intent+billing present", async () => {
       const files = [
         { filename: "quotes.csv", buffer: createCsvBuffer(quotesCSV) },
         { filename: "invoices.csv", buffer: createCsvBuffer(invoicesCSV) },
       ];
 
-      const pack = normalizeToCompanyPack(files, "test");
+      const pack = await normalizeToCompanyPack(files, "test");
 
       expect(pack.recognition_summary.readiness).toBe("ready");
     });
 
-    it("should compute readiness as 'partial' when file uploaded but not recognized", () => {
+    it("should compute readiness as 'partial' when file uploaded but not recognized", async () => {
       // Create a file with a non-invoice name that won't be recognized
       const badCSV = `Some Random Header,Another Column
 data1,data2`;
@@ -103,18 +103,18 @@ data1,data2`;
         { filename: "random_data.csv", buffer: createCsvBuffer(badCSV) },
       ];
 
-      const pack = normalizeToCompanyPack(files, "test");
+      const pack = await normalizeToCompanyPack(files, "test");
 
       // Should be blocked because nothing was recognized
       expect(pack.recognition_summary.readiness).toBe("blocked");
     });
 
-    it("should parse space-separated datetime format (HVAC CSV format)", () => {
+    it("should parse space-separated datetime format (HVAC CSV format)", async () => {
       const files = [
         { filename: "quotes.csv", buffer: createCsvBuffer(quotesCSV) },
       ];
 
-      const pack = normalizeToCompanyPack(files, "test");
+      const pack = await normalizeToCompanyPack(files, "test");
 
       // All dates should be parsed successfully
       const dateOk = pack.recognition_summary.by_type.quotes.date_parse_success;
@@ -126,13 +126,13 @@ data1,data2`;
   });
 
   describe("companyPackToDataPack", () => {
-    it("should convert CompanyPack to DataPackV0 for backward compatibility", () => {
+    it("should convert CompanyPack to DataPackV0 for backward compatibility", async () => {
       const files = [
         { filename: "quotes.csv", buffer: createCsvBuffer(quotesCSV) },
         { filename: "invoices.csv", buffer: createCsvBuffer(invoicesCSV) },
       ];
 
-      const companyPack = normalizeToCompanyPack(files, "test");
+      const companyPack = await normalizeToCompanyPack(files, "test");
       const { pack, stats } = companyPackToDataPack(companyPack);
 
       expect(pack.version).toBe("data_pack_v0");
@@ -144,14 +144,14 @@ data1,data2`;
   });
 
   describe("buildSnapshotFromCompanyPack", () => {
-    it("should build snapshot with layer coverage", () => {
+    it("should build snapshot with layer coverage", async () => {
       const files = [
         { filename: "quotes.csv", buffer: createCsvBuffer(quotesCSV) },
         { filename: "invoices.csv", buffer: createCsvBuffer(invoicesCSV) },
         { filename: "calendar.csv", buffer: createCsvBuffer(calendarCSV) },
       ];
 
-      const companyPack = normalizeToCompanyPack(files, "test");
+      const companyPack = await normalizeToCompanyPack(files, "test");
       const { snapshot, input_recognition } = buildSnapshotFromCompanyPack(companyPack);
 
       // Snapshot should be built
@@ -163,27 +163,28 @@ data1,data2`;
       expect(input_recognition.layer_coverage.capacity).toBe(true);
     });
 
-    it("should include calendar_detected_count", () => {
+    it("should include calendar_detected_count", async () => {
       const files = [
         { filename: "calendar.csv", buffer: createCsvBuffer(calendarCSV) },
       ];
 
-      const companyPack = normalizeToCompanyPack(files, "test");
+      const companyPack = await normalizeToCompanyPack(files, "test");
       const { input_recognition } = buildSnapshotFromCompanyPack(companyPack);
 
       expect(input_recognition.calendar_detected_count).toBe(3);
     });
 
-    it("should inherit readiness from CompanyPack", () => {
+    it("should inherit readiness from CompanyPack", async () => {
       const files = [
         { filename: "quotes.csv", buffer: createCsvBuffer(quotesCSV) },
         { filename: "invoices.csv", buffer: createCsvBuffer(invoicesCSV) },
       ];
 
-      const companyPack = normalizeToCompanyPack(files, "test");
+      const companyPack = await normalizeToCompanyPack(files, "test");
       const { input_recognition } = buildSnapshotFromCompanyPack(companyPack);
 
       expect(input_recognition.readiness).toBe("ready");
     });
   });
 });
+

@@ -5,7 +5,7 @@ import { normalizeExportsToDataPack } from "../src/lib/intelligence/pack_normali
 import { buildSnapshotFromPack } from "../src/lib/intelligence/snapshot_from_pack";
 
 describe("HVAC invoice mapping", () => {
-  it("recognizes invoices + paid invoices from common HVAC-style headers", () => {
+  it("recognizes invoices + paid invoices from common HVAC-style headers", async () => {
     const csv = [
       "Invoice #,Created date,Issued date,Marked paid date,Total ($),Balance ($),Status,Quote ID",
       "INV-9001,2026-01-05 09:12:00,2026-01-05 09:12:00,2026-01-10 16:01:00,1250.00,0.00,Paid,Q-1005",
@@ -13,7 +13,7 @@ describe("HVAC invoice mapping", () => {
       "",
     ].join("\n");
 
-    const parsed = [parseFile("hvac_invoices.csv", Buffer.from(csv, "utf8"))];
+    const parsed = [await parseFile("hvac_invoices.csv", Buffer.from(csv, "utf8"))];
     const { pack } = normalizeExportsToDataPack(parsed, "Jobber");
 
     const { snapshot, input_recognition } = buildSnapshotFromPack(pack, {
@@ -27,4 +27,3 @@ describe("HVAC invoice mapping", () => {
     expect(input_recognition.invoices_paid_detected_count).toBeGreaterThan(0);
   });
 });
-

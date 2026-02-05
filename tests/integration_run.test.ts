@@ -12,10 +12,10 @@ describe("runAnalysisFromPack", () => {
     const quotePath = path.resolve("fixtures", "quotes_export.csv");
     const invoicePath = path.resolve("fixtures", "invoices_export.csv");
 
-    const parsed = [
+    const parsed = await Promise.all([
       parseFile("quotes_export.csv", fs.readFileSync(quotePath)),
       parseFile("invoices_export.csv", fs.readFileSync(invoicePath)),
-    ];
+    ]);
 
     const { pack } = normalizeExportsToDataPack(parsed, "Jobber");
     const result = await runAnalysisFromPack({

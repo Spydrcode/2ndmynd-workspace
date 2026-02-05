@@ -44,8 +44,14 @@ export const INDUSTRY_OVERRIDES: Partial<
     },
   },
   painter: {
+    concentration_risk: {
+      owner_felt_line: "One big paint job sets the pace for the whole month.",
+    },
     follow_up_drift: {
       owner_felt_line: "Quotes stall while customers decide colors and timing.",
+    },
+    capacity_pressure: {
+      owner_felt_line: "Prep time breaks the schedule even when the calendar looks full.",
     },
   },
   roofer: {
@@ -73,6 +79,12 @@ export const INDUSTRY_OVERRIDES: Partial<
     },
   },
   taco_stand: {
+    concentration_risk: {
+      owner_felt_line: "A few slow days can erase a week's profit.",
+    },
+    follow_up_drift: {
+      owner_felt_line: "Demand is real-time -- if the line isn't there, you feel it immediately.",
+    },
     capacity_pressure: {
       owner_felt_line: "Prep and service compete; you run out before the rush ends.",
       recommended_move: "Prep in bulk before peak hours and run a 3-5 item rush menu to keep throughput high.",

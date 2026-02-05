@@ -93,6 +93,7 @@ export function DecisionArtifactView({
   const visuals = artifact.visuals_summary;
   const opportunities = artifact.website_opportunities ?? [];
   const learningNote = artifact.learning_note;
+  const benchmarks = artifact.benchmarks;
 
   return (
     <div className="space-y-6">
@@ -249,20 +250,20 @@ export function DecisionArtifactView({
         )}
 
         {/* Benchmarks - "You vs peers" */}
-        {artifact.benchmarks && (
+        {benchmarks && (
           <AccordionItem value="benchmarks" className="rounded-2xl border border-border/60 bg-background/90 px-6">
             <AccordionTrigger className="hover:no-underline">
               <CardTitle className="text-base font-semibold">
-                You vs peers ({artifact.benchmarks.cohort_label})
+                You vs peers ({benchmarks.cohort_label})
               </CardTitle>
             </AccordionTrigger>
           <AccordionContent className="space-y-4 pb-6">
             <p className="text-xs text-muted-foreground">
-              Cohort: {artifact.benchmarks.cohort_label} ({artifact.benchmarks.version})
+              Cohort: {benchmarks.cohort_label} ({benchmarks.version})
             </p>
             <div className="space-y-3">
-              {artifact.benchmarks.metrics.map((metric) => {
-                  const industryGroup = getIndustryGroupFromCohort(artifact.benchmarks.cohort_label);
+              {benchmarks.metrics.map((metric) => {
+                  const industryGroup = getIndustryGroupFromCohort(benchmarks.cohort_label);
                   const insight = formatBenchmarkInsight({
                     metric_key: metric.key,
                     value: metric.value,

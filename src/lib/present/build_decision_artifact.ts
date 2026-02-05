@@ -9,7 +9,7 @@
 
 import type { SnapshotV2, ConclusionV2 } from "@/lib/decision/v2/conclusion_schema_v2";
 import type { LayerFusionResult } from "../intelligence/layer_fusion/types";
-import type { BusinessProfile } from "../intelligence/web_profile";
+import { buildWebsiteOpportunities, type BusinessProfile } from "../intelligence/web_profile";
 import type { BenchmarkResult } from "../benchmarks/types";
 import type {
   DecisionArtifactV1,
@@ -348,7 +348,7 @@ function buildWhyHeavy(
             (m.direction === "lower_is_risk" && m.percentile > 60)
         );
         if (goodMetrics.length > 0) {
-          why += ` This is not a ${goodMetrics[0].label.toLowerCase()} issue—that's tracking well.`;
+          why += ` This is not a ${goodMetrics[0].label.toLowerCase()} issue -- that's tracking well.`;
         }
       }
 
@@ -466,8 +466,8 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
     invoice_size_distribution_gini: "Invoice size variation",
     quote_age_over_14d_share: "Quote follow-up lag",
     quote_to_job_conversion_rate: "Quote conversion",
-    approved_to_scheduled_p50_days: "Approved → scheduled lag",
-    invoiced_to_paid_p50_days: "Invoice → paid cycle",
+    approved_to_scheduled_p50_days: "Approved -> scheduled lag",
+    invoiced_to_paid_p50_days: "Invoice -> paid cycle",
     weekly_volume_volatility_index: "Volume volatility",
   };
   
@@ -491,7 +491,7 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
   } : undefined;
 
   // Get industry context for voice and grouping
-  const industry = business_profile?.industry_bucket ?? null;
+  const industry = (business_profile?.industry_bucket as IndustryBucket | null) ?? null;
   const industry_key = (business_profile as { industry_key?: string | null })?.industry_key ?? null;
   const cohort_label = benchmarks?.cohort_label;
   const industry_group = industry_key
@@ -502,7 +502,24 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
   const quotes_count = snapshot.activity_signals?.quotes?.quotes_count ?? 0;
   const invoices_count = snapshot.activity_signals?.invoices?.invoices_count ?? 0;
   const lookback_days = snapshot.window?.lookback_days ?? 90;
-  const evidence_summary = `Based on ${quotes_count} quotes and ${invoices_count} invoices in the last ${lookback_days} days`;
+  const evidence_summary_line = `Based on ${quotes_count} quotes and ${invoices_count} invoices in the last ${lookback_days} days`;
+  const calendar_count =
+    (snapshot as { activity_signals?: { calendar?: { calendar_events_count?: number } } })
+      ?.activity_signals?.calendar?.calendar_events_count ?? 0;
+  const paid_invoices_count = snapshot.activity_signals?.invoices?.invoices_paid_count ?? 0;
+  const evidence_summary = {
+    quotes_count,
+    invoices_count,
+    calendar_count,
+    paid_invoices_count,
+    window_start: snapshot.window?.slice_start ?? "",
+    window_end: snapshot.window?.slice_end ?? "",
+  };
+  const visuals_summary = {
+    weekly_volume_series: snapshot.weekly_volume_series ?? undefined,
+    invoice_size_buckets: snapshot.invoice_size_buckets ?? undefined,
+    quote_age_buckets: snapshot.quote_age_buckets ?? undefined,
+  };
   
   // Build pressure map with industry awareness
   const pressure_map = buildPressureMap(
@@ -520,7 +537,7 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
     conclusion ?? null,
     snapshot,
     benchmarks,
-    evidence_summary,
+    evidence_summary_line,
     industry_group,
     industry_key,
     cohort_label
@@ -574,6 +591,10 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
     ];
   }
 
+  const website_opportunities = business_profile
+    ? buildWebsiteOpportunities(business_profile, business_profile.industry_bucket)
+    : undefined;
+
   return {
     version: "v1",
     takeaway,
@@ -584,5 +605,8 @@ export function buildDecisionArtifact(input: BuildArtifactInput): DecisionArtifa
     confidence,
     pressure_map,
     benchmarks,
+    evidence_summary,
+    visuals_summary,
+    website_opportunities,
   };
 }

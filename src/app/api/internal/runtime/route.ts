@@ -148,6 +148,8 @@ export async function GET(request: NextRequest): Promise<NextResponse> {
   }
   
   // Environment checks
+  const allowInternalTesting = process.env.ALLOW_INTERNAL_TESTING === "true";
+  const internalToken = process.env.INTERNAL_TESTING_TOKEN;
   const env = {
     ALLOW_INTERNAL_TESTING: allowInternalTesting,
     INTERNAL_TESTING_TOKEN_set: !!internalToken,

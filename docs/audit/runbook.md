@@ -354,3 +354,21 @@ jobs:
 - `docs/internal-testing.md` - Internal testing procedures
 - `docs/learning-layer.md` - Learning layer architecture
 - `docs/runtime-governance.md` - RAG and learning safety
+
+---
+
+## Local Verification Checklist (Append)
+
+Run in repo root:
+
+```bash
+npm run audit:wiring
+npm test
+npm run lint
+npm run build
+```
+
+Notes:
+- `npm run audit:wiring` is an alias of `npm run wiring:check`.
+- If Python dependencies are required for wiring validation, install them first and re-run with `REQUIRE_PYTHON_WIRING=1`.
+- If learning/vector features are disabled locally, set `LEARNING_VECTOR_BACKEND=none` to avoid optional vector backends.

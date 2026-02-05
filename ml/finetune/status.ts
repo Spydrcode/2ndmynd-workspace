@@ -3,10 +3,11 @@ import OpenAI from "openai";
 
 async function run() {
   const args = minimist(process.argv.slice(2));
-  const jobId = args.job_id ?? process.env.OPENAI_FINE_TUNE_JOB_ID;
-  if (!jobId) {
+  const jobIdRaw = args.job_id ?? process.env.OPENAI_FINE_TUNE_JOB_ID;
+  if (typeof jobIdRaw !== "string" || jobIdRaw.length === 0) {
     throw new Error("Provide --job_id or set OPENAI_FINE_TUNE_JOB_ID.");
   }
+  const jobId = jobIdRaw;
   if (!process.env.OPENAI_API_KEY) {
     throw new Error("OPENAI_API_KEY is required to query fine-tune status.");
   }

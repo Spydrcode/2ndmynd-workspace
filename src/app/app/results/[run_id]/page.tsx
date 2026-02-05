@@ -4,6 +4,8 @@ import { Download, RefreshCw } from "lucide-react";
 
 import { presentArtifact } from "@/lib/decision/v2/present";
 import { buildResultsArtifact, getRun, InputHealth } from "@/src/lib/intelligence/run_adapter";
+import type { LayerFusionResult } from "@/src/lib/intelligence/layer_fusion/types";
+import type { BenchmarkResult } from "@/src/lib/benchmarks/types";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -140,17 +142,36 @@ export default async function ResultsPage({
   }
 
   const artifact = buildResultsArtifact(run);
+  const readinessForPresent =
+    artifact.readiness_level === "ready"
+      ? "ready"
+      : artifact.readiness_level
+        ? "diagnose"
+        : null;
+
   const presented = presentArtifact({
     run_id: artifact.run_id,
     created_at: artifact.created_at,
     mode: run.mode ?? null,
-    artifact,
+    artifact: {
+      conclusion: artifact.conclusion,
+      snapshot: artifact.snapshot,
+      input_health: artifact.input_health,
+      data_warnings: artifact.data_warnings,
+      readiness_level: readinessForPresent,
+      layer_fusion: artifact.layer_fusion as LayerFusionResult | null,
+      benchmarks: artifact.benchmarks as BenchmarkResult | null,
+      mapping_confidence: artifact.mapping_confidence,
+      business_profile: artifact.business_profile,
+    },
   });
 
   const conclusion = artifact.conclusion;
   const validation = artifact.validation;
   const profile = artifact.business_profile;
   const fileAttempts = getFileAttempts(artifact.input_recognition);
+  const predictiveWatchList = artifact.predictive_watch_list ?? null;
+  const watchItems = predictiveWatchList?.items ?? [];
   
   // Type-safe decision_artifact extraction
   const decision_artifact = artifact.decision_artifact as DecisionArtifactV1 | null | undefined;
@@ -269,7 +290,7 @@ export default async function ResultsPage({
             <CardContent className="text-sm text-muted-foreground">{presented.why_heavy}</CardContent>
           </Card>
 
-          {!quiet && presented.predictive_watch_list && presented.predictive_watch_list.length > 0 ? (
+          {!quiet && watchItems.length > 0 ? (
             <Card className="rounded-2xl border border-border/60 bg-background/90">
               <CardHeader>
                 <CardTitle className="text-base font-semibold">
@@ -282,7 +303,7 @@ export default async function ResultsPage({
                     Show watch list
                   </summary>
                   <div className="mt-3 space-y-4">
-                    {presented.predictive_watch_list.map((item) => (
+                    {watchItems.map((item) => (
                       <div key={item.topic} className="space-y-1">
                         <p className="font-medium text-foreground">{item.topic}</p>
                         <p className="text-xs text-muted-foreground">{item.why}</p>
@@ -335,14 +356,6 @@ export default async function ResultsPage({
                       Show technical details
                     </summary>
                     <div className="mt-2 space-y-2">
-                      {presented.technical_details ? (
-                        <div className="space-y-2">
-                          <p className="text-xs text-foreground">
-                            Run manifest: {presented.technical_details.manifest_summary}
-                          </p>
-                          <Separator />
-                        </div>
-                      ) : null}
                       {presented.technical_details?.signals.map((s) => (
                         <pre
                           key={`${s.key}=${s.value}`}

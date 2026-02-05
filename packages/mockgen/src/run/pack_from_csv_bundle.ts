@@ -7,6 +7,7 @@ import * as fs from "fs";
 import * as path from "path";
 import { parse } from "csv-parse/sync";
 import type { DataPackV0, DataPackStatus } from "../../../../src/lib/intelligence/data_pack_v0";
+import { parseFlexibleTimestampToISO } from "../../../../src/lib/intelligence/dates";
 
 function parseCSVFile(filePath: string): Array<Record<string, string>> {
   if (!fs.existsSync(filePath)) return [];
@@ -53,7 +54,7 @@ function parseNumber(value?: string): number | undefined {
 
 function parseDate(value?: string): string | undefined {
   if (!value) return undefined;
-  return value.trim() || undefined;
+  return parseFlexibleTimestampToISO(value);
 }
 
 function pickValue(...values: (string | undefined)[]): string | undefined {

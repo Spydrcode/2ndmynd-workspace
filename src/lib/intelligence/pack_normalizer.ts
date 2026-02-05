@@ -1,4 +1,4 @@
-import { DataPackStats, DataPackV0, DataPackStatus } from "./data_pack_v0";
+﻿import { DataPackStats, DataPackV0, DataPackStatus } from "./data_pack_v0";
 import { ParsedFile } from "./file_parsers";
 import { parseFlexibleTimestampToISO } from "./dates";
 import { parseFile } from "./file_parsers";
@@ -19,6 +19,27 @@ import {
 
 const EMAIL_RE = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi;
 const PHONE_RE = /(\+?\d{1,2}[\s.-]?)?(\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}/g;
+
+function normalizeKey(key: string) {
+  return key.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+function buildNormalizedRow(row: Record<string, string>) {
+  const normalized: Record<string, string> = {};
+  for (const [key, value] of Object.entries(row)) {
+    normalized[normalizeKey(key)] = value;
+  }
+  return normalized;
+}
+
+function pickValueFromNormalized(normalizedRow: Record<string, string>, keys: string[]) {
+  for (const key of keys) {
+    const normalizedKey = normalizeKey(key);
+    const value = normalizedRow[normalizedKey];
+    if (value !== undefined && value !== "") return value;
+  }
+  return undefined;
+}
 
 function redactText(value: string) {
   return value.replace(EMAIL_RE, "[redacted]").replace(PHONE_RE, "[redacted]");
@@ -80,9 +101,11 @@ const DETECTORS = {
 };
 
 function detectCategory(headers: string[]) {
-  const headerStr = headers.join(" ");
+  const normalizedHeaders = headers.map(normalizeKey);
+  const headerStr = normalizedHeaders.join(" ");
+  const headerSet = new Set(normalizedHeaders);
   const score = (terms: string[]) =>
-    terms.reduce((acc, term) => (headerStr.includes(term) ? acc + 1 : acc), 0);
+    terms.reduce((acc, term) => (headerStr.includes(normalizeKey(term)) ? acc + 1 : acc), 0);
   const scores = {
     quotes: score(DETECTORS.quotes),
     invoices: score(DETECTORS.invoices),
@@ -93,8 +116,17 @@ function detectCategory(headers: string[]) {
 
   // Strong disambiguation: invoices often contain "Quote ID" (linkage) which can tie with "quote" detectors.
   // If we see invoice-specific keys, always classify as invoices.
-  const invoiceStrongKeys = ["invoice#", "invoiceid", "invoicenumber"];
-  if (invoiceStrongKeys.some((k) => headerStr.includes(k))) {
+  const invoiceStrongKeys = [
+    "invoice#",
+    "invoiceid",
+    "invoicenumber",
+    "balance",
+    "paidat",
+    "paiddate",
+    "amountdue",
+    "amountpaid",
+  ];
+  if (invoiceStrongKeys.map(normalizeKey).some((key) => headerSet.has(key))) {
     return "invoices";
   }
 
@@ -112,11 +144,8 @@ function detectCategory(headers: string[]) {
   return best;
 }
 
-function pickValue(row: Record<string, string>, keys: string[]) {
-  for (const key of keys) {
-    if (row[key] !== undefined && row[key] !== "") return row[key];
-  }
-  return undefined;
+function pickValue(row: Record<string, string>, keys: string[], normalizedRow?: Record<string, string>) {
+  return pickValueFromNormalized(normalizedRow ?? buildNormalizedRow(row), keys);
 }
 
 export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: string) {
@@ -144,29 +173,41 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
   };
 
   parsed.forEach((file) => {
-    const headers = file.rows[0] ? Object.keys(file.rows[0]) : [];
+    const rows = file.rows ?? [];
+    const headers = rows[0] ? Object.keys(rows[0]) : [];
     const category = detectCategory(headers);
     stats.file_categories = stats.file_categories ?? {};
     stats.file_categories[category] = (stats.file_categories[category] ?? 0) + 1;
     stats.files_attempted = stats.files_attempted ?? [];
-    stats.files_attempted.push({ filename: file.filename, type_guess: category, status: "success" });
+    stats.files_attempted.push({
+      filename: file.filename,
+      type_guess: category,
+      status: category === "unknown" ? "unknown" : "success",
+    });
     if (category === "unknown") {
       stats.warnings.push(`Could not classify ${file.filename}`);
       return;
     }
 
-    stats.rows += file.rows.length;
+    stats.rows += rows.length;
 
-    for (const row of file.rows) {
+    for (const row of rows) {
+      const normalizedRow = buildNormalizedRow(row);
       stats.rows_by_type = stats.rows_by_type ?? {};
       stats.rows_by_type[category] = (stats.rows_by_type[category] ?? 0) + 1;
       if (category === "quotes") {
         pack.quotes?.push({
-          id: cleanText(pickValue(row, ["quoteid", "estimateid", "proposalid", "number"])),
-          status: mapStatus(pickValue(row, ["status", "state"]), "quote"),
-          created_at: parseDate(pickValue(row, ["createdat", "created", "date", "issuedat"])),
-          approved_at: parseDate(pickValue(row, ["approvedat", "acceptedat", "convertedat"])),
-          total: parseNumber(pickValue(row, ["total", "amount", "subtotal", "price"])),
+          id: cleanText(
+            pickValue(row, ["quoteid", "estimateid", "proposalid", "number"], normalizedRow)
+          ),
+          status: mapStatus(pickValue(row, ["status", "state"], normalizedRow), "quote"),
+          created_at: parseDate(
+            pickValue(row, ["createdat", "created", "date", "issuedat"], normalizedRow)
+          ),
+          approved_at: parseDate(
+            pickValue(row, ["approvedat", "acceptedat", "convertedat"], normalizedRow)
+          ),
+          total: parseNumber(pickValue(row, ["total", "amount", "subtotal", "price"], normalizedRow)),
         });
         stats.quotes += 1;
         continue;
@@ -175,10 +216,12 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
       if (category === "invoices") {
         pack.invoices?.push({
           id: cleanText(
-            pickValue(row, ["invoiceid", "invoice#", "invoicenumber", "number", "id", "invoice"])
+            pickValue(row, ["invoiceid", "invoice#", "invoicenumber", "number", "id", "invoice"], normalizedRow)
           ),
-          related_quote_id: cleanText(pickValue(row, ["quoteid", "relatedquoteid", "estimateid"])),
-          status: mapStatus(pickValue(row, ["status", "state"]), "invoice"),
+          related_quote_id: cleanText(
+            pickValue(row, ["quoteid", "relatedquoteid", "estimateid"], normalizedRow)
+          ),
+          status: mapStatus(pickValue(row, ["status", "state"], normalizedRow), "invoice"),
           issued_at: parseDate(
             pickValue(row, [
               "issuedat",
@@ -188,10 +231,10 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
               "createddate",
               "date",
               "dateissued",
-            ])
+            ], normalizedRow)
           ),
           paid_at: parseDate(
-            pickValue(row, ["paidat", "paiddate", "markedpaiddate", "paymentdate", "closedat"])
+            pickValue(row, ["paidat", "paiddate", "markedpaiddate", "paymentdate", "closedat"], normalizedRow)
           ),
           total: parseNumber(
             pickValue(row, [
@@ -204,7 +247,7 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
               "pretaxtotal$",
               "subtotal",
               "subtotal$",
-            ])
+            ], normalizedRow)
           ),
         });
         stats.invoices += 1;
@@ -212,10 +255,10 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
       }
 
       if (category === "jobs" || category === "calendar") {
-        const startDate = pickValue(row, ["startdate", "scheduleddate", "date"]);
-        const startTime = pickValue(row, ["starttime"]);
-        const endDate = pickValue(row, ["enddate"]);
-        const endTime = pickValue(row, ["endtime"]);
+        const startDate = pickValue(row, ["startdate", "scheduleddate", "date"], normalizedRow);
+        const startTime = pickValue(row, ["starttime"], normalizedRow);
+        const endDate = pickValue(row, ["enddate"], normalizedRow);
+        const endTime = pickValue(row, ["endtime"], normalizedRow);
         const scheduled_at = parseFlexibleTimestampToISO(
           startDate && startTime ? `${startDate} ${startTime}` : startDate
         );
@@ -224,14 +267,21 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
         );
         pack.jobs?.push({
           id: cleanText(
-            pickValue(row, ["jobid", "appointmentid", "workorderid", "eventid", "number"]) ??
+            pickValue(
+              row,
+              ["jobid", "appointmentid", "workorderid", "eventid", "number"],
+              normalizedRow
+            ) ??
               `row_${stats.jobs + 1}`
           ),
-          related_quote_id: cleanText(pickValue(row, ["quoteid", "relatedquoteid", "estimateid"])),
-          status: mapStatus(pickValue(row, ["status", "state"]), "job"),
-          scheduled_at: scheduled_at ?? parseDate(pickValue(row, ["scheduledat", "start"])),
-          completed_at: completed_at ?? parseDate(pickValue(row, ["completedat", "end", "closedat"])),
-          total: parseNumber(pickValue(row, ["total", "amount", "price"])),
+          related_quote_id: cleanText(
+            pickValue(row, ["quoteid", "relatedquoteid", "estimateid"], normalizedRow)
+          ),
+          status: mapStatus(pickValue(row, ["status", "state"], normalizedRow), "job"),
+          scheduled_at: scheduled_at ?? parseDate(pickValue(row, ["scheduledat", "start"], normalizedRow)),
+          completed_at:
+            completed_at ?? parseDate(pickValue(row, ["completedat", "end", "closedat"], normalizedRow)),
+          total: parseNumber(pickValue(row, ["total", "amount", "price"], normalizedRow)),
         });
         stats.jobs += 1;
         continue;
@@ -239,12 +289,12 @@ export function normalizeExportsToDataPack(parsed: ParsedFile[], sourceTool: str
 
       if (category === "customers") {
         pack.customers?.push({
-          id: cleanText(pickValue(row, ["customerid", "clientid", "accountid", "id"])),
-          name: cleanText(pickValue(row, ["name", "customername", "company"])),
-          status: mapStatus(pickValue(row, ["status", "state"]), "customer"),
-          created_at: parseDate(pickValue(row, ["createdat", "created", "date"])),
-          city: cleanText(pickValue(row, ["city"])),
-          state: cleanText(pickValue(row, ["state", "province"])),
+          id: cleanText(pickValue(row, ["customerid", "clientid", "accountid", "id"], normalizedRow)),
+          name: cleanText(pickValue(row, ["name", "customername", "company"], normalizedRow)),
+          status: mapStatus(pickValue(row, ["status", "state"], normalizedRow), "customer"),
+          created_at: parseDate(pickValue(row, ["createdat", "created", "date"], normalizedRow)),
+          city: cleanText(pickValue(row, ["city"], normalizedRow)),
+          state: cleanText(pickValue(row, ["state", "province"], normalizedRow)),
         });
         stats.customers += 1;
       }
@@ -290,50 +340,77 @@ export async function normalizeUploadBuffersToDataPack(
   return { pack, stats };
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 // NEW: CompanyPack normalization (layered, multi-file, no short-circuit)
-// ─────────────────────────────────────────────────────────────────────────────
+// -----------------------------------------------------------------------------
 
-function mapRowToQuote(row: Record<string, string>, sourceFile: string): QuoteDoc {
+function mapRowToQuote(
+  row: Record<string, string>,
+  sourceFile: string,
+  normalizedRow?: Record<string, string>
+): QuoteDoc {
+  const normalized = normalizedRow ?? buildNormalizedRow(row);
   return {
-    id: cleanText(pickValue(row, ["quoteid", "estimateid", "proposalid", "number"])),
-    status: mapStatus(pickValue(row, ["status", "state"]), "quote"),
-    created_at: parseDate(pickValue(row, ["createdat", "created", "date", "issuedat"])),
-    approved_at: parseDate(pickValue(row, ["approvedat", "acceptedat", "convertedat"])),
-    total: parseNumber(pickValue(row, ["total", "amount", "subtotal", "price"])),
+    id: cleanText(pickValue(row, ["quoteid", "estimateid", "proposalid", "number"], normalized)),
+    status: mapStatus(pickValue(row, ["status", "state"], normalized), "quote"),
+    created_at: parseDate(pickValue(row, ["createdat", "created", "date", "issuedat"], normalized)),
+    approved_at: parseDate(pickValue(row, ["approvedat", "acceptedat", "convertedat"], normalized)),
+    total: parseNumber(pickValue(row, ["total", "amount", "subtotal", "price"], normalized)),
     source_file: sourceFile,
   };
 }
 
-function mapRowToInvoice(row: Record<string, string>, sourceFile: string): InvoiceDoc {
+function mapRowToInvoice(
+  row: Record<string, string>,
+  sourceFile: string,
+  normalizedRow?: Record<string, string>
+): InvoiceDoc {
+  const normalized = normalizedRow ?? buildNormalizedRow(row);
   return {
     id: cleanText(
-      pickValue(row, ["invoiceid", "invoice#", "invoicenumber", "number", "id", "invoice"])
+      pickValue(row, ["invoiceid", "invoice#", "invoicenumber", "number", "id", "invoice"], normalized)
     ),
-    related_quote_id: cleanText(pickValue(row, ["quoteid", "relatedquoteid", "estimateid"])),
-    status: mapStatus(pickValue(row, ["status", "state"]), "invoice"),
+    related_quote_id: cleanText(pickValue(row, ["quoteid", "relatedquoteid", "estimateid"], normalized)),
+    status: mapStatus(pickValue(row, ["status", "state"], normalized), "invoice"),
     issued_at: parseDate(
       pickValue(row, [
-        "issuedat", "issueddate", "invoicedate", "createdat", "createddate", "date", "dateissued",
-      ])
+        "issuedat",
+        "issueddate",
+        "invoicedate",
+        "createdat",
+        "createddate",
+        "date",
+        "dateissued",
+      ], normalized)
     ),
-    paid_at: parseDate(
-      pickValue(row, ["paidat", "paiddate", "markedpaiddate", "paymentdate", "closedat"])
-    ),
+    paid_at: parseDate(pickValue(row, ["paidat", "paiddate", "markedpaiddate", "paymentdate", "closedat"], normalized)),
     total: parseNumber(
       pickValue(row, [
-        "total", "total$", "totalamount", "amount", "balance", "balance$", "pretaxtotal$", "subtotal", "subtotal$",
-      ])
+        "total",
+        "total$",
+        "totalamount",
+        "amount",
+        "balance",
+        "balance$",
+        "pretaxtotal$",
+        "subtotal",
+        "subtotal$",
+      ], normalized)
     ),
     source_file: sourceFile,
   };
 }
 
-function mapRowToCalendarEvent(row: Record<string, string>, sourceFile: string): CalendarEvent {
-  const startDate = pickValue(row, ["startdate", "scheduleddate", "date"]);
-  const startTime = pickValue(row, ["starttime"]);
-  const endDate = pickValue(row, ["enddate"]);
-  const endTime = pickValue(row, ["endtime"]);
+function mapRowToCalendarEvent(
+  row: Record<string, string>,
+  sourceFile: string,
+  normalizedRow?: Record<string, string>
+): CalendarEvent {
+  const normalized = normalizedRow ?? buildNormalizedRow(row);
+  const startDate = pickValue(row, ["startdate", "scheduleddate", "date"], normalized);
+  const startTime = pickValue(row, ["starttime"], normalized);
+  const endDate = pickValue(row, ["enddate"], normalized);
+  const endTime = pickValue(row, ["endtime"], normalized);
   const scheduled_at = parseFlexibleTimestampToISO(
     startDate && startTime ? `${startDate} ${startTime}` : startDate
   );
@@ -343,47 +420,62 @@ function mapRowToCalendarEvent(row: Record<string, string>, sourceFile: string):
 
   return {
     id: cleanText(
-      pickValue(row, ["jobid", "appointmentid", "workorderid", "eventid", "number"]) ?? undefined
+      pickValue(row, ["jobid", "appointmentid", "workorderid", "eventid", "number"], normalized) ?? undefined
     ),
-    related_quote_id: cleanText(pickValue(row, ["quoteid", "relatedquoteid", "estimateid"])),
-    status: mapStatus(pickValue(row, ["status", "state"]), "job"),
-    scheduled_at: scheduled_at ?? parseDate(pickValue(row, ["scheduledat", "start"])),
-    completed_at: completed_at ?? parseDate(pickValue(row, ["completedat", "end", "closedat"])),
-    title: cleanText(pickValue(row, ["title", "description", "name", "subject"])),
+    related_quote_id: cleanText(pickValue(row, ["quoteid", "relatedquoteid", "estimateid"], normalized)),
+    status: mapStatus(pickValue(row, ["status", "state"], normalized), "job"),
+    scheduled_at: scheduled_at ?? parseDate(pickValue(row, ["scheduledat", "start"], normalized)),
+    completed_at: completed_at ?? parseDate(pickValue(row, ["completedat", "end", "closedat"], normalized)),
+    title: cleanText(pickValue(row, ["title", "description", "name", "subject"], normalized)),
     source_file: sourceFile,
   };
 }
 
-function mapRowToPayment(row: Record<string, string>, sourceFile: string): PaymentTxn {
+function mapRowToPayment(
+  row: Record<string, string>,
+  sourceFile: string,
+  normalizedRow?: Record<string, string>
+): PaymentTxn {
+  const normalized = normalizedRow ?? buildNormalizedRow(row);
   return {
-    id: cleanText(pickValue(row, ["paymentid", "transactionid", "id", "reference"])),
-    invoice_id: cleanText(pickValue(row, ["invoiceid", "invoice"])),
-    amount: parseNumber(pickValue(row, ["amount", "total", "paid"])),
-    payment_date: parseDate(pickValue(row, ["paymentdate", "date", "paidat", "received"])),
-    method: cleanText(pickValue(row, ["method", "paymentmethod", "type"])),
+    id: cleanText(pickValue(row, ["paymentid", "transactionid", "id", "reference"], normalized)),
+    invoice_id: cleanText(pickValue(row, ["invoiceid", "invoice"], normalized)),
+    amount: parseNumber(pickValue(row, ["amount", "total", "paid"], normalized)),
+    payment_date: parseDate(pickValue(row, ["paymentdate", "date", "paidat", "received"], normalized)),
+    method: cleanText(pickValue(row, ["method", "paymentmethod", "type"], normalized)),
     source_file: sourceFile,
   };
 }
 
-function mapRowToReceipt(row: Record<string, string>, sourceFile: string): ReceiptTxn {
+function mapRowToReceipt(
+  row: Record<string, string>,
+  sourceFile: string,
+  normalizedRow?: Record<string, string>
+): ReceiptTxn {
+  const normalized = normalizedRow ?? buildNormalizedRow(row);
   return {
-    id: cleanText(pickValue(row, ["receiptid", "expenseid", "id"])),
-    vendor: cleanText(pickValue(row, ["vendor", "supplier", "merchant", "payee"])),
-    amount: parseNumber(pickValue(row, ["amount", "total", "cost"])),
-    date: parseDate(pickValue(row, ["date", "expensedate", "purchasedate"])),
-    category: cleanText(pickValue(row, ["category", "type", "expensetype"])),
+    id: cleanText(pickValue(row, ["receiptid", "expenseid", "id"], normalized)),
+    vendor: cleanText(pickValue(row, ["vendor", "supplier", "merchant", "payee"], normalized)),
+    amount: parseNumber(pickValue(row, ["amount", "total", "cost"], normalized)),
+    date: parseDate(pickValue(row, ["date", "expensedate", "purchasedate"], normalized)),
+    category: cleanText(pickValue(row, ["category", "type", "expensetype"], normalized)),
     source_file: sourceFile,
   };
 }
 
-function mapRowToCustomer(row: Record<string, string>, sourceFile: string): CustomerDoc {
+function mapRowToCustomer(
+  row: Record<string, string>,
+  sourceFile: string,
+  normalizedRow?: Record<string, string>
+): CustomerDoc {
+  const normalized = normalizedRow ?? buildNormalizedRow(row);
   return {
-    id: cleanText(pickValue(row, ["customerid", "clientid", "accountid", "id"])),
-    name: cleanText(pickValue(row, ["name", "customername", "company"])),
-    status: mapStatus(pickValue(row, ["status", "state"]), "customer"),
-    created_at: parseDate(pickValue(row, ["createdat", "created", "date"])),
-    city: cleanText(pickValue(row, ["city"])),
-    state: cleanText(pickValue(row, ["state", "province"])),
+    id: cleanText(pickValue(row, ["customerid", "clientid", "accountid", "id"], normalized)),
+    name: cleanText(pickValue(row, ["name", "customername", "company"], normalized)),
+    status: mapStatus(pickValue(row, ["status", "state"], normalized), "customer"),
+    created_at: parseDate(pickValue(row, ["createdat", "created", "date"], normalized)),
+    city: cleanText(pickValue(row, ["city"], normalized)),
+    state: cleanText(pickValue(row, ["state", "province"], normalized)),
     source_file: sourceFile,
   };
 }
@@ -395,7 +487,7 @@ function mapRowToCustomer(row: Record<string, string>, sourceFile: string): Cust
 export async function normalizeToCompanyPack(
   files: Array<{ filename: string; buffer: Buffer }>,
   sourceTool: string
-): CompanyPack {
+): Promise<CompanyPack> {
   const pack = createEmptyCompanyPack(sourceTool);
 
   // Track which types had files uploaded
@@ -415,11 +507,12 @@ export async function normalizeToCompanyPack(
       // Parse the file
       const parsed = await parseFile(file.filename, file.buffer);
       const headers = parsed.rows[0] ? Object.keys(parsed.rows[0]) : [];
+      const headersNormalized = headers.map(normalizeKey);
 
       // Infer file types
       const inferences = inferFileTypes({
         filename: file.filename,
-        headers_normalized: headers,
+        headers_normalized: headersNormalized,
       });
 
       attempt.detected_types = inferences.map((i) => ({
@@ -441,39 +534,40 @@ export async function normalizeToCompanyPack(
 
       for (const row of parsed.rows) {
         rowsParsed++;
+        const normalizedRow = buildNormalizedRow(row);
 
         if (primaryType === "quotes") {
-          const doc = mapRowToQuote(row, file.filename);
+          const doc = mapRowToQuote(row, file.filename, normalizedRow);
           pack.layers.intent_quotes = pack.layers.intent_quotes ?? [];
           pack.layers.intent_quotes.push(doc);
           if (doc.created_at) dateOk++;
           else dateFail++;
         } else if (primaryType === "invoices") {
-          const doc = mapRowToInvoice(row, file.filename);
+          const doc = mapRowToInvoice(row, file.filename, normalizedRow);
           pack.layers.billing_invoices = pack.layers.billing_invoices ?? [];
           pack.layers.billing_invoices.push(doc);
           if (doc.issued_at) dateOk++;
           else dateFail++;
         } else if (primaryType === "calendar") {
-          const doc = mapRowToCalendarEvent(row, file.filename);
+          const doc = mapRowToCalendarEvent(row, file.filename, normalizedRow);
           pack.layers.schedule_events = pack.layers.schedule_events ?? [];
           pack.layers.schedule_events.push(doc);
           if (doc.scheduled_at) dateOk++;
           else dateFail++;
         } else if (primaryType === "payments") {
-          const doc = mapRowToPayment(row, file.filename);
+          const doc = mapRowToPayment(row, file.filename, normalizedRow);
           pack.layers.cash_payments = pack.layers.cash_payments ?? [];
           pack.layers.cash_payments.push(doc);
           if (doc.payment_date) dateOk++;
           else dateFail++;
         } else if (primaryType === "receipts") {
-          const doc = mapRowToReceipt(row, file.filename);
+          const doc = mapRowToReceipt(row, file.filename, normalizedRow);
           pack.layers.cost_receipts = pack.layers.cost_receipts ?? [];
           pack.layers.cost_receipts.push(doc);
           if (doc.date) dateOk++;
           else dateFail++;
         } else if (primaryType === "crm_export") {
-          const doc = mapRowToCustomer(row, file.filename);
+          const doc = mapRowToCustomer(row, file.filename, normalizedRow);
           pack.layers.crm_customers = pack.layers.crm_customers ?? [];
           pack.layers.crm_customers.push(doc);
           if (doc.created_at) dateOk++;
@@ -599,3 +693,4 @@ export function companyPackToDataPack(companyPack: CompanyPack): { pack: DataPac
 
   return { pack, stats };
 }
+

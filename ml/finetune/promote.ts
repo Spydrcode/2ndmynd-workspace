@@ -33,7 +33,8 @@ async function run() {
   const args = minimist(process.argv.slice(2));
   const { model_id, job_id } = await resolveModelId(args);
   const registry = loadRegistry();
-  const datasetPath = args.dataset ?? process.env.ML_TRAIN_JSONL_PATH;
+  const datasetRaw = args.dataset ?? process.env.ML_TRAIN_JSONL_PATH;
+  const datasetPath = typeof datasetRaw === "string" && datasetRaw.length > 0 ? datasetRaw : null;
   const datasetHash = datasetPath && fs.existsSync(datasetPath) ? sha256File(datasetPath) : "unknown";
 
   setCandidate(model_id);

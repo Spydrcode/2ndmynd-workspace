@@ -51,6 +51,6 @@ export function createRunContext(params: {
   };
 }
 
-export function finalizeRunContext(ctx: RunContext): RunContext {
+export function finalizeRunContext<T extends RunContext>(ctx: T): T {
   return { ...ctx, finished_at: new Date().toISOString() };
 }

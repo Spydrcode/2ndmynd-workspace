@@ -4,7 +4,7 @@ import { normalizeUploadBuffersToDataPack } from "../src/lib/intelligence/pack_n
 import { buildSnapshotFromPack } from "../src/lib/intelligence/snapshot_from_pack";
 
 describe("multi-file merge (quotes + invoices + calendar)", () => {
-  it("does not short-circuit and records files_attempted by type", () => {
+  it("does not short-circuit and records files_attempted by type", async () => {
     const quotesCsv = [
       "Quote ID,Created At,Total,Status,Approved At",
       "Q-1,2025-02-03 09:45:00,350.00,Sent,",
@@ -26,7 +26,7 @@ describe("multi-file merge (quotes + invoices + calendar)", () => {
       "",
     ].join("\n");
 
-    const { pack, stats } = normalizeUploadBuffersToDataPack(
+    const { pack, stats } = await normalizeUploadBuffersToDataPack(
       [
         { filename: "quotes.csv", buffer: Buffer.from(quotesCsv, "utf8") },
         { filename: "invoices.csv", buffer: Buffer.from(invoicesCsv, "utf8") },
@@ -61,4 +61,3 @@ describe("multi-file merge (quotes + invoices + calendar)", () => {
     expect(input_recognition.by_type.quotes.date_parse_fail_count).toBe(0);
   });
 });
-

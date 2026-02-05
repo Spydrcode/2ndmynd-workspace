@@ -495,6 +495,7 @@ export async function runMockPackV2(options: RunMockPackV2Options): Promise<Mock
       snapshot,
       conclusion: result?.conclusion ?? null,
       meta: {
+        run_id: runId,
         model_id: result?.model_id ?? "missing_openai_key",
         rewrite_used: result?.rewrite_used ?? false,
         fallback_used: result?.fallback_used ?? false,
@@ -560,7 +561,7 @@ export async function runMockPackV2(options: RunMockPackV2Options): Promise<Mock
 
       options.on_company?.({
         company: companyName,
-        conclusion: result.conclusion,
+        conclusion: result?.conclusion ?? null,
         meta: record.meta,
         debug_counts: {
           quotes_rows: quoteStats.rows,
@@ -574,7 +575,7 @@ export async function runMockPackV2(options: RunMockPackV2Options): Promise<Mock
     } else {
       options.on_company?.({
         company: companyName,
-        conclusion: result.conclusion,
+        conclusion: result?.conclusion ?? null,
         meta: record.meta,
       });
     }

@@ -59,12 +59,16 @@ function splitHoldout(
   };
 }
 
+function getPathArg(value: unknown, fallback: string): string {
+  return typeof value === "string" && value.length > 0 ? value : fallback;
+}
+
 async function run() {
   const args = minimist(process.argv.slice(2));
-  const goldPath = args.gold ?? path.join(process.cwd(), "ml", "datasets", "gold", "gold.jsonl");
-  const growthPath = args.growth ?? path.join(process.cwd(), "ml", "datasets", "growth", "growth.jsonl");
-  const trainOut = args.train_out ?? path.join(process.cwd(), "ml", "finetune", "train.jsonl");
-  const holdoutOut = args.holdout_out ?? path.join(process.cwd(), "ml", "finetune", "eval_holdout.jsonl");
+  const goldPath = getPathArg(args.gold, path.join(process.cwd(), "ml", "datasets", "gold", "gold.jsonl"));
+  const growthPath = getPathArg(args.growth, path.join(process.cwd(), "ml", "datasets", "growth", "growth.jsonl"));
+  const trainOut = getPathArg(args.train_out, path.join(process.cwd(), "ml", "finetune", "train.jsonl"));
+  const holdoutOut = getPathArg(args.holdout_out, path.join(process.cwd(), "ml", "finetune", "eval_holdout.jsonl"));
   const holdoutRatio = Number(args.holdout_ratio ?? "0.1");
   const seed = Number(args.seed ?? "42");
   const force = args.force === true;

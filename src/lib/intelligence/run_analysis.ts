@@ -28,7 +28,7 @@ import type { BenchmarkResult } from "../benchmarks/types";
 import type { DecisionArtifactV1 } from "../types/decision_artifact";
 import { buildDecisionArtifact } from "../present/build_decision_artifact";
 import type { RunContext } from "./run_context";
-import type { SnapshotV2 } from "../../../lib/decision/v2/conclusion_schema_v2";
+import type { SnapshotV2, ConclusionV2 } from "../../../lib/decision/v2/conclusion_schema_v2";
 
 /**
  * Ingest business profile + snapshot context to RAG.
@@ -80,9 +80,6 @@ async function ingestBusinessContextToRag(params: {
       contextParts.push(
         `- Quotes (${snapshot.window.lookback_days}d): ${snapshot.activity_signals.quotes.quotes_count}`
       );
-      if (snapshot.activity_signals.invoices.revenue_sum) {
-        contextParts.push(`- Revenue: $${Math.round(snapshot.activity_signals.invoices.revenue_sum).toLocaleString()}`);
-      }
     }
 
     // Detected pressures (keys only)
@@ -90,7 +87,7 @@ async function ingestBusinessContextToRag(params: {
       contextParts.push(``);
       contextParts.push(`## Pressure Patterns Detected`);
       layer_fusion.pressure_patterns.forEach((pattern) => {
-        contextParts.push(`- ${pattern.pattern_key}: ${pattern.severity}`);
+        contextParts.push(`- ${pattern.id}: ${pattern.severity}`);
       });
     }
 
@@ -404,12 +401,12 @@ export async function runAnalysisFromPack(params: {
 
   // Generate archetype-based watch list (skipped in diagnose mode when inference is suppressed)
   const predictive_watch_list = readiness.suppress_inference
-    ? null
+    ? undefined
     : getArchetypeWatchList(archetypes.archetypes, snapshot);
 
   let conclusion: unknown = null;
   let pipeline_meta: unknown = null;
-  let validationResult = { ok: true, errors: [] };
+  let validationResult: { ok: boolean; errors: string[] } = { ok: true, errors: [] };
 
   if (readiness.suppress_inference) {
     // Skip inference - DIAGNOSE mode suppresses business conclusions
@@ -469,6 +466,7 @@ export async function runAnalysisFromPack(params: {
     console.warn("RAG context retrieval failed (non-blocking):", error);
     rag_context = undefined;
   }
+  void rag_context;
 
   // Build decision artifact (client-facing output)
   let decision_artifact: DecisionArtifactV1 | undefined;
@@ -482,8 +480,6 @@ export async function runAnalysisFromPack(params: {
       diagnose_mode,
       mapping_confidence,
       benchmarks,
-      workspace_id: params.workspace_id,
-      rag_context,
     });
   } catch (error) {
     logger.logEvent("decision_artifact_error", { error: RunLogger.serializeError(error) });
