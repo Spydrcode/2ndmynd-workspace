@@ -80,6 +80,7 @@ export type RunResults = {
   mapping_confidence?: "low" | "medium" | "high" | null;
   run_manifest?: RunManifest | null;
   decision_artifact?: unknown | null;
+  coherence_snapshot?: unknown | null;
   artifacts?: {
     log_path?: string | null;
   } | null;
@@ -121,6 +122,7 @@ export type ResultsArtifact = {
   benchmarks?: unknown | null;
   mapping_confidence?: "low" | "medium" | "high" | null;
   decision_artifact?: unknown | null;
+  coherence_snapshot?: unknown | null;
   run_manifest?: RunManifest | null;
 };
 
@@ -277,5 +279,6 @@ export function buildResultsArtifact(run: Run): ResultsArtifact {
     benchmarks: run.results_json?.benchmarks ?? null,
     mapping_confidence: run.results_json?.mapping_confidence ?? null,
     decision_artifact: run.results_json?.decision_artifact ?? null,
+    coherence_snapshot: run.results_json?.coherence_snapshot ?? null,
   };
 }

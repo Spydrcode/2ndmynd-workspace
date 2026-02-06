@@ -25,6 +25,7 @@ function makeSnapshotV2(params: {
       report_date: params.slice_end,
       lookback_days: params.lookback_days,
       sample_confidence: "high",
+      window_type: "custom",
     },
     activity_signals: {
       quotes: {

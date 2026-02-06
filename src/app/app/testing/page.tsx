@@ -1,10 +1,11 @@
 ﻿import TestingClient from "./TestingClient";
 
-type TestingPageProps = {
-  searchParams?: Record<string, string | string[] | undefined>;
-};
+export const dynamic = "force-dynamic";
 
-export default function TestingPage({ searchParams }: TestingPageProps) {
+export default async function TestingPage(props: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const searchParams = props.searchParams ? await props.searchParams : {};
   const internalParam =
     typeof searchParams?.internal === "string"
       ? searchParams.internal === "1"

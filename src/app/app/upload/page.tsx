@@ -1,10 +1,11 @@
 import UploadClient from "./UploadClient";
 
-type UploadPageProps = {
-  searchParams?: Record<string, string | string[] | undefined>;
-};
+export const dynamic = "force-dynamic";
 
-export default function UploadPage({ searchParams }: UploadPageProps) {
+export default async function UploadPage(props: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const searchParams = props.searchParams ? await props.searchParams : {};
   const website =
     typeof searchParams?.website === "string"
       ? searchParams.website

@@ -182,7 +182,7 @@ describe("Learning safety invariant", () => {
     const last = JSON.parse(jsonl[jsonl.length - 1]);
 
     const featureKeys = Object.keys(last.features ?? {});
-    expect(featureKeys.every((key) => SIGNALS_V1_KEYS.includes(key))).toBe(true);
+    expect(featureKeys.every((key) => (SIGNALS_V1_KEYS as readonly string[]).includes(key))).toBe(true);
     expect(JSON.stringify(last.features)).not.toContain(RAG_MARKER);
     expect(featureKeys.some((key) => key.toLowerCase().startsWith("rag"))).toBe(false);
   });

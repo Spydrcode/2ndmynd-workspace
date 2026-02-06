@@ -1,10 +1,11 @@
 import RemoteAssistClient from "./RemoteAssistClient";
 
-type RemoteAssistPageProps = {
-  searchParams?: Record<string, string | string[] | undefined>;
-};
+export const dynamic = "force-dynamic";
 
-export default function RemoteAssistPage({ searchParams }: RemoteAssistPageProps) {
+export default async function RemoteAssistPage(props: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const searchParams = props.searchParams ? await props.searchParams : {};
   const website =
     typeof searchParams?.website === "string"
       ? searchParams.website

@@ -7,18 +7,7 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 
 describe("Runtime Endpoint Guard", () => {
-  let originalEnv: NodeJS.ProcessEnv;
-
-  beforeEach(() => {
-    originalEnv = { ...process.env };
-  });
-
-  afterEach(() => {
-    process.env = originalEnv;
-  });
-
   it("should require internal=1 in dev mode", async () => {
-    process.env.NODE_ENV = "development";
     
     // Import and test (would need to mock NextRequest properly)
     // This is a placeholder for the actual test structure
@@ -26,17 +15,10 @@ describe("Runtime Endpoint Guard", () => {
   });
 
   it("should require ALLOW_INTERNAL_TESTING in prod", async () => {
-    process.env.NODE_ENV = "production";
-    delete process.env.ALLOW_INTERNAL_TESTING;
-    
     expect(true).toBe(true);
   });
 
   it("should require valid token in prod when enabled", async () => {
-    process.env.NODE_ENV = "production";
-    process.env.ALLOW_INTERNAL_TESTING = "true";
-    process.env.INTERNAL_TESTING_TOKEN = "secret123";
-    
     expect(true).toBe(true);
   });
 });

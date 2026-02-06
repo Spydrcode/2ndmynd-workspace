@@ -5,6 +5,14 @@ import * as validateConclusionV2Tool from "./tools/validate_conclusion_v2";
 import * as runMockPackV2Tool from "./tools/run_mock_pack_v2";
 import * as runPipelineV2Tool from "./tools/run_pipeline_v2";
 
+// Decision Closure v3 tools
+import * as captureIntentV1Tool from "./tools/capture_intent_v1";
+import * as computeSignalsV2Tool from "./tools/compute_signals_v2";
+import * as recordCommitmentV1Tool from "./tools/record_commitment_v1";
+import * as reviewOutcomesV1Tool from "./tools/review_outcomes_v1";
+import * as validateDoctrineV1Tool from "./tools/validate_doctrine_v1";
+import * as runPipelineV3Tool from "./tools/run_pipeline_v3";
+
 type ToolHandler = (args: Record<string, unknown>) => Promise<unknown> | unknown;
 
 type ToolDefinition = {
@@ -296,6 +304,106 @@ const pipelineOutputSchema = {
   anyOf: [pipelineRawSnapshotOutputSchema, pipelineJobberOutputSchema, pipelineMockPackOutputSchema],
 };
 
+// ============================================================================
+// Decision Closure v3 Output Schemas
+// ============================================================================
+
+const ownerIntentProfileOutputSchema = {
+  type: "object",
+  required: ["profile", "contradictions", "valid"],
+  properties: {
+    profile: { type: "object" },
+    contradictions: { type: "array", items: { type: "object" } },
+    valid: { type: "boolean" },
+  },
+};
+
+const computedSignalsOutputSchema = {
+  type: "object",
+  required: [
+    "seasonality_pattern",
+    "volatility_band",
+    "approval_lag_signal",
+    "payment_lag_signal",
+    "concentration_signals",
+    "capacity_signals",
+    "owner_dependency",
+    "business_type_hypothesis",
+    "confidence",
+  ],
+  properties: {
+    seasonality_pattern: { type: "string" },
+    seasonality_evidence: { type: "string" },
+    volatility_band: { type: "string" },
+    volatility_evidence: { type: "string" },
+    approval_lag_signal: { type: "string" },
+    payment_lag_signal: { type: "string" },
+    concentration_signals: { type: "array" },
+    capacity_signals: { type: "array" },
+    owner_dependency: { type: "array" },
+    business_type_hypothesis: { type: "string" },
+    confidence: { type: "string" },
+    missing_data_flags: { type: "array" },
+  },
+};
+
+const commitmentRecordOutputSchema = {
+  type: "object",
+  required: ["commitment_gate", "end_cleanly"],
+  properties: {
+    commitment_gate: { type: "object" },
+    action_plan: { type: "object" },
+    accountability: { type: "object" },
+    end_cleanly: { type: "boolean" },
+  },
+};
+
+const outcomeReviewOutputSchema = {
+  type: "object",
+  required: [
+    "review_version",
+    "review_date",
+    "days_since_commitment",
+    "implementation_status",
+    "strategy_assessment",
+    "expected_signals_comparison",
+    "pressure_change",
+    "pivot_recommendation",
+    "reasoning",
+  ],
+  properties: {
+    review_version: { type: "string" },
+    review_date: { type: "string" },
+    days_since_commitment: { type: "number" },
+    implementation_status: { type: "string" },
+    strategy_assessment: { type: "string" },
+    expected_signals_comparison: { type: "array" },
+    pressure_change: { type: "string" },
+    pivot_recommendation: { type: "string" },
+    reasoning: { type: "string" },
+  },
+};
+
+const doctrineValidationOutputSchema = {
+  type: "object",
+  required: ["valid", "doctrine_checks", "errors"],
+  properties: {
+    valid: { type: "boolean" },
+    doctrine_checks: { type: "object" },
+    errors: { type: "array", items: { type: "string" } },
+  },
+};
+
+const pipelineV3OutputSchema = {
+  type: "object",
+  required: ["artifact", "summary"],
+  properties: {
+    artifact: { type: "object" },
+    summary: { type: "string" },
+    end_cleanly: { type: "boolean" },
+  },
+};
+
 const toolRegistry: ToolDefinition[] = [
   {
     name: inferDecisionV2Tool.tool.name,
@@ -324,6 +432,49 @@ const toolRegistry: ToolDefinition[] = [
     input_schema: runPipelineV2Tool.tool.inputSchema as Record<string, unknown>,
     output_schema: pipelineOutputSchema,
     handler: runPipelineV2Tool.handler as ToolHandler,
+  },
+  // Decision Closure v3 tools
+  {
+    name: captureIntentV1Tool.tool.name,
+    description: captureIntentV1Tool.tool.description,
+    input_schema: captureIntentV1Tool.tool.inputSchema as Record<string, unknown>,
+    output_schema: ownerIntentProfileOutputSchema,
+    handler: captureIntentV1Tool.handler as ToolHandler,
+  },
+  {
+    name: computeSignalsV2Tool.tool.name,
+    description: computeSignalsV2Tool.tool.description,
+    input_schema: computeSignalsV2Tool.tool.inputSchema as Record<string, unknown>,
+    output_schema: computedSignalsOutputSchema,
+    handler: computeSignalsV2Tool.handler as ToolHandler,
+  },
+  {
+    name: recordCommitmentV1Tool.tool.name,
+    description: recordCommitmentV1Tool.tool.description,
+    input_schema: recordCommitmentV1Tool.tool.inputSchema as Record<string, unknown>,
+    output_schema: commitmentRecordOutputSchema,
+    handler: recordCommitmentV1Tool.handler as ToolHandler,
+  },
+  {
+    name: reviewOutcomesV1Tool.tool.name,
+    description: reviewOutcomesV1Tool.tool.description,
+    input_schema: reviewOutcomesV1Tool.tool.inputSchema as Record<string, unknown>,
+    output_schema: outcomeReviewOutputSchema,
+    handler: reviewOutcomesV1Tool.handler as ToolHandler,
+  },
+  {
+    name: validateDoctrineV1Tool.tool.name,
+    description: validateDoctrineV1Tool.tool.description,
+    input_schema: validateDoctrineV1Tool.tool.inputSchema as Record<string, unknown>,
+    output_schema: doctrineValidationOutputSchema,
+    handler: validateDoctrineV1Tool.handler as ToolHandler,
+  },
+  {
+    name: runPipelineV3Tool.tool.name,
+    description: runPipelineV3Tool.tool.description,
+    input_schema: runPipelineV3Tool.tool.inputSchema as Record<string, unknown>,
+    output_schema: pipelineV3OutputSchema,
+    handler: runPipelineV3Tool.handler as ToolHandler,
   },
 ];
 

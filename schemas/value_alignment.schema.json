@@ -1,0 +1,81 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "value_alignment.schema.json",
+  "title": "ValuePropAlignment",
+  "description": "Per-tag alignment between declared values and observed reality",
+  "type": "object",
+  "required": ["tag", "label", "confidence", "sources", "score", "support", "evidence"],
+  "properties": {
+    "tag": {
+      "type": "string",
+      "description": "The value-prop tag ID."
+    },
+    "label": {
+      "type": "string",
+      "description": "Human-readable label for the value proposition."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["low", "med", "high"],
+      "description": "Confidence in this alignment assessment."
+    },
+    "sources": {
+      "type": "object",
+      "required": ["declared", "behavioral", "refusal"],
+      "properties": {
+        "declared": {
+          "type": "boolean",
+          "description": "Owner explicitly selected or implied this value."
+        },
+        "behavioral": {
+          "oneOf": [
+            { "type": "boolean" },
+            { "type": "string", "enum": ["unknown"] }
+          ],
+          "description": "CSV signals support this value (true/false/'unknown')."
+        },
+        "refusal": {
+          "type": "boolean",
+          "description": "Non-negotiables or anti-goals reinforce this value."
+        }
+      }
+    },
+    "score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 3,
+      "description": "Evidence source count (0-3)."
+    },
+    "support": {
+      "type": "string",
+      "enum": ["supported", "mixed", "crowded_out", "unknown"],
+      "description": "Overall support status."
+    },
+    "evidence": {
+      "type": "object",
+      "required": ["signal_ids", "bullets"],
+      "properties": {
+        "signal_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "IDs of signals that contributed to this assessment."
+        },
+        "bullets": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Human-readable evidence bullets."
+        }
+      },
+      "description": "Evidence grounding for this alignment."
+    },
+    "gentle_check": {
+      "type": "string",
+      "description": "Optional decision-safe check-in question."
+    },
+    "notes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Internal debugging notes."
+    }
+  }
+}

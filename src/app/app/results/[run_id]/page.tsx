@@ -14,7 +14,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { rerunSnapshot } from "./actions";
 import { DecisionArtifactView } from "./DecisionArtifactView";
+import { CoherenceView } from "./CoherenceView";
 import type { DecisionArtifactV1 } from "@/src/lib/types/decision_artifact";
+import type { PresentedCoherenceArtifact } from "@/src/lib/present/present_coherence";
 
 function formatTimestamp(value?: string | null) {
   if (!value) return "Timestamp unavailable";
@@ -172,10 +174,19 @@ export default async function ResultsPage({
   const fileAttempts = getFileAttempts(artifact.input_recognition);
   const predictiveWatchList = artifact.predictive_watch_list ?? null;
   const watchItems = predictiveWatchList?.items ?? [];
+  const archetypes = artifact.archetypes ?? null;
   
-  // Type-safe decision_artifact extraction
-  const decision_artifact = artifact.decision_artifact as DecisionArtifactV1 | null | undefined;
+  // Type-safe decision_artifact extraction — prefer stored, fall back to rebuilt
+  const storedArtifact = artifact.decision_artifact as DecisionArtifactV1 | null | undefined;
+  const decision_artifact = 
+    storedArtifact?.version === "v1" 
+      ? storedArtifact 
+      : presented.built_decision_artifact ?? null;
   const hasDecisionArtifact = decision_artifact?.version === "v1";
+
+  // Coherence snapshot — new coherence engine output
+  const coherenceRaw = artifact.coherence_snapshot as PresentedCoherenceArtifact | null | undefined;
+  const hasCoherence = coherenceRaw?.version === "presented_coherence_v1";
 
   return (
     <div className="space-y-6">
@@ -250,9 +261,19 @@ export default async function ResultsPage({
 
       {!conclusion && !artifact.diagnose_mode ? (
         <SnapshotSkeleton />
+      ) : hasCoherence ? (
+        <CoherenceView
+          artifact={coherenceRaw!}
+          isDev={!quiet}
+        />
       ) : hasDecisionArtifact ? (
-        <DecisionArtifactView artifact={decision_artifact!} isDev={!quiet} showInternal={internalAllowed} />
-      ) : (
+        <DecisionArtifactView
+          artifact={decision_artifact!}
+          isDev={!quiet}
+          showInternal={internalAllowed}
+          archetypes={archetypes}
+          watchList={watchItems}
+        />) : (
         <div className="space-y-6">
           <Card className="rounded-2xl border border-border/60 bg-background/90">
             <CardHeader>

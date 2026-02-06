@@ -119,7 +119,7 @@ describe("E2E artifact richness", () => {
     expect(artifact.website_opportunities?.length ?? 0).toBeGreaterThan(0);
 
     const { features } = extractSignalsV1(result);
-    const featureKeys = Object.keys(features);
+    const featureKeys = Object.keys(features) as Array<keyof typeof features>;
     expect(featureKeys.some((key) => key.toLowerCase().startsWith("rag"))).toBe(false);
 
     const examplesPath = path.join(process.env.LEARNING_STORE_ROOT!, "examples.jsonl");
@@ -128,6 +128,6 @@ describe("E2E artifact richness", () => {
 
     const featureJson = JSON.stringify(lastExample.features ?? {});
     expect(featureJson).not.toContain(RAG_MARKER);
-    expect(featureKeys.every((key) => SIGNALS_V1_KEYS.includes(key))).toBe(true);
+    expect(featureKeys.every((key) => (SIGNALS_V1_KEYS as readonly string[]).includes(key))).toBe(true);
   });
 });

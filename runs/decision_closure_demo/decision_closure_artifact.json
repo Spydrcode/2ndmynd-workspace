@@ -1,0 +1,203 @@
+{
+  "artifact_version": "closure_v1",
+  "run_id": "cf87e955-5fc6-4980-92b0-d27373c504fc",
+  "created_at": "2026-02-05T15:32:05.539Z",
+  "owner_intent": {
+    "profile_version": "intent_v1",
+    "primary_priority": "time_relief",
+    "risk_appetite": "medium",
+    "change_appetite": "structural",
+    "non_negotiables": [
+      "No price increases",
+      "Keep current team size"
+    ],
+    "time_horizon": "90_days",
+    "captured_at": "2026-02-05T15:32:05.536Z"
+  },
+  "business_reality": {
+    "model_version": "reality_v1",
+    "business_type_detected": "Mixed job size distribution",
+    "confidence": "high",
+    "concentration_signals": [],
+    "seasonality_pattern": "strong",
+    "capacity_signals": [],
+    "owner_dependency": [
+      {
+        "dependency_type": "approval_bottleneck",
+        "frequency": "frequent",
+        "impact": "Quotes waiting for approval; slows revenue conversion"
+      },
+      {
+        "dependency_type": "hero_dynamic",
+        "frequency": "frequent",
+        "impact": "Owner is critical path for decisions; creates bottleneck"
+      }
+    ],
+    "volatility_drivers": [
+      "Overall volatility: high",
+      "High decision lag detected (high)"
+    ],
+    "missing_data_notes": [
+      "Insufficient weekly volume data for trend analysis"
+    ],
+    "reconstructed_at": "2026-02-05T15:32:05.539Z"
+  },
+  "structural_findings": [
+    {
+      "lens": "e_myth",
+      "finding_id": "emyth_approval_bottleneck",
+      "finding_summary": "approval_bottleneck: Quotes waiting for approval; slows revenue conversion",
+      "severity": "high",
+      "evidence": [
+        "Quotes waiting for approval; slows revenue conversion",
+        "High decision lag detected (high)"
+      ],
+      "contributes_to_pressure": true
+    },
+    {
+      "lens": "e_myth",
+      "finding_id": "emyth_hero_dynamic",
+      "finding_summary": "hero_dynamic: Owner is critical path for decisions; creates bottleneck",
+      "severity": "high",
+      "evidence": [
+        "Owner is critical path for decisions; creates bottleneck",
+        "High decision lag detected (high)"
+      ],
+      "contributes_to_pressure": true
+    },
+    {
+      "lens": "porter_lite",
+      "finding_id": "porter_volatility",
+      "finding_summary": "High volatility exposes business to demand swings",
+      "severity": "high",
+      "evidence": [
+        "Overall volatility: high"
+      ],
+      "contributes_to_pressure": true
+    },
+    {
+      "lens": "financial_shape",
+      "finding_id": "financial_seasonality",
+      "finding_summary": "Strong seasonality creates revenue unpredictability",
+      "severity": "medium",
+      "evidence": [
+        "Phase: Active, Strength: strong, Predictability: medium"
+      ],
+      "contributes_to_pressure": true
+    }
+  ],
+  "primary_constraint": {
+    "constraint_id": "emyth_approval_bottleneck",
+    "constraint_description": "approval_bottleneck: Quotes waiting for approval; slows revenue conversion",
+    "downstream_noise": [
+      "hero_dynamic: Owner is critical path for decisions; creates bottleneck",
+      "High volatility exposes business to demand swings",
+      "Strong seasonality creates revenue unpredictability"
+    ],
+    "why_primary": "Highest severity (high) and directly impacts owner pressure"
+  },
+  "decision_paths": [
+    {
+      "path_id": "A",
+      "path_name": "Directly resolve: approval_bottleneck: Quotes waiting for approval; ...",
+      "pressure_resolved": "approval_bottleneck: Quotes waiting for approval; slows revenue conversion",
+      "trade_offs": [
+        "Requires owner time investment upfront",
+        "May increase short-term workload"
+      ],
+      "fits_owner_profile": "Aligns with time_relief priority and structural change appetite",
+      "proof_of_concept_signals": [
+        {
+          "signal": "Primary constraint severity decreases",
+          "time_window_days": 60,
+          "expected_outcome": "Measurable reduction in bottleneck/pressure"
+        }
+      ],
+      "exit_conditions": [
+        "No measurable improvement after 60 days",
+        "Owner unable to execute required actions"
+      ],
+      "confidence": "high"
+    },
+    {
+      "path_id": "B",
+      "path_name": "Work around constraint with structural adjustment",
+      "pressure_resolved": "Reduce impact of: approval_bottleneck: Quotes waiting for ...",
+      "trade_offs": [
+        "Doesn't eliminate root cause",
+        "May require external help or delegation"
+      ],
+      "fits_owner_profile": "Fits medium risk appetite",
+      "proof_of_concept_signals": [
+        {
+          "signal": "Downstream symptoms reduce even if root cause remains",
+          "time_window_days": 45,
+          "expected_outcome": "Owner pressure decreases noticeably"
+        }
+      ],
+      "exit_conditions": [
+        "Symptoms persist or worsen",
+        "Root cause pressure escalates"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "commitment_gate": {
+    "owner_choice": "path_A",
+    "commitment_made": true,
+    "chosen_at": "2026-02-05T15:32:05.541Z"
+  },
+  "doctrine_checks": {
+    "checks_version": "doctrine_v1",
+    "max_two_paths_enforced": true,
+    "non_actions_present": true,
+    "forbidden_language_absent": true,
+    "commitment_gate_valid": true,
+    "conclusions_locked_unless_triggered": true,
+    "all_checks_passed": true,
+    "failed_checks": []
+  },
+  "action_plan": {
+    "plan_version": "commitment_v1",
+    "chosen_path": "A",
+    "time_box_days": 90,
+    "minimal_actions": [
+      {
+        "action": "Delegate quote approval to senior technician",
+        "deadline_days": 14,
+        "responsible": "owner"
+      },
+      {
+        "action": "Document approval criteria checklist",
+        "deadline_days": 7,
+        "responsible": "owner"
+      }
+    ],
+    "explicit_non_actions": [
+      "NOT hiring additional staff",
+      "NOT changing pricing structure",
+      "NOT expanding service offerings"
+    ],
+    "created_at": "2026-02-05T15:32:05.541Z"
+  },
+  "accountability": {
+    "spec_version": "accountability_v1",
+    "re_evaluation_triggers": [
+      {
+        "trigger": "Primary constraint severity decreases",
+        "check_frequency_days": 30
+      }
+    ],
+    "failure_conditions": [
+      "No measurable improvement after 60 days",
+      "Owner unable to execute required actions"
+    ],
+    "success_metrics": [
+      {
+        "metric": "Primary constraint severity decreases",
+        "target": "Measurable reduction in bottleneck/pressure"
+      }
+    ],
+    "created_at": "2026-02-05T15:32:05.541Z"
+  }
+}

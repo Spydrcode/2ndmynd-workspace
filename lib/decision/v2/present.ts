@@ -49,6 +49,8 @@ export type PresentedArtifact = {
     }>;
   };
   boundary?: string;
+  /** Built decision artifact V1 — available when layer_fusion + snapshot exist */
+  built_decision_artifact?: DecisionArtifactV1;
 };
 
 function inferSource(mode: unknown): PresentedArtifact["header"]["source"] {
@@ -169,6 +171,7 @@ export function presentArtifact(params: {
       pressure_map,
       benchmarks,
       boundary: decision_artifact.boundary,
+      built_decision_artifact: decision_artifact,
     };
   }
 

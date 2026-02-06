@@ -188,36 +188,34 @@ npm test -- build_decision_artifact
 ## F) Build Stability (Google Fonts)
 
 **What Changed**:
-1. Updated `src/app/layout.tsx` to support offline builds:
-   - Added `NEXT_OFFLINE_BUILD` environment variable
-   - When set, skips Google Fonts import and uses system font stack
-   - Falls back gracefully to sans-serif
-2. Updated `README.md` with offline build mode documentation
+1. Reverted `src/app/layout.tsx` to standard ESM font imports
+2. Removed conditional font loading (incompatible with Next.js static analysis)
+3. Updated `README.md` to document font fetch during build time
 
 **Why**:
-- **CI/CD COMPATIBILITY**: Many CI environments block external font fetches
-- **AIR-GAPPED BUILDS**: Support environments without internet access
-- **FASTER BUILDS**: Skip external dependencies when not needed
-- **ZERO BREAKING CHANGES**: Google Fonts still default in dev/prod
+- **NEXT.JS REQUIREMENT**: Fonts must be statically imported for build-time optimization
+- **BUILD-TIME FETCH**: Google Fonts are fetched once during `npm run build`, not at runtime
+- **CI COMPATIBILITY**: Most CI environments allow outbound HTTPS during builds
+- **ALTERNATIVE**: For true offline builds, use self-hosted fonts or font files in `/public`
 
-**Usage**:
-```bash
-# Offline build (CI mode)
-export NEXT_OFFLINE_BUILD=true
-npm run build
-
-# Normal build (Google Fonts)
-npm run build
-```
+**Impact**:
+- Builds require network access during `npm run build` step
+- Fonts are optimized and bundled at build time
+- No runtime network calls for fonts
 
 **How to Verify**:
 ```bash
-# Test offline build
-$env:NEXT_OFFLINE_BUILD="true"
 npm run build
 
-# Should complete without network errors or font fetch failures
+# Should complete successfully with network access
+# Fonts are embedded in build output
 ```
+
+**For True Offline Builds**:
+If network access is unavailable during builds, options include:
+1. Self-host font files in `/public/fonts`
+2. Use system font stack only (remove Google Fonts imports)
+3. Pre-download fonts during Docker image build layer
 
 ---
 
@@ -257,8 +255,7 @@ npm run audit:wiring
 # 3. Run all tests
 npm test
 
-# 4. Test offline build
-$env:NEXT_OFFLINE_BUILD="true"
+# 4. Test build
 npm run build
 
 # 5. Run lint
@@ -269,7 +266,7 @@ npm run lint
 - ✅ Schema exported: `ml/schemas/signals_v1_schema.json` (hash: 5cda6ade)
 - ✅ Wiring checks: 4/4 passing
 - ✅ All tests passing (including new address PII guards)
-- ✅ Build succeeds with NEXT_OFFLINE_BUILD=true
+- ✅ Build succeeds (fonts fetched during build time)
 - ✅ Lint: 0 errors
 
 ---
@@ -279,7 +276,6 @@ npm run lint
 **None**. All changes are:
 - Additive (new guards, new tests)
 - Backward compatible (Python scripts load schema, old behavior preserved)
-- Opt-in (offline build mode via env var)
 - Enforcement of existing rules (promotion-only was intended, now enforced)
 
 ---
@@ -293,21 +289,14 @@ npm run lint
    - Embeds new schema_hash in meta.json
    - Fails if schema file missing
 
-2. **Update CI Pipeline**:
-   ```yaml
-   # .github/workflows/build.yml
-   env:
-     NEXT_OFFLINE_BUILD: true
-   ```
-
-3. **Monitor Schema Drift**:
+2. **Monitor Schema Drift**:
    - Any change to `SIGNALS_V1_KEYS` requires re-export:
      ```bash
      node scripts/export_signals_schema.mjs
      ```
    - Old models will be rejected at runtime with "schema_mismatch" (non-breaking)
 
-4. **Document Model Promotion**:
+3. **Document Model Promotion**:
    - Only promoted models (LATEST.json) run in production
    - Dev testing: Set `ALLOW_UNSAFE_MODEL_OVERRIDE=true` (logs loud warnings)
 

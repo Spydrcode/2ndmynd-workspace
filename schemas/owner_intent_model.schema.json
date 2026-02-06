@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "owner_intent_model_v3",
+  "title": "OwnerIntentModel",
+  "description": "Normalized owner intent with confidence, conflicts, and optional per-tag value confidence.",
+  "type": "object",
+  "required": ["version", "value_proposition", "priorities_ranked", "non_negotiables", "anti_goals", "primary_constraint", "definition_of_success", "confidence", "detected_conflicts", "captured_at"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "string", "const": "intent_v3" },
+    "value_proposition": {
+      "type": "object",
+      "required": ["statement", "tags"],
+      "properties": {
+        "statement": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "maxItems": 2
+        }
+      }
+    },
+    "priorities_ranked": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 3
+    },
+    "non_negotiables": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 3
+    },
+    "anti_goals": {
+      "type": "array",
+      "items": { "type": "string" },
+      "maxItems": 3
+    },
+    "primary_constraint": { "type": "string" },
+    "definition_of_success": { "type": "string" },
+    "context_notes": { "type": "string" },
+    "confidence": { "type": "string", "enum": ["low", "med", "high"] },
+    "detected_conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "tags_involved", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "tags_involved": { "type": "array", "items": { "type": "string" } },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "value_confidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["tag", "score", "confidence", "sources"],
+        "properties": {
+          "tag": { "type": "string" },
+          "score": { "type": "number", "minimum": 0, "maximum": 3 },
+          "confidence": { "type": "string", "enum": ["low", "med", "high"] },
+          "sources": {
+            "type": "object",
+            "required": ["declared", "behavioral", "refusal"],
+            "properties": {
+              "declared": { "type": "boolean" },
+              "behavioral": {},
+              "refusal": { "type": "boolean" }
+            }
+          },
+          "notes": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "captured_at": { "type": "string", "format": "date-time" }
+  }
+}

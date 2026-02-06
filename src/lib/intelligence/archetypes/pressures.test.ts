@@ -12,6 +12,7 @@ const baseSnapshot: SnapshotV2 = {
     report_date: "2024-12-31",
     lookback_days: 365,
     sample_confidence: "high",
+    window_type: "last_12_months",
   },
   activity_signals: {
     quotes: {

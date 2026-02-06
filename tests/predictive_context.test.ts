@@ -9,9 +9,19 @@ describe("predictive_context", () => {
       summary: "HVAC repair and maintenance",
       services: ["Air Conditioning", "Heating"],
       location_mentions: ["Dallas", "TX"],
-      industry_bucket: "hvac",
+      industry_bucket: "trade",
       domain: "coolairservices.com",
       found_contact: true,
+      website_present: true,
+      opportunity_signals: {
+        has_phone: true,
+        has_email: true,
+        has_booking_cta: false,
+        has_financing: false,
+        has_reviews: false,
+        has_service_pages: true,
+        has_maintenance_plan: false,
+      },
     };
 
     const context = buildPredictiveContext({ business_profile: profile });
@@ -95,9 +105,19 @@ describe("predictive_context", () => {
       summary: "Service business",
       services: [],
       location_mentions: [],
-      industry_bucket: "hvac",
+      industry_bucket: "trade",
       domain: "coolairservices.com",
       found_contact: true,
+      website_present: true,
+      opportunity_signals: {
+        has_phone: true,
+        has_email: true,
+        has_booking_cta: false,
+        has_financing: false,
+        has_reviews: false,
+        has_service_pages: true,
+        has_maintenance_plan: false,
+      },
     };
 
     const context = buildPredictiveContext({

@@ -286,81 +286,11 @@ export async function runAnalysisFromPack(params: {
     layer_fusion.warnings.length ? `warnings: ${layer_fusion.warnings.length}` : undefined
   );
 
-  // Step 3c: Compute benchmarks
+  // Step 3c: Benchmarks DEPRECATED — Coherence Engine replaces external comparisons
+  // DOCTRINE: We are NOT a benchmarking company. No peer/industry comparisons.
   manifest = markStepStart(manifest, "compute_benchmarks");
-  let benchmarks: BenchmarkResult | undefined;
-  try {
-    const { computeBenchmarks } = await import("../benchmarks/benchmark_engine");
-    const industryTags = [business_profile.industry_bucket, ...business_profile.services].filter(Boolean);
-    const expandBucketSeries = (buckets: Array<{ bucket: string; count: number }>, midpoints: Record<string, number>) => {
-      const values: number[] = [];
-      const maxValues = 200;
-      for (const bucket of buckets) {
-        const midpoint = midpoints[bucket.bucket];
-        if (!Number.isFinite(midpoint) || bucket.count <= 0) continue;
-        const repeats = Math.min(bucket.count, Math.max(1, Math.floor(maxValues / buckets.length)));
-        for (let i = 0; i < repeats; i += 1) {
-          values.push(midpoint);
-        }
-      }
-      return values;
-    };
-
-    const invoiceTotals = snapshot.invoice_size_buckets
-      ? expandBucketSeries(snapshot.invoice_size_buckets, {
-          "<250": 125,
-          "250-500": 375,
-          "500-1k": 750,
-          "1k-2k": 1500,
-          "2k+": 3000,
-        })
-      : [];
-
-    const quoteAges = snapshot.quote_age_buckets
-      ? expandBucketSeries(snapshot.quote_age_buckets, {
-          "0-2d": 1,
-          "3-7d": 5,
-          "8-14d": 11,
-          "15-30d": 22,
-          "30d+": 45,
-        })
-      : [];
-
-    const weeklyInvoiceCounts =
-      snapshot.weekly_volume_series?.map((point) => point.invoices).filter((count) => Number.isFinite(count)) ?? [];
-
-    const approvedToScheduledDays = layer_fusion?.timing?.approved_to_scheduled_p50_days
-      ? [layer_fusion.timing.approved_to_scheduled_p50_days]
-      : [];
-    const invoicedToPaidDays = layer_fusion?.timing?.invoiced_to_paid_p50_days
-      ? [layer_fusion.timing.invoiced_to_paid_p50_days]
-      : [];
-
-    const quoteToJobConversionRate =
-      layer_fusion?.linkage?.quote_to_job_match_rate ??
-      (snapshot.activity_signals.quotes.quotes_count > 0
-        ? snapshot.activity_signals.quotes.quotes_approved_count / snapshot.activity_signals.quotes.quotes_count
-        : undefined);
-
-    benchmarks = computeBenchmarks({
-      snapshot,
-      industryTags,
-      invoiceTotals,
-      weeklyInvoiceCounts,
-      quoteAges,
-      approvedToScheduledDays,
-      invoicedToPaidDays,
-      quoteToJobConversionRate,
-    });
-    manifest = markStepSuccess(manifest, "compute_benchmarks", [benchmarks.cohort_id]);
-  } catch (error) {
-    manifest = markStepError(
-      manifest,
-      "compute_benchmarks",
-      error instanceof Error ? error.message : String(error)
-    );
-    benchmarks = undefined;
-  }
+  const benchmarks: BenchmarkResult | undefined = undefined;
+  manifest = markStepSkipped(manifest, "compute_benchmarks", "Deprecated: replaced by Coherence Engine");
 
   // Ingest business profile + snapshot context to RAG
   // Fire and forget - don't block on RAG ingestion

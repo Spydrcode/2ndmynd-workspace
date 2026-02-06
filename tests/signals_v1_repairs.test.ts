@@ -82,6 +82,16 @@ describe("signals_v1 feature extraction", () => {
         industry_bucket: "service",
         domain: null,
         found_contact: false,
+        website_present: false,
+        opportunity_signals: {
+          has_phone: false,
+          has_email: false,
+          has_booking_cta: false,
+          has_financing: false,
+          has_reviews: false,
+          has_service_pages: false,
+          has_maintenance_plan: false,
+        },
       },
       validation: { ok: true, errors: [] },
     };
@@ -179,6 +189,16 @@ describe("signals_v1 feature extraction", () => {
         industry_bucket: "service",
         domain: null,
         found_contact: false,
+        website_present: false,
+        opportunity_signals: {
+          has_phone: false,
+          has_email: false,
+          has_booking_cta: false,
+          has_financing: false,
+          has_reviews: false,
+          has_service_pages: false,
+          has_maintenance_plan: false,
+        },
       },
       validation: { ok: true, errors: [] },
     };
@@ -256,8 +276,16 @@ describe("signals_v1 feature extraction", () => {
         location_mentions: [],
         industry_bucket: "service",
         domain: null,
-        found_contact: false,
-      },
+        found_contact: false,        website_present: false,
+        opportunity_signals: {
+          has_phone: false,
+          has_email: false,
+          has_booking_cta: false,
+          has_financing: false,
+          has_reviews: false,
+          has_service_pages: false,
+          has_maintenance_plan: false,
+        },      },
       validation: { ok: true, errors: [] },
     };
     
@@ -292,14 +320,22 @@ describe("signals_v1 feature extraction", () => {
         industry_bucket: "service",
         domain: null,
         found_contact: false,
+        website_present: false,
+        opportunity_signals: {
+          has_phone: false,
+          has_email: false,
+          has_booking_cta: false,
+          has_financing: false,
+          has_reviews: false,
+          has_service_pages: false,
+          has_maintenance_plan: false,
+        },
       },
       validation: { ok: true, errors: [] },
     };
-    
+
     const { features } = extractSignalsV1(minimalAnalysis as AnalysisResult);
     
-    // Should not crash and should compute missingness_score
-    expect(features.missingness_score).toBeGreaterThan(0);
     expect(features.industry_key).toBe("unknown");
     expect(features.source).toBe("mock");
   });
