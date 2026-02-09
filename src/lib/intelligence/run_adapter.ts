@@ -4,6 +4,9 @@ import { DataPackV0 } from "@/src/lib/intelligence/data_pack_v0";
 import type { PredictiveContext } from "@/src/lib/intelligence/predictive/predictive_context";
 import type { RunManifest } from "@/src/lib/intelligence/run_manifest";
 import type { ArchetypeDetectionResult, ArchetypeWatchList } from "@/src/lib/intelligence/archetypes/types";
+import type { PresentedCoherenceArtifact } from "@/src/lib/present/present_coherence";
+import type { CoherenceSnapshot, CoherenceDrift } from "@/src/lib/types/coherence_engine";
+import type { IntentOverrides } from "@/src/lib/types/intent_intake";
 import { parseFlexibleTimestamp } from "./dates";
 
 export type InputHealth = {
@@ -80,7 +83,10 @@ export type RunResults = {
   mapping_confidence?: "low" | "medium" | "high" | null;
   run_manifest?: RunManifest | null;
   decision_artifact?: unknown | null;
-  coherence_snapshot?: unknown | null;
+  coherence_snapshot?: CoherenceSnapshot | null;
+  presented_coherence_v1?: PresentedCoherenceArtifact | null;
+  coherence_drift?: CoherenceDrift | null;
+  intent_overrides?: IntentOverrides | null;
   artifacts?: {
     log_path?: string | null;
   } | null;
@@ -122,7 +128,10 @@ export type ResultsArtifact = {
   benchmarks?: unknown | null;
   mapping_confidence?: "low" | "medium" | "high" | null;
   decision_artifact?: unknown | null;
-  coherence_snapshot?: unknown | null;
+  coherence_snapshot?: CoherenceSnapshot | null;
+  presented_coherence_v1?: PresentedCoherenceArtifact | null;
+  coherence_drift?: CoherenceDrift | null;
+  intent_overrides?: IntentOverrides | null;
   run_manifest?: RunManifest | null;
 };
 
@@ -280,5 +289,8 @@ export function buildResultsArtifact(run: Run): ResultsArtifact {
     mapping_confidence: run.results_json?.mapping_confidence ?? null,
     decision_artifact: run.results_json?.decision_artifact ?? null,
     coherence_snapshot: run.results_json?.coherence_snapshot ?? null,
+    presented_coherence_v1: run.results_json?.presented_coherence_v1 ?? null,
+    coherence_drift: run.results_json?.coherence_drift ?? null,
+    intent_overrides: run.results_json?.intent_overrides ?? null,
   };
 }

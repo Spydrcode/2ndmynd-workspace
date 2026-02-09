@@ -1,4 +1,5 @@
 import Ajv, { type ValidateFunction } from "ajv";
+import addFormats from "ajv-formats";
 
 import * as inferDecisionV2Tool from "./tools/infer_decision_v2";
 import * as validateConclusionV2Tool from "./tools/validate_conclusion_v2";
@@ -24,6 +25,7 @@ type ToolDefinition = {
 };
 
 const ajv = new Ajv({ allErrors: true, strict: true, allowUnionTypes: true });
+addFormats(ajv);
 
 const decisionPatchReasonSchema = {
   anyOf: [{ type: "string", enum: ["verb", "timebox", "both"] }, { type: "null" }],
@@ -396,11 +398,18 @@ const doctrineValidationOutputSchema = {
 
 const pipelineV3OutputSchema = {
   type: "object",
-  required: ["artifact", "summary"],
+  additionalProperties: false,
+  required: ["artifact", "summary", "coherence_snapshot", "presented_coherence_v1", "coherence_drift", "intent_overrides"],
   properties: {
     artifact: { type: "object" },
     summary: { type: "string" },
     end_cleanly: { type: "boolean" },
+    coherence_snapshot: { anyOf: [{ type: "object" }, { type: "null" }] },
+    presented_coherence_v1: { anyOf: [{ type: "object" }, { type: "null" }] },
+    coherence_drift: { anyOf: [{ type: "object" }, { type: "null" }] },
+    intent_overrides: { anyOf: [{ type: "object" }, { type: "null" }] },
+    coherence: { type: "object" },
+    drift: { type: "object" },
   },
 };
 

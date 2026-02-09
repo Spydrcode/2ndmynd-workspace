@@ -8,8 +8,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import type { DecisionArtifactV1 } from "@/src/lib/types/decision_artifact";
-import { formatBenchmarkInsight } from "@/src/lib/present/benchmark_narratives";
-import { getIndustryGroupFromCohort } from "@/src/lib/intelligence/industry_groups";
 import { EvidenceCharts } from "./EvidenceCharts";
 import type { ArchetypeDetectionResult } from "@/src/lib/intelligence/archetypes/types";
 
@@ -27,8 +25,6 @@ type DecisionArtifactViewProps = {
   watchList?: WatchListItem[];
 };
 
-type BenchmarkMetric = NonNullable<DecisionArtifactV1["benchmarks"]>["metrics"][number];
-
 function formatDate(isoDate: string): string {
   try {
     const date = new Date(isoDate);
@@ -36,20 +32,6 @@ function formatDate(isoDate: string): string {
   } catch {
     return isoDate;
   }
-}
-
-function formatMetricValue(metric: BenchmarkMetric) {
-  if (metric.unit === "%") return `${Math.round(metric.value)}%`;
-  if (metric.unit === "days") return `${Math.round(metric.value)} days`;
-  if (metric.unit === "ratio") return metric.value.toFixed(1);
-  return `${metric.value}${metric.unit}`;
-}
-
-function formatPeerMedian(metric: BenchmarkMetric) {
-  if (metric.unit === "%") return `${Math.round(metric.peer_median)}%`;
-  if (metric.unit === "days") return `${Math.round(metric.peer_median)} days`;
-  if (metric.unit === "ratio") return metric.peer_median.toFixed(1);
-  return `${metric.peer_median}${metric.unit}`;
 }
 
 function ConfidenceBadge({ level, reason }: { level: string; reason: string }) {
@@ -94,36 +76,12 @@ function WindowSummary({ window }: { window: DecisionArtifactV1["window"] }) {
 }
 
 /** Severity color for pressure signal cards */
-function pressureSeverityColor(percentile?: number): string {
-  if (percentile === undefined) return "border-amber-400/50 bg-amber-50/30 dark:bg-amber-950/20";
-  if (percentile >= 75) return "border-red-400/60 bg-red-50/40 dark:bg-red-950/20";
-  if (percentile >= 50) return "border-amber-400/50 bg-amber-50/30 dark:bg-amber-950/20";
-  return "border-emerald-400/40 bg-emerald-50/30 dark:bg-emerald-950/20";
+function pressureSeverityColor(): string {
+  return "border-amber-400/50 bg-amber-50/30 dark:bg-amber-950/20";
 }
 
-function pressureSeverityDot(percentile?: number): string {
-  if (percentile === undefined) return "bg-amber-400";
-  if (percentile >= 75) return "bg-red-500";
-  if (percentile >= 50) return "bg-amber-500";
-  return "bg-emerald-500";
-}
-
-/** Visual percentile bar */
-function PercentileBar({ percentile, label }: { percentile: number; label: string }) {
-  const barColor =
-    percentile >= 75 ? "bg-red-500" : percentile >= 50 ? "bg-amber-500" : "bg-emerald-500";
-
-  return (
-    <div className="flex items-center gap-3">
-      <div className="relative h-2 w-full max-w-30 overflow-hidden rounded-full bg-muted/40">
-        <div
-          className={`absolute left-0 top-0 h-full rounded-full ${barColor}`}
-          style={{ width: `${Math.min(percentile, 100)}%` }}
-        />
-      </div>
-      <span className="text-xs text-muted-foreground whitespace-nowrap">{label}</span>
-    </div>
-  );
+function pressureSeverityDot(): string {
+  return "bg-amber-400";
 }
 
 /** Archetype label formatting */
@@ -144,7 +102,6 @@ export function DecisionArtifactView({
   const visuals = artifact.visuals_summary;
   const opportunities = artifact.website_opportunities ?? [];
   const learningNote = artifact.learning_note;
-  const benchmarks = artifact.benchmarks;
   const primaryArchetype = archetypes?.primary
     ? archetypes.archetypes.find((a) => a.id === archetypes.primary)
     : archetypes?.archetypes?.[0];
@@ -217,28 +174,15 @@ export function DecisionArtifactView({
               {artifact.pressure_map.map((signal) => (
                 <div
                   key={signal.key}
-                  className={`rounded-xl border p-4 ${pressureSeverityColor(signal.percentile)}`}
+                  className={`rounded-xl border p-4 ${pressureSeverityColor()}`}
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2">
-                      <div className={`mt-0.5 h-2.5 w-2.5 shrink-0 rounded-full ${pressureSeverityDot(signal.percentile)}`} />
+                      <div className={`mt-0.5 h-2.5 w-2.5 shrink-0 rounded-full ${pressureSeverityDot()}`} />
                       <p className="text-sm font-medium text-foreground">{signal.label}</p>
                     </div>
-                    {signal.percentile !== undefined && (
-                      <Badge variant="outline" className="text-xs whitespace-nowrap">
-                        {signal.percentile}th percentile
-                      </Badge>
-                    )}
                   </div>
                   <p className="mt-2 pl-4.5 text-sm text-muted-foreground">{signal.sentence}</p>
-                  {signal.percentile !== undefined && (
-                    <div className="mt-3 pl-4.5">
-                      <PercentileBar
-                        percentile={signal.percentile}
-                        label={`You vs peers: ${signal.percentile}th`}
-                      />
-                    </div>
-                  )}
                   <div className="mt-3 pl-4.5 rounded-lg bg-background/60 p-3 space-y-1">
                     <p className="text-xs text-foreground">
                       <span className="font-medium">Recommended:</span> {signal.recommended_move}
@@ -263,65 +207,6 @@ export function DecisionArtifactView({
           </CardContent>
         </Card>
 
-        {/* ── BENCHMARKS (VISIBLE — "You vs Peers" with visual bars) ── */}
-        {benchmarks && (
-          <Card className="rounded-2xl border border-border/60 bg-background/90">
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="text-base font-semibold">You vs peers</CardTitle>
-                <Badge variant="outline" className="text-xs">{benchmarks.cohort_label}</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {benchmarks.metrics.map((metric) => {
-                const industryGroup = getIndustryGroupFromCohort(benchmarks.cohort_label);
-                const insight = formatBenchmarkInsight({
-                  metric_key: metric.key,
-                  value: metric.value,
-                  peer_median: metric.peer_median,
-                  percentile: metric.percentile,
-                  direction: metric.direction,
-                  industry_group: industryGroup,
-                });
-                const barColor =
-                  metric.direction === "higher_is_risk"
-                    ? metric.percentile >= 75
-                      ? "bg-red-500" : metric.percentile >= 50
-                        ? "bg-amber-500" : "bg-emerald-500"
-                    : metric.percentile <= 25
-                      ? "bg-red-500" : metric.percentile <= 50
-                        ? "bg-amber-500" : "bg-emerald-500";
-
-                return (
-                  <div key={metric.key} className="space-y-2">
-                    <div className="space-y-0.5">
-                      <p className="text-sm font-medium text-foreground">{insight.headline}</p>
-                      <p className="text-xs text-muted-foreground">{insight.so_what}</p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="relative h-2 flex-1 overflow-hidden rounded-full bg-muted/40">
-                        <div
-                          className={`absolute left-0 top-0 h-full rounded-full ${barColor}`}
-                          style={{ width: `${Math.min(metric.percentile, 100)}%` }}
-                        />
-                        <div
-                          className="absolute -top-0.5 h-2.5 w-0.5 bg-foreground/40"
-                          style={{ left: "50%" }}
-                          title="Peer median"
-                        />
-                      </div>
-                      <span className="text-xs text-muted-foreground w-28 text-right">
-                        {formatMetricValue(metric)} vs {formatPeerMedian(metric)}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
-            </CardContent>
-          </Card>
-        )}
-
-        {/* ── WATCH LIST (VISIBLE — what might shift) ── */}
         {watchList.length > 0 && (
           <Card className="rounded-2xl border border-border/60 bg-background/90">
             <CardHeader>
@@ -491,3 +376,4 @@ export function DecisionArtifactView({
     </div>
   );
 }
+

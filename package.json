@@ -103,6 +103,7 @@
     "mcp:server": "tsx mcp/server.ts",
     "mcp:selftest": "npx tsx mcp/server.ts --selftest",
     "intelligence:smoke": "npx tsx scripts/mcp_smoke.ts",
+    "smoke:coherence:v3": "tsx scripts/intelligence/smoke_coherence_v3.ts",
     "intelligence:eval": "npx tsx scripts/intelligence/eval.ts",
     "intelligence:green": "npx tsx scripts/intelligence/green.ts",
     "test": "vitest run"

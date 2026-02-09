@@ -25,6 +25,7 @@ describe("MCP Tool Registry Contract", () => {
     // Check for critical tools used in pipeline
     const requiredTools = [
       "pipeline.run_v2",
+      "pipeline.run_v3",
       "decision.infer_v2",
       "decision.validate_v2",
     ];

@@ -10,6 +10,8 @@
  */
 
 import crypto from "node:crypto";
+import Ajv, { type ValidateFunction } from "ajv";
+import addFormats from "ajv-formats";
 import type { SnapshotV2 } from "../../lib/decision/v2/conclusion_schema_v2";
 import type {
   DecisionClosureArtifact,
@@ -31,9 +33,17 @@ import { checkFlipFlop, lockConclusion } from "./locked_state_persistence";
 import { runCoherenceEngine, runCoherenceEngineV3, type IntentIntake } from "../../src/lib/coherence/index";
 import { coherenceToLegacyArtifact } from "../../src/lib/coherence/bridge_legacy";
 import { computeCoherenceDrift } from "../../src/lib/coherence/coherence_drift";
-import { presentCoherenceSnapshot } from "../../src/lib/present/present_coherence";
-import type { CoherenceSnapshot } from "../../src/lib/types/coherence_engine";
-import type { OwnerIntentIntake } from "../../src/lib/types/intent_intake";
+import { presentCoherenceSnapshot, type PresentedCoherenceArtifact } from "../../src/lib/present/present_coherence";
+import type { CoherenceSnapshot, CoherenceDrift } from "../../src/lib/types/coherence_engine";
+import type { OwnerIntentIntake, IntentOverrides } from "../../src/lib/types/intent_intake";
+import { getStore } from "../../src/lib/intelligence/store";
+import ownerIntentIntakeSchema from "../../schemas/owner_intent_intake.schema.json";
+
+const ajv = new Ajv({ allErrors: true, strict: true, allowUnionTypes: true });
+addFormats(ajv);
+const validateOwnerIntentIntake = ajv.compile(
+  ownerIntentIntakeSchema as Record<string, unknown>
+) as ValidateFunction<OwnerIntentIntake>;
 
 export const tool = {
   name: "pipeline.run_v3",
@@ -65,8 +75,31 @@ export const tool = {
         description: "IntentIntake for Coherence Engine (legacy free-text format)",
       },
       owner_intent_intake: {
-        type: "object",
+        ...ownerIntentIntakeSchema,
         description: "OwnerIntentIntake (7-question format, preferred for initial mode)",
+      },
+      intent_overrides: {
+        type: "object",
+        additionalProperties: false,
+        required: ["overrides"],
+        properties: {
+          run_id: { type: "string" },
+          updated_at: { type: "string" },
+          overrides: {
+            type: "array",
+            maxItems: 10,
+            items: {
+              type: "object",
+              additionalProperties: false,
+              required: ["tag", "confirmed"],
+              properties: {
+                tag: { type: "string" },
+                confirmed: { type: "boolean" },
+                recorded_at: { type: "string" },
+              },
+            },
+          },
+        },
       },
       owner_choice: {
         type: "string",
@@ -109,6 +142,7 @@ export type RunPipelineV3Args = {
   owner_intent?: OwnerIntentProfile;
   intent_intake?: IntentIntake;
   owner_intent_intake?: OwnerIntentIntake;
+  intent_overrides?: IntentOverrides;
   owner_choice?: "path_A" | "path_B" | "neither";
   explicit_non_actions?: string[];
   minimal_actions?: Array<{
@@ -129,25 +163,71 @@ export type RunPipelineV3Args = {
 
 export async function handler(args: RunPipelineV3Args): Promise<{
   artifact: DecisionClosureArtifact;
-  coherence?: CoherenceSnapshot;
-  drift?: import("../../src/lib/types/coherence_engine").CoherenceDrift;
+  coherence_snapshot: CoherenceSnapshot | null;
+  presented_coherence_v1: PresentedCoherenceArtifact | null;
+  coherence_drift: CoherenceDrift | null;
+  intent_overrides: IntentOverrides | null;
   summary: string;
   end_cleanly?: boolean;
+  coherence?: CoherenceSnapshot;
+  drift?: CoherenceDrift;
 }> {
   const run_id = args.run_id ?? crypto.randomUUID();
   const now = new Date().toISOString();
+  const resolvedArgs: RunPipelineV3Args = { ...args, run_id };
+
+  if (resolvedArgs.owner_intent_intake && !validateOwnerIntentIntake(resolvedArgs.owner_intent_intake)) {
+    throw new Error("We couldn't validate the intake; please retry.");
+  }
+
+  const loadedOverrides = await resolveIntentOverrides(resolvedArgs);
 
   // Route to appropriate mode handler
+  let result:
+    | {
+        artifact: DecisionClosureArtifact;
+        coherence_snapshot?: CoherenceSnapshot;
+        coherence_drift?: CoherenceDrift;
+        summary: string;
+        end_cleanly?: boolean;
+      }
+    | {
+        artifact: DecisionClosureArtifact;
+        summary: string;
+        end_cleanly?: boolean;
+      };
+
   switch (args.mode) {
     case "initial":
-      return handleInitialMode(args, run_id, now);
+      result = await handleInitialMode({ ...resolvedArgs, intent_overrides: loadedOverrides }, run_id, now);
+      break;
     case "commit":
-      return handleCommitMode(args, run_id, now);
+      result = await handleCommitMode(resolvedArgs, run_id, now);
+      break;
     case "monthly_review":
-      return handleMonthlyReviewMode(args, run_id, now);
+      result = await handleMonthlyReviewMode({ ...resolvedArgs, intent_overrides: loadedOverrides }, run_id, now);
+      break;
     default:
       throw new Error(`Unknown mode: ${args.mode}`);
   }
+
+  const coherence_snapshot = "coherence_snapshot" in result ? result.coherence_snapshot ?? null : null;
+  const coherence_drift = "coherence_drift" in result ? result.coherence_drift ?? null : null;
+  const presented_coherence_v1 = coherence_snapshot
+    ? presentCoherenceSnapshot(coherence_snapshot, coherence_drift ?? undefined)
+    : null;
+
+  return {
+    artifact: result.artifact,
+    coherence_snapshot,
+    presented_coherence_v1,
+    coherence_drift,
+    intent_overrides: loadedOverrides ?? null,
+    summary: result.summary,
+    end_cleanly: result.end_cleanly,
+    coherence: coherence_snapshot ?? undefined,
+    drift: coherence_drift ?? undefined,
+  };
 }
 
 // ============================================================================
@@ -158,7 +238,13 @@ async function handleInitialMode(
   args: RunPipelineV3Args,
   run_id: string,
   now: string
-): Promise<{ artifact: DecisionClosureArtifact; coherence: CoherenceSnapshot; summary: string; end_cleanly?: boolean }> {
+): Promise<{
+  artifact: DecisionClosureArtifact;
+  coherence_snapshot: CoherenceSnapshot;
+  coherence_drift?: CoherenceDrift;
+  summary: string;
+  end_cleanly?: boolean;
+}> {
   if (!args.snapshot) {
     throw new Error("Mode 'initial' requires snapshot");
   }
@@ -181,6 +267,7 @@ async function handleInitialMode(
       intake: args.owner_intent_intake,
       computedSignals,
       snapshot: args.snapshot,
+      overrides: args.intent_overrides,
     });
   } else {
     // Legacy IntentIntake or adapted OwnerIntentProfile
@@ -207,7 +294,7 @@ async function handleInitialMode(
 
   const summary = generateCoherenceSummary(coherence);
 
-  return { artifact, coherence, summary, end_cleanly: false };
+  return { artifact, coherence_snapshot: coherence, coherence_drift: undefined, summary, end_cleanly: false };
 }
 
 // Adapt legacy OwnerIntentProfile to IntentIntake
@@ -376,7 +463,13 @@ async function handleMonthlyReviewMode(
   args: RunPipelineV3Args,
   run_id: string,
   now: string
-): Promise<{ artifact: DecisionClosureArtifact; drift?: import("../../src/lib/types/coherence_engine").CoherenceDrift; summary: string; end_cleanly?: boolean }> {
+): Promise<{
+  artifact: DecisionClosureArtifact;
+  coherence_snapshot?: CoherenceSnapshot;
+  coherence_drift?: CoherenceDrift;
+  summary: string;
+  end_cleanly?: boolean;
+}> {
   if (!args.snapshot || !args.commitment_details || !args.prior_artifact) {
     throw new Error("Mode 'monthly_review' requires snapshot, commitment_details, and prior_artifact");
   }
@@ -388,17 +481,18 @@ async function handleMonthlyReviewMode(
   });
 
   // If we have a prior coherence snapshot + intake, compute drift
-  let drift: import("../../src/lib/types/coherence_engine").CoherenceDrift | undefined;
+  let drift: CoherenceDrift | undefined;
+  let currentCoherence: CoherenceSnapshot | undefined;
 
   if (args.prior_coherence_snapshot && (args.intent_intake || args.owner_intent_intake)) {
     // Build current coherence snapshot for drift comparison
-    let currentCoherence: CoherenceSnapshot;
     if (args.owner_intent_intake) {
       currentCoherence = runCoherenceEngineV3({
         run_id,
         intake: args.owner_intent_intake,
         computedSignals: currentSignals,
         snapshot: args.snapshot,
+        overrides: args.intent_overrides,
       });
     } else {
       currentCoherence = runCoherenceEngine({
@@ -413,6 +507,10 @@ async function handleMonthlyReviewMode(
       previous: args.prior_coherence_snapshot,
       current: currentCoherence,
     });
+    currentCoherence.review = {
+      ...(currentCoherence.review ?? {}),
+      drift,
+    };
   }
 
   // Call outcome review
@@ -462,7 +560,8 @@ async function handleMonthlyReviewMode(
 
   return {
     artifact,
-    drift,
+    coherence_snapshot: currentCoherence,
+    coherence_drift: drift,
     summary,
     end_cleanly: outcomeReview.pivot_recommendation === "end",
   };
@@ -471,6 +570,57 @@ async function handleMonthlyReviewMode(
 // ============================================================================
 // HELPER FUNCTIONS
 // ============================================================================
+
+function normalizeIntentOverrides(
+  raw: IntentOverrides,
+  fallbackRunId?: string
+): IntentOverrides | undefined {
+  if (!raw || !Array.isArray(raw.overrides)) return undefined;
+  const cleaned = raw.overrides
+    .filter((item) => item && typeof item.tag === "string" && typeof item.confirmed === "boolean")
+    .slice(0, 10)
+    .map((item) => ({
+      tag: item.tag,
+      confirmed: item.confirmed,
+      recorded_at:
+        typeof item.recorded_at === "string" && item.recorded_at.length > 0
+          ? item.recorded_at
+          : new Date().toISOString(),
+    }));
+  if (cleaned.length === 0) return undefined;
+  return {
+    run_id: raw.run_id || fallbackRunId || "",
+    overrides: cleaned,
+    updated_at:
+      typeof raw.updated_at === "string" && raw.updated_at.length > 0
+        ? raw.updated_at
+        : new Date().toISOString(),
+  };
+}
+
+async function resolveIntentOverrides(args: RunPipelineV3Args): Promise<IntentOverrides | undefined> {
+  const explicit = args.intent_overrides
+    ? normalizeIntentOverrides(args.intent_overrides, args.run_id)
+    : undefined;
+  if (explicit) return explicit;
+
+  const runCandidates = [args.run_id, args.prior_coherence_snapshot?.run_id].filter(
+    (value): value is string => typeof value === "string" && value.length > 0
+  );
+  if (runCandidates.length === 0) return undefined;
+
+  const store = getStore();
+  for (const runId of runCandidates) {
+    const run = await store.getRun(runId);
+    const results = run?.results_json;
+    if (!results || typeof results !== "object") continue;
+    const candidate = (results as Record<string, unknown>).intent_overrides;
+    if (!candidate || typeof candidate !== "object") continue;
+    const normalized = normalizeIntentOverrides(candidate as IntentOverrides, runId);
+    if (normalized) return normalized;
+  }
+  return undefined;
+}
 
 // Generate human-readable summary from CoherenceSnapshot
 function generateCoherenceSummary(cs: CoherenceSnapshot): string {

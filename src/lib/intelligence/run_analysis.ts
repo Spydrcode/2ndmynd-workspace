@@ -29,6 +29,9 @@ import type { DecisionArtifactV1 } from "../types/decision_artifact";
 import { buildDecisionArtifact } from "../present/build_decision_artifact";
 import type { RunContext } from "./run_context";
 import type { SnapshotV2, ConclusionV2 } from "../../../lib/decision/v2/conclusion_schema_v2";
+import type { OwnerIntentIntake, IntentOverrides } from "../types/intent_intake";
+import type { CoherenceSnapshot, CoherenceDrift } from "../types/coherence_engine";
+import type { PresentedCoherenceArtifact } from "../present/present_coherence";
 
 /**
  * Ingest business profile + snapshot context to RAG.
@@ -38,7 +41,6 @@ import type { SnapshotV2, ConclusionV2 } from "../../../lib/decision/v2/conclusi
  * - Service mix
  * - Geography (if available)
  * - Detected pressures (keys only, not prose)
- * - Benchmark cohort
  * 
  * This allows RAG to "remember" the business across runs
  * WITHOUT storing raw data.
@@ -51,9 +53,8 @@ async function ingestBusinessContextToRag(params: {
   business_profile: BusinessProfile;
   snapshot: SnapshotV2;
   layer_fusion?: LayerFusionResult;
-  benchmarks?: BenchmarkResult;
 }) {
-  const { workspace_id, run_id, business_profile, snapshot, layer_fusion, benchmarks } = params;
+  const { workspace_id, run_id, business_profile, snapshot, layer_fusion } = params;
 
   try {
     // Build high-level context doc
@@ -89,12 +90,6 @@ async function ingestBusinessContextToRag(params: {
       layer_fusion.pressure_patterns.forEach((pattern) => {
         contextParts.push(`- ${pattern.id}: ${pattern.severity}`);
       });
-    }
-
-    // Benchmark cohort
-    if (benchmarks?.cohort_id) {
-      contextParts.push(``);
-      contextParts.push(`Benchmark Cohort: ${benchmarks.cohort_id}`);
     }
 
     const ragText = contextParts.join("\n");
@@ -138,6 +133,10 @@ export type AnalysisResult = {
   benchmarks?: BenchmarkResult;
   mapping_confidence?: "low" | "medium" | "high";
   decision_artifact?: DecisionArtifactV1;
+  coherence_snapshot?: CoherenceSnapshot;
+  presented_coherence_v1?: PresentedCoherenceArtifact;
+  coherence_drift?: CoherenceDrift;
+  intent_overrides?: IntentOverrides;
   ctx?: RunContext;
 };
 
@@ -148,6 +147,7 @@ export async function runAnalysisFromPack(params: {
   website_url?: string | null;
   workspace_id: string;
   lock_id?: string;
+  intent_overrides?: IntentOverrides;
   ctx?: RunContext;
 }) {
   const logger = new RunLogger(params.run_id);
@@ -300,7 +300,6 @@ export async function runAnalysisFromPack(params: {
     business_profile,
     snapshot,
     layer_fusion,
-    benchmarks,
   }).catch((err) => {
     console.warn("Business context RAG ingestion failed (non-blocking):", err);
   });
@@ -337,6 +336,10 @@ export async function runAnalysisFromPack(params: {
   let conclusion: unknown = null;
   let pipeline_meta: unknown = null;
   let validationResult: { ok: boolean; errors: string[] } = { ok: true, errors: [] };
+  let coherence_snapshot: CoherenceSnapshot | undefined;
+  let presented_coherence_v1: PresentedCoherenceArtifact | undefined;
+  let coherence_drift: CoherenceDrift | undefined;
+  let intent_overrides: IntentOverrides | undefined = params.intent_overrides;
 
   if (readiness.suppress_inference) {
     // Skip inference - DIAGNOSE mode suppresses business conclusions
@@ -347,28 +350,92 @@ export async function runAnalysisFromPack(params: {
     validationResult = { ok: true, errors: [] };
     logger.logEvent("inference_skipped", { reason: "incomplete_inputs" });
   } else {
-    // Step 5: Run inference
+    const inferWithV2Fallback = async (warningReason: string) => {
+      console.warn(`[run_analysis] pipeline.run_v3 fallback to run_v2: ${warningReason}`);
+      const v2Result = await callTool("pipeline.run_v2", {
+        mode: "raw_snapshot",
+        payload: { snapshot, run_id: params.run_id },
+      });
+      conclusion = (v2Result as { conclusion?: unknown }).conclusion;
+      pipeline_meta = (v2Result as { meta?: unknown }).meta ?? null;
+      coherence_snapshot = undefined;
+      presented_coherence_v1 = undefined;
+      coherence_drift = undefined;
+      return "v2_fallback" as const;
+    };
+
+    const autoIntentIntake = buildAutoOwnerIntentIntake({
+      run_id: params.run_id,
+      business_profile,
+      layer_fusion,
+    });
+
     manifest = markStepStart(manifest, "infer_decision_v2");
     logger.logEvent("pipeline_start", { run_id: params.run_id });
-    const pipelineResult = await callTool("pipeline.run_v2", {
-      mode: "raw_snapshot",
-      payload: { snapshot, run_id: params.run_id },
-    });
-    logger.logEvent("pipeline_end", { run_id: params.run_id });
+    try {
+      const pipelineResult = await callTool("pipeline.run_v3", {
+        mode: "initial",
+        client_id: params.workspace_id,
+        run_id: params.run_id,
+        snapshot,
+        owner_intent_intake: autoIntentIntake,
+        intent_overrides: params.intent_overrides,
+      });
+      logger.logEvent("pipeline_end", { run_id: params.run_id, pipeline: "v3" });
 
-    conclusion = (pipelineResult as { conclusion?: unknown }).conclusion;
-    pipeline_meta = (pipelineResult as { meta?: unknown }).meta ?? null;
+      const v3 = pipelineResult as {
+        artifact?: unknown;
+        coherence_snapshot?: CoherenceSnapshot | null;
+        presented_coherence_v1?: PresentedCoherenceArtifact | null;
+        coherence_drift?: CoherenceDrift | null;
+        intent_overrides?: IntentOverrides | null;
+        summary?: string;
+      };
+
+      const hasArtifact = Boolean(v3?.artifact);
+      const hasCoherence = Boolean(v3?.presented_coherence_v1 || v3?.coherence_snapshot);
+      if (!hasArtifact || !hasCoherence) {
+        await inferWithV2Fallback(!hasArtifact ? "missing artifact" : "missing coherence output");
+      } else {
+        conclusion = null;
+        pipeline_meta = {
+          run_id: params.run_id,
+          pipeline: "v3",
+          summary: typeof v3.summary === "string" ? v3.summary : null,
+        };
+        coherence_snapshot = v3.coherence_snapshot ?? undefined;
+        presented_coherence_v1 = v3.presented_coherence_v1 ?? undefined;
+        coherence_drift = v3.coherence_drift ?? undefined;
+        intent_overrides = v3.intent_overrides ?? params.intent_overrides;
+        validationResult = { ok: true, errors: [] };
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const intakeValidationError = /owner_intent_intake|intent_overrides|Invalid tool input for pipeline\.run_v3/i.test(
+        message
+      );
+      if (!intakeValidationError) {
+        throw error;
+      }
+      await inferWithV2Fallback("validation error");
+      logger.logEvent("pipeline_end", { run_id: params.run_id, pipeline: "v2_fallback" });
+    }
+
     manifest = markStepSuccess(manifest, "infer_decision_v2", ["conclusion"]);
 
-    // Step 6: Validate conclusion
-    manifest = markStepStart(manifest, "validate_conclusion_v2");
-    logger.logEvent("validate_start", { run_id: params.run_id });
-    validationResult = (await callTool("decision.validate_v2", {
-      snapshot,
-      conclusion,
-    })) as { ok: boolean; errors: string[] };
-    logger.logEvent("validate_end", { ok: validationResult.ok });
-    manifest = markStepSuccess(manifest, "validate_conclusion_v2", [], `ok: ${validationResult.ok}`);
+    if (conclusion) {
+      // Step 6: Validate conclusion
+      manifest = markStepStart(manifest, "validate_conclusion_v2");
+      logger.logEvent("validate_start", { run_id: params.run_id });
+      validationResult = (await callTool("decision.validate_v2", {
+        snapshot,
+        conclusion,
+      })) as { ok: boolean; errors: string[] };
+      logger.logEvent("validate_end", { ok: validationResult.ok });
+      manifest = markStepSuccess(manifest, "validate_conclusion_v2", [], `ok: ${validationResult.ok}`);
+    } else {
+      manifest = markStepSkipped(manifest, "validate_conclusion_v2", "Coherence artifact path");
+    }
   }
 
   manifest = finalizeManifest(manifest);
@@ -387,7 +454,7 @@ export async function runAnalysisFromPack(params: {
       filters: {
         workspace_id: params.workspace_id,
         industry_key: business_profile.industry_bucket,
-        doc_type: ["website_scan", "business_profile", "industry_baseline", "tool_playbook"],
+        doc_type: ["website_scan", "business_profile", "tool_playbook", "internal_doctrine"],
       },
       limit: 6,
     });
@@ -469,6 +536,10 @@ export async function runAnalysisFromPack(params: {
     benchmarks,
     mapping_confidence,
     decision_artifact,
+    coherence_snapshot,
+    presented_coherence_v1,
+    coherence_drift,
+    intent_overrides,
     ctx: params.ctx,
   } satisfies AnalysisResult;
 
@@ -509,4 +580,63 @@ export async function runAnalysisFromPack(params: {
   }
 
   return analysisResult;
+}
+
+function mapRecommendedFocusToConstraint(
+  focus?: LayerFusionResult["recommended_focus"]
+): OwnerIntentIntake["primary_constraint"] {
+  switch (focus) {
+    case "follow_up":
+      return "customer_communication_load";
+    case "scheduling":
+      return "scheduling_chaos";
+    case "collections":
+    case "invoicing":
+      return "cashflow_gaps";
+    case "pricing":
+      return "too_many_small_jobs";
+    default:
+      return "owner_bottleneck_decisions";
+  }
+}
+
+function buildAutoOwnerIntentIntake(params: {
+  run_id: string;
+  business_profile: BusinessProfile;
+  layer_fusion?: LayerFusionResult;
+}): OwnerIntentIntake {
+  const { business_profile, layer_fusion } = params;
+  const contextSummary: string[] = [];
+  if (business_profile.industry_bucket) {
+    contextSummary.push(`Industry: ${business_profile.industry_bucket}`);
+  }
+  if (Array.isArray(business_profile.services) && business_profile.services.length > 0) {
+    contextSummary.push(`Services: ${business_profile.services.slice(0, 3).join(", ")}`);
+  }
+  if (layer_fusion?.recommended_focus) {
+    contextSummary.push(`Focus: ${layer_fusion.recommended_focus}`);
+  }
+
+  const focus = layer_fusion?.recommended_focus;
+  const priorities: OwnerIntentIntake["priorities_ranked"] =
+    focus === "pricing"
+      ? ["profit_margin", "predictability_stability", "customer_experience"]
+      : focus === "collections" || focus === "invoicing"
+        ? ["predictability_stability", "profit_margin", "low_stress_owner"]
+        : focus === "scheduling" || focus === "follow_up"
+          ? ["customer_experience", "predictability_stability", "time_freedom"]
+          : ["predictability_stability", "low_stress_owner", "customer_experience"];
+
+  return {
+    intake_version: "0.2",
+    collected_at: new Date().toISOString(),
+    value_prop_tags: ["clarity_communication", "local_trust"],
+    priorities_ranked: priorities,
+    non_negotiables: ["protect_reputation"],
+    anti_goals: [],
+    primary_constraint: mapRecommendedFocusToConstraint(focus),
+    success_90d:
+      "Daily operations feel steadier, communication stays clear, and ownership load is lighter.",
+    context_notes: contextSummary.join(" | ").slice(0, 500),
+  };
 }

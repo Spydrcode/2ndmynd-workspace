@@ -252,6 +252,10 @@ export type CoherenceSnapshot = {
     reason?: string;
     timestamp: string;
   };
+  /** Optional review metadata for monthly runs. */
+  review?: {
+    drift?: CoherenceDrift;
+  };
   /** Confidence in the overall output. */
   confidence: {
     level: IntentConfidence;

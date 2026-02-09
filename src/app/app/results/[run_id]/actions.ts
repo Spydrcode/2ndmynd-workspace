@@ -9,9 +9,11 @@ import { runAnalysisFromPack } from "@/src/lib/intelligence/run_analysis";
 import type { DataPackStats, DataPackV0 } from "@/src/lib/intelligence/data_pack_v0";
 import { RunLogger } from "@/lib/intelligence/run_logger";
 import { acquireRunLock, releaseRunLock } from "@/src/lib/intelligence/run_lock";
+import type { IntentOverrides } from "@/src/lib/types/intent_intake";
 
 export async function rerunSnapshot(formData: FormData) {
   const packId = String(formData.get("pack_id") ?? "");
+  const sourceRunId = String(formData.get("source_run_id") ?? "");
   if (!packId) return;
 
   const supabase = await createSupabaseServerClient();
@@ -38,6 +40,16 @@ export async function rerunSnapshot(formData: FormData) {
   const pack = await store.getDataPack(packId);
   if (!pack) return;
 
+  const sourceRun = sourceRunId ? await store.getRun(sourceRunId) : null;
+  const sourceResults =
+    sourceRun && sourceRun.results_json && typeof sourceRun.results_json === "object"
+      ? (sourceRun.results_json as Record<string, unknown>)
+      : null;
+  const sourceOverrides =
+    sourceResults?.intent_overrides && typeof sourceResults.intent_overrides === "object"
+      ? sourceResults.intent_overrides
+      : undefined;
+
   const run_id = crypto.randomUUID();
   const logger = new RunLogger(run_id);
 
@@ -57,6 +69,7 @@ export async function rerunSnapshot(formData: FormData) {
       pack_stats: pack.stats_json as DataPackStats,
       workspace_id: workspace.id,
       lock_id: lockResult.lock_id,
+      intent_overrides: sourceOverrides as IntentOverrides | undefined,
       ctx: { learning_source: "real" },
     });
     await store.updateRun(run_id, {
@@ -77,6 +90,11 @@ export async function rerunSnapshot(formData: FormData) {
         predictive_watch_list: result.predictive_watch_list ?? null,
         layer_fusion: result.layer_fusion ?? null,
         run_manifest: result.run_manifest,
+        decision_artifact: result.decision_artifact ?? null,
+        coherence_snapshot: result.coherence_snapshot ?? null,
+        presented_coherence_v1: result.presented_coherence_v1 ?? null,
+        coherence_drift: result.coherence_drift ?? null,
+        intent_overrides: result.intent_overrides ?? null,
       },
       business_profile_json: result.business_profile,
       error: result.validation.ok ? null : result.validation.errors.join("; "),

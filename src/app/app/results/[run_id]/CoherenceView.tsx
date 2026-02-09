@@ -358,7 +358,7 @@ function TensionCard({ tension }: { tension: PresentedTension }) {
       {tension.what_must_be_true.length > 0 && (
         <div className="mt-3 pl-4.5">
           <p className="text-xs font-medium text-foreground mb-1">
-            For this to change, it would need to be true that:
+            For this to change, these conditions help:
           </p>
           <ul className="list-disc pl-4 text-xs text-muted-foreground space-y-1">
             {tension.what_must_be_true.map((item, i) => (

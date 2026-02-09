@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "intent_overrides_v1",
+  "title": "IntentOverridesBody",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["overrides"],
+  "properties": {
+    "overrides": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 10,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tag", "confirmed"],
+        "properties": {
+          "tag": {
+            "type": "string",
+            "enum": [
+              "speed_responsiveness",
+              "affordability",
+              "clarity_communication",
+              "safety_compliance",
+              "premium_quality",
+              "availability_when_others_wont",
+              "local_trust",
+              "convenience_low_hassle",
+              "relationship_care",
+              "other_custom"
+            ]
+          },
+          "confirmed": {
+            "type": "boolean"
+          }
+        }
+      }
+    }
+  }
+}

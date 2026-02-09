@@ -27,7 +27,7 @@ describe("runAnalysisFromPack", () => {
     });
 
     expect(result.run_id).toBe("test-run-id");
-    expect(result.conclusion).toBeTruthy();
+    expect(Boolean(result.conclusion) || Boolean(result.presented_coherence_v1)).toBe(true);
     expect(result.validation.ok).toBe(true);
   });
 });

@@ -14,9 +14,11 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { rerunSnapshot } from "./actions";
 import { DecisionArtifactView } from "./DecisionArtifactView";
-import { CoherenceView } from "./CoherenceView";
 import type { DecisionArtifactV1 } from "@/src/lib/types/decision_artifact";
 import type { PresentedCoherenceArtifact } from "@/src/lib/present/present_coherence";
+import { presentCoherenceSnapshot } from "@/src/lib/present/present_coherence";
+import type { CoherenceSnapshot, CoherenceDrift } from "@/src/lib/types/coherence_engine";
+import { CoherencePanelClient } from "./CoherencePanelClient";
 
 function formatTimestamp(value?: string | null) {
   if (!value) return "Timestamp unavailable";
@@ -185,7 +187,16 @@ export default async function ResultsPage({
   const hasDecisionArtifact = decision_artifact?.version === "v1";
 
   // Coherence snapshot — new coherence engine output
-  const coherenceRaw = artifact.coherence_snapshot as PresentedCoherenceArtifact | null | undefined;
+  const storedPresented = artifact.presented_coherence_v1 as PresentedCoherenceArtifact | null | undefined;
+  const rawSnapshot = artifact.coherence_snapshot as CoherenceSnapshot | null | undefined;
+  const rawDrift = artifact.coherence_drift as CoherenceDrift | null | undefined;
+  const driftFromSnapshot = rawSnapshot?.review?.drift as CoherenceDrift | undefined;
+  const coherenceRaw =
+    storedPresented?.version === "presented_coherence_v1"
+      ? storedPresented
+      : rawSnapshot?.version === "coherence_v1"
+        ? presentCoherenceSnapshot(rawSnapshot, rawDrift ?? driftFromSnapshot)
+        : null;
   const hasCoherence = coherenceRaw?.version === "presented_coherence_v1";
 
   return (
@@ -217,6 +228,7 @@ export default async function ResultsPage({
               aria-label="Rerun snapshot"
             >
               <input type="hidden" name="pack_id" value={run.pack_id} />
+              <input type="hidden" name="source_run_id" value={run.run_id} />
               <Button type="submit" variant="default">
                 <RefreshCw className="mr-2 h-4 w-4" />
                 Re-run
@@ -262,7 +274,8 @@ export default async function ResultsPage({
       {!conclusion && !artifact.diagnose_mode ? (
         <SnapshotSkeleton />
       ) : hasCoherence ? (
-        <CoherenceView
+        <CoherencePanelClient
+          run_id={run.run_id}
           artifact={coherenceRaw!}
           isDev={!quiet}
         />

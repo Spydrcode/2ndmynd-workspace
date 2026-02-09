@@ -221,38 +221,8 @@ export default async function ResultsPage({
                     <div key={pressure.key} className="space-y-1">
                       <div className="flex items-center gap-2">
                         <span className="text-foreground">{idx + 1}. {titleCase(pressure.label)}</span>
-                        {pressure.percentile !== undefined && (
-                          <Badge variant="outline" className="text-xs">
-                            {pressure.percentile}th percentile
-                          </Badge>
-                        )}
                       </div>
                       <p>{pressure.sentence}</p>
-                    </div>
-                  ))}
-                </AccordionContent>
-              </AccordionItem>
-            )}
-
-            {/* You vs peers (benchmarks) */}
-            {presented.benchmarks && presented.benchmarks.top_signals.length > 0 && (
-              <AccordionItem value="benchmarks" className="rounded-2xl border border-border/60 bg-background/90 px-6">
-                <AccordionTrigger className="text-base font-semibold hover:no-underline">
-                  You vs peers ({presented.benchmarks.cohort_label})
-                </AccordionTrigger>
-                <AccordionContent className="space-y-3 pb-6 text-sm text-muted-foreground">
-                  {presented.benchmarks.top_signals.map((signal) => (
-                    <div key={signal.metric_label} className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-foreground">{titleCase(signal.metric_label)}</span>
-                        <Badge variant="outline" className="text-xs">
-                          {signal.value_display}
-                        </Badge>
-                        <Badge variant="secondary" className="text-xs">
-                          {signal.percentile}th percentile
-                        </Badge>
-                      </div>
-                      <p className="text-xs">{signal.interpretation}</p>
                     </div>
                   ))}
                 </AccordionContent>
