@@ -1,0 +1,18 @@
+{
+  "pack_id": "logistics_dispatch_seed1234_01",
+  "industry": "logistics_dispatch",
+  "seed": 802541011,
+  "window_start": "2025-11-12",
+  "window_end": "2026-02-09",
+  "notes": [
+    "Dispatch-heavy synthetic dataset with SLA and coordination load signals.",
+    "All identifiers are synthetic and non-personal."
+  ],
+  "expected_patterns": [
+    "dispatch_pressure",
+    "schedule_fill",
+    "coordination_overhead"
+  ],
+  "emyth_role": "manager",
+  "business_name": "Dispatch Operations Owner"
+}

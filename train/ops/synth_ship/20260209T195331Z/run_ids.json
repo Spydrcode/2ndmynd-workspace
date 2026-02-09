@@ -1,0 +1,643 @@
+{
+  "generated_at": "2026-02-09T19:53:48.215Z",
+  "templates_used": 9,
+  "industries_used": 9,
+  "iterations": 10,
+  "attempted_runs": 90,
+  "succeeded_runs": 90,
+  "failed_runs": [],
+  "run_ids": [
+    "synth-20260209T195331Z-a6565b25-e579-45f5-b6dc-ae338b96edc1",
+    "synth-20260209T195331Z-32cdd09b-aff9-43b8-99ac-429bc970c61d",
+    "synth-20260209T195331Z-a17a857c-b10d-4d5b-9337-2d723f0eb75b",
+    "synth-20260209T195331Z-8fffeb62-396d-493b-887d-bb7fbb0ba16f",
+    "synth-20260209T195331Z-a79f3e26-9ac2-4f19-986d-bfd2cca392b8",
+    "synth-20260209T195332Z-a63233da-f2b7-4e11-a6f4-ba0e9b2fbc62",
+    "synth-20260209T195332Z-f5b1eda2-3675-48b0-99b9-5d153ec327e0",
+    "synth-20260209T195332Z-eb22d29c-5976-4d43-91f8-51c6aeecffd3",
+    "synth-20260209T195332Z-d98a2688-90f2-4f88-b14b-4b8a079ef0d3",
+    "synth-20260209T195332Z-7d96ea1a-1a3e-4860-831f-290f220be931",
+    "synth-20260209T195332Z-a804abf4-c1e7-4fd5-9520-0d53f2c99506",
+    "synth-20260209T195333Z-36f621aa-a962-46cc-b783-0028006a36f7",
+    "synth-20260209T195333Z-8274c784-2b11-4b7f-aed5-738236de4270",
+    "synth-20260209T195333Z-e07271d0-fdfd-488e-a1bb-6df653a44394",
+    "synth-20260209T195333Z-3b8fcabd-7e45-4aec-8325-8aacee55a858",
+    "synth-20260209T195333Z-08e2f8bd-35ff-46d8-9601-2cf5ef3e73c5",
+    "synth-20260209T195333Z-7ef90f54-168c-4fa9-ae2a-d0f1ef6fe30c",
+    "synth-20260209T195334Z-63db1e68-97c7-4ba4-988c-c6cf102cb6ba",
+    "synth-20260209T195334Z-2c215867-05b5-43d1-b1d3-13e1efb3816a",
+    "synth-20260209T195334Z-9500ed68-130b-40a4-b0db-dc6ff4cfb8c4",
+    "synth-20260209T195334Z-f8d66ece-f885-4a2b-b2fe-43350a240c01",
+    "synth-20260209T195334Z-f144e230-92aa-4c91-b465-b14a88159907",
+    "synth-20260209T195335Z-38f9c9ac-1451-4b39-913b-a4d2e31d6104",
+    "synth-20260209T195335Z-5d55dee3-1073-45aa-9e90-0596f38161b9",
+    "synth-20260209T195335Z-b47fb615-0ccb-4dab-97dc-a9254042ab4d",
+    "synth-20260209T195335Z-ab666366-0bb8-407c-a1bd-fd6f25970e3c",
+    "synth-20260209T195335Z-e011f66f-8e3c-4bf9-a58d-daf3b4a49e97",
+    "synth-20260209T195336Z-a158d1cc-b08a-4b08-8ed2-4e8857b238a5",
+    "synth-20260209T195336Z-f74bc08a-7bb5-45d9-b3df-273aa2a8b36f",
+    "synth-20260209T195336Z-b1c986ba-9cdc-4d2a-a369-af4a001b419a",
+    "synth-20260209T195336Z-ca71f683-ee96-4c5a-b03f-eb985e08f2c5",
+    "synth-20260209T195336Z-44517454-6137-453f-98f8-682acfafd449",
+    "synth-20260209T195337Z-7fd833ee-c21d-4349-bd7d-829221a680c2",
+    "synth-20260209T195337Z-e36a7146-8602-4d66-8a8a-19f4bb3c4544",
+    "synth-20260209T195337Z-cb06169e-8cd8-4b5b-bf36-7dd951bc8081",
+    "synth-20260209T195337Z-2c0c9351-11f0-404c-a912-65c8cf6d71f4",
+    "synth-20260209T195337Z-e9d80ca9-86a4-4e87-b401-83cd80dc7cf6",
+    "synth-20260209T195338Z-a75e2502-8df3-46ee-a902-22b791c68dfd",
+    "synth-20260209T195338Z-9a18792c-66da-4794-a0c1-6669dbbcd43d",
+    "synth-20260209T195338Z-c79c2e5e-cd4f-440c-82d7-c7a59ed8446e",
+    "synth-20260209T195338Z-83b0821e-c860-4cf2-8b8c-8ba3b97175f6",
+    "synth-20260209T195338Z-0ad172fa-625f-42aa-8fd3-ff0c8a2c8555",
+    "synth-20260209T195338Z-c53d21f9-ea66-4531-8570-69aef168cdca",
+    "synth-20260209T195339Z-6337ba69-09e5-490f-a659-24df7370ef9f",
+    "synth-20260209T195339Z-160f03b3-96bd-41d1-872f-a37cb0de5b67",
+    "synth-20260209T195339Z-653b1a8e-03f0-4ab4-9b13-5fa87b66ab6f",
+    "synth-20260209T195339Z-30f4a885-e632-4b79-b49b-3274b1fbaa59",
+    "synth-20260209T195339Z-0093a3bf-23e3-412c-9f0c-2ee34f71bd60",
+    "synth-20260209T195340Z-dcd078aa-19f5-4b94-baf6-877b2924e2a4",
+    "synth-20260209T195340Z-6e1e2012-d2db-493b-9ad5-c2cf87c80cca",
+    "synth-20260209T195340Z-5cfd4dae-dba5-4cf1-b041-2553c49a1300",
+    "synth-20260209T195340Z-98a693d7-7477-45e7-9ad1-740943be7f30",
+    "synth-20260209T195340Z-851fc27d-61d7-44cf-8eb8-7b6bf10778c1",
+    "synth-20260209T195341Z-414a7f4f-0ac1-4975-b386-c40febda3350",
+    "synth-20260209T195341Z-767992d9-86d2-476c-a567-0ebc6b822a43",
+    "synth-20260209T195341Z-79427b03-b7bf-4f58-a408-a4d75781ccc9",
+    "synth-20260209T195341Z-aec8e33d-fe5b-44bc-8fdb-c20f3e4e23bb",
+    "synth-20260209T195341Z-19b1d58f-b5a1-4b09-aeed-511340df08cf",
+    "synth-20260209T195342Z-551cadae-931d-4e54-a782-1e9021a748c7",
+    "synth-20260209T195342Z-da9c1bb2-e6c6-451c-be48-bf2f81491070",
+    "synth-20260209T195342Z-9d6d0a0d-005f-46aa-aa4d-7c22dc15714e",
+    "synth-20260209T195342Z-67e58065-37a4-4c33-88d2-59dd83294fa6",
+    "synth-20260209T195342Z-9a4b375a-ce25-4013-80da-3ddbaa7e3859",
+    "synth-20260209T195342Z-884cb399-a973-4c35-a55d-3f934eb36666",
+    "synth-20260209T195343Z-82bea88c-1cb9-4782-9a51-27ec1fb47576",
+    "synth-20260209T195343Z-581db029-dc11-40b9-a22e-218122682806",
+    "synth-20260209T195343Z-3fa6cc4f-ce33-442a-95f1-17a013ad0b9e",
+    "synth-20260209T195343Z-d895488a-ad7f-4a95-a5b0-605ddbd6bb39",
+    "synth-20260209T195343Z-c8165221-3746-45f9-a34d-16625253ca60",
+    "synth-20260209T195344Z-2905edc7-cb5f-4f1a-9193-d321b91a9ed8",
+    "synth-20260209T195344Z-43becd05-5705-4798-87cc-2c7b04a74f3f",
+    "synth-20260209T195344Z-550912da-47d4-48e7-baff-97341cf6a688",
+    "synth-20260209T195344Z-8de2013b-e7d8-4178-8d0f-753d01eddc26",
+    "synth-20260209T195344Z-fb37078c-fc13-42d0-b12b-572432707e85",
+    "synth-20260209T195345Z-d1d7c926-7d6c-4d57-8216-4fb1c49167a7",
+    "synth-20260209T195345Z-c34b95fb-d1f7-4a9a-afc2-6a5de440a4b8",
+    "synth-20260209T195345Z-a07d1c24-d29e-45b3-b582-07dc70d78fc5",
+    "synth-20260209T195345Z-9a97ac1c-75ed-4a92-995f-7a68d3f6f05d",
+    "synth-20260209T195345Z-3ddd09ee-947e-4177-8a7b-4679e5cdaf8b",
+    "synth-20260209T195346Z-7b745f37-e754-4b44-8e8f-496bcdf28a3b",
+    "synth-20260209T195346Z-29af3307-4d7d-487d-9ca2-41b21b2ee2f6",
+    "synth-20260209T195346Z-1c9e3e08-4caa-4869-8065-c93edc5b3244",
+    "synth-20260209T195346Z-2c3b1f0b-aba8-4661-9989-7b18d0a41c4d",
+    "synth-20260209T195346Z-a6575815-429f-4ae9-837f-ee60b33b2ef4",
+    "synth-20260209T195347Z-e031a755-a482-4f2a-b532-084fcf388124",
+    "synth-20260209T195347Z-42ebfd94-33df-407e-b8d6-348ce43cbc40",
+    "synth-20260209T195347Z-46fcd044-52c5-492f-b1b4-3d5e2d3f2dc7",
+    "synth-20260209T195347Z-a5afe382-cfe7-47fa-99cb-260d014afe1c",
+    "synth-20260209T195347Z-117b933d-8769-4cb4-be6a-daf9b4e99bea",
+    "synth-20260209T195348Z-514a07ef-7313-4cdc-af4e-4b6da480e435"
+  ],
+  "runs": [
+    {
+      "run_id": "synth-20260209T195331Z-a6565b25-e579-45f5-b6dc-ae338b96edc1",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195331Z-32cdd09b-aff9-43b8-99ac-429bc970c61d",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195331Z-a17a857c-b10d-4d5b-9337-2d723f0eb75b",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195331Z-8fffeb62-396d-493b-887d-bb7fbb0ba16f",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195331Z-a79f3e26-9ac2-4f19-986d-bfd2cca392b8",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195332Z-a63233da-f2b7-4e11-a6f4-ba0e9b2fbc62",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195332Z-f5b1eda2-3675-48b0-99b9-5d153ec327e0",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195332Z-eb22d29c-5976-4d43-91f8-51c6aeecffd3",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195332Z-d98a2688-90f2-4f88-b14b-4b8a079ef0d3",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195332Z-7d96ea1a-1a3e-4860-831f-290f220be931",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195332Z-a804abf4-c1e7-4fd5-9520-0d53f2c99506",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195333Z-36f621aa-a962-46cc-b783-0028006a36f7",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195333Z-8274c784-2b11-4b7f-aed5-738236de4270",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195333Z-e07271d0-fdfd-488e-a1bb-6df653a44394",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195333Z-3b8fcabd-7e45-4aec-8325-8aacee55a858",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195333Z-08e2f8bd-35ff-46d8-9601-2cf5ef3e73c5",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195333Z-7ef90f54-168c-4fa9-ae2a-d0f1ef6fe30c",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195334Z-63db1e68-97c7-4ba4-988c-c6cf102cb6ba",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195334Z-2c215867-05b5-43d1-b1d3-13e1efb3816a",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195334Z-9500ed68-130b-40a4-b0db-dc6ff4cfb8c4",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195334Z-f8d66ece-f885-4a2b-b2fe-43350a240c01",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195334Z-f144e230-92aa-4c91-b465-b14a88159907",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195335Z-38f9c9ac-1451-4b39-913b-a4d2e31d6104",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195335Z-5d55dee3-1073-45aa-9e90-0596f38161b9",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195335Z-b47fb615-0ccb-4dab-97dc-a9254042ab4d",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195335Z-ab666366-0bb8-407c-a1bd-fd6f25970e3c",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195335Z-e011f66f-8e3c-4bf9-a58d-daf3b4a49e97",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195336Z-a158d1cc-b08a-4b08-8ed2-4e8857b238a5",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195336Z-f74bc08a-7bb5-45d9-b3df-273aa2a8b36f",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195336Z-b1c986ba-9cdc-4d2a-a369-af4a001b419a",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195336Z-ca71f683-ee96-4c5a-b03f-eb985e08f2c5",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195336Z-44517454-6137-453f-98f8-682acfafd449",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195337Z-7fd833ee-c21d-4349-bd7d-829221a680c2",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195337Z-e36a7146-8602-4d66-8a8a-19f4bb3c4544",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195337Z-cb06169e-8cd8-4b5b-bf36-7dd951bc8081",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195337Z-2c0c9351-11f0-404c-a912-65c8cf6d71f4",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195337Z-e9d80ca9-86a4-4e87-b401-83cd80dc7cf6",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195338Z-a75e2502-8df3-46ee-a902-22b791c68dfd",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195338Z-9a18792c-66da-4794-a0c1-6669dbbcd43d",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195338Z-c79c2e5e-cd4f-440c-82d7-c7a59ed8446e",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195338Z-83b0821e-c860-4cf2-8b8c-8ba3b97175f6",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195338Z-0ad172fa-625f-42aa-8fd3-ff0c8a2c8555",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195338Z-c53d21f9-ea66-4531-8570-69aef168cdca",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195339Z-6337ba69-09e5-490f-a659-24df7370ef9f",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195339Z-160f03b3-96bd-41d1-872f-a37cb0de5b67",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195339Z-653b1a8e-03f0-4ab4-9b13-5fa87b66ab6f",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195339Z-30f4a885-e632-4b79-b49b-3274b1fbaa59",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195339Z-0093a3bf-23e3-412c-9f0c-2ee34f71bd60",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195340Z-dcd078aa-19f5-4b94-baf6-877b2924e2a4",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195340Z-6e1e2012-d2db-493b-9ad5-c2cf87c80cca",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195340Z-5cfd4dae-dba5-4cf1-b041-2553c49a1300",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195340Z-98a693d7-7477-45e7-9ad1-740943be7f30",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195340Z-851fc27d-61d7-44cf-8eb8-7b6bf10778c1",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195341Z-414a7f4f-0ac1-4975-b386-c40febda3350",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195341Z-767992d9-86d2-476c-a567-0ebc6b822a43",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195341Z-79427b03-b7bf-4f58-a408-a4d75781ccc9",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195341Z-aec8e33d-fe5b-44bc-8fdb-c20f3e4e23bb",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195341Z-19b1d58f-b5a1-4b09-aeed-511340df08cf",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195342Z-551cadae-931d-4e54-a782-1e9021a748c7",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195342Z-da9c1bb2-e6c6-451c-be48-bf2f81491070",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195342Z-9d6d0a0d-005f-46aa-aa4d-7c22dc15714e",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195342Z-67e58065-37a4-4c33-88d2-59dd83294fa6",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195342Z-9a4b375a-ce25-4013-80da-3ddbaa7e3859",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195342Z-884cb399-a973-4c35-a55d-3f934eb36666",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195343Z-82bea88c-1cb9-4782-9a51-27ec1fb47576",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195343Z-581db029-dc11-40b9-a22e-218122682806",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195343Z-3fa6cc4f-ce33-442a-95f1-17a013ad0b9e",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195343Z-d895488a-ad7f-4a95-a5b0-605ddbd6bb39",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195343Z-c8165221-3746-45f9-a34d-16625253ca60",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195344Z-2905edc7-cb5f-4f1a-9193-d321b91a9ed8",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195344Z-43becd05-5705-4798-87cc-2c7b04a74f3f",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195344Z-550912da-47d4-48e7-baff-97341cf6a688",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195344Z-8de2013b-e7d8-4178-8d0f-753d01eddc26",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195344Z-fb37078c-fc13-42d0-b12b-572432707e85",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195345Z-d1d7c926-7d6c-4d57-8216-4fb1c49167a7",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195345Z-c34b95fb-d1f7-4a9a-afc2-6a5de440a4b8",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195345Z-a07d1c24-d29e-45b3-b582-07dc70d78fc5",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195345Z-9a97ac1c-75ed-4a92-995f-7a68d3f6f05d",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195345Z-3ddd09ee-947e-4177-8a7b-4679e5cdaf8b",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195346Z-7b745f37-e754-4b44-8e8f-496bcdf28a3b",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195346Z-29af3307-4d7d-487d-9ca2-41b21b2ee2f6",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195346Z-1c9e3e08-4caa-4869-8065-c93edc5b3244",
+      "industry": "hvac",
+      "template_id": "fixture:hvac_dispatch_drag",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195346Z-2c3b1f0b-aba8-4661-9989-7b18d0a41c4d",
+      "industry": "plumbing",
+      "template_id": "fixture:plumbing_cash_timing",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195346Z-a6575815-429f-4ae9-837f-ee60b33b2ef4",
+      "industry": "propane",
+      "template_id": "fixture:propane_safety_pressure",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195347Z-e031a755-a482-4f2a-b532-084fcf388124",
+      "industry": "agency",
+      "template_id": "synth:agency/agency_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195347Z-42ebfd94-33df-407e-b8d6-348ce43cbc40",
+      "industry": "ecommerce_ops",
+      "template_id": "synth:ecommerce_ops/ecommerce_ops_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195347Z-46fcd044-52c5-492f-b1b4-3d5e2d3f2dc7",
+      "industry": "home_services_generic",
+      "template_id": "synth:home_services_generic/home_services_generic_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195347Z-a5afe382-cfe7-47fa-99cb-260d014afe1c",
+      "industry": "logistics_dispatch",
+      "template_id": "synth:logistics_dispatch/logistics_dispatch_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195347Z-117b933d-8769-4cb4-be6a-daf9b4e99bea",
+      "industry": "professional_services",
+      "template_id": "synth:professional_services/professional_services_seed2026_01",
+      "status": "succeeded"
+    },
+    {
+      "run_id": "synth-20260209T195348Z-514a07ef-7313-4cdc-af4e-4b6da480e435",
+      "industry": "saas_micro",
+      "template_id": "synth:saas_micro/saas_micro_seed2026_01",
+      "status": "succeeded"
+    }
+  ]
+}

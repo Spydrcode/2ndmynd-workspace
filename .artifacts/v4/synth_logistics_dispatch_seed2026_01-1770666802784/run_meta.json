@@ -1,0 +1,9 @@
+{
+  "run_id": "synth_logistics_dispatch_seed2026_01-1770666802784",
+  "workspace_id": "eval-fixture",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:53:22.785Z",
+  "finished_at": "2026-02-09T19:53:22.966Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-v1"
+}

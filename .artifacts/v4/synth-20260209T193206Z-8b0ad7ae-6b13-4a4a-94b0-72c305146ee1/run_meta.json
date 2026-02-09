@@ -1,0 +1,9 @@
+{
+  "run_id": "synth-20260209T193206Z-8b0ad7ae-6b13-4a4a-94b0-72c305146ee1",
+  "workspace_id": "test-client-synth",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:32:06.844Z",
+  "finished_at": "2026-02-09T19:32:07.073Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-hvac-v1"
+}

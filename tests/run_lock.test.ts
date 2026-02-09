@@ -1,24 +1,31 @@
 import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { acquireRunLock, releaseRunLock } from "../src/lib/intelligence/run_lock";
 
-// Clean up test database before/after tests
-const TEST_DB_PATH = path.resolve("tmp", "intelligence.db");
+let testDir = "";
+let testDbPath = "";
 
 function cleanupTestDb() {
-  if (fs.existsSync(TEST_DB_PATH)) {
-    fs.unlinkSync(TEST_DB_PATH);
+  if (testDir && fs.existsSync(testDir)) {
+    fs.rmSync(testDir, { recursive: true, force: true });
   }
 }
 
 describe("run_lock (SQLite)", () => {
   beforeEach(() => {
     cleanupTestDb();
+    testDir = fs.mkdtempSync(path.join(os.tmpdir(), "run-lock-"));
+    testDbPath = path.join(testDir, "intelligence.db");
+    process.env.INTELLIGENCE_DB_PATH = testDbPath;
   });
 
   afterEach(() => {
     cleanupTestDb();
+    delete process.env.INTELLIGENCE_DB_PATH;
+    testDir = "";
+    testDbPath = "";
   });
 
   it("acquires lock for a workspace", async () => {

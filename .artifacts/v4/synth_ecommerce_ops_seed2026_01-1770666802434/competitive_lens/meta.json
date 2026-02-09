@@ -1,0 +1,25 @@
+{
+  "run_id": "synth_ecommerce_ops_seed2026_01-1770666802434",
+  "workspace_id": "eval-fixture",
+  "stage_name": "competitive_lens",
+  "created_at": "2026-02-09T19:53:22.507Z",
+  "updated_at": "2026-02-09T19:53:22.522Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:competitive-v1",
+    "prompt_version": "v1",
+    "schema_version": "competitive_lens_v1",
+    "temperature": 0,
+    "max_tokens": 1200,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

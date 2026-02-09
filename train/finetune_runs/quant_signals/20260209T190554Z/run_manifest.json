@@ -1,0 +1,25 @@
+{
+  "generated_at": "2026-02-09T19:05:54.880Z",
+  "stage": "quant_signals",
+  "dataset_path": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\train\\datasets\\stage_quant.jsonl",
+  "output_dir": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\train\\finetune_runs\\quant_signals\\20260209T190554Z",
+  "dry_run": true,
+  "approved_only": true,
+  "minimum_rows_required": 0,
+  "total_rows": 0,
+  "accepted_rows": 0,
+  "rejected_rows": 0,
+  "rejection_reasons": {},
+  "config": {
+    "base_model": "gpt-4o-mini-2024-07-18",
+    "suffix": "2ndmynd-quant-test",
+    "n_epochs": null,
+    "learning_rate_multiplier": null,
+    "seed": null,
+    "notes": ""
+  },
+  "hashes": {
+    "dataset_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "training_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

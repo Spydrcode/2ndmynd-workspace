@@ -1,0 +1,91 @@
+{
+  "version": "synth_ship_v1",
+  "generated_at": "2026-02-09T19:53:31.015Z",
+  "status": "awaiting_approval",
+  "args": {
+    "dry_run": true,
+    "days": 90,
+    "base_model": "gpt-4o-mini-2024-07-18",
+    "suffix": "2ndmynd-synth-20260209",
+    "auto_promote": false,
+    "approved_only": true,
+    "skip_runpacks": false,
+    "packs_dir": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\src\\intelligence_v4\\evals\\fixtures,C:\\Users\\dusti\\git\\2ndmynd-workspace\\src\\intelligence_v4\\evals\\fixtures_synth",
+    "iterations": 10,
+    "target_runs": 50,
+    "client_id": "test-client-synth",
+    "dataset_path": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\train\\datasets\\stage_synthesis.jsonl",
+    "min_rows": 1,
+    "force": false,
+    "poll_job": false,
+    "poll_interval_seconds": 30,
+    "poll_timeout_minutes": 120,
+    "live_min_rows": 40,
+    "max_homogeneity_share": 0.8,
+    "industry_mix": "balanced",
+    "min_industries": 6,
+    "ensure_diversity": true
+  },
+  "run_ids_index_path": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\train\\ops\\synth_ship\\20260209T195331Z\\run_ids.json",
+  "review_pack_path": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\train\\curation\\review_packs\\review_pack_2026-02-09.json",
+  "dataset": {
+    "path": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\train\\datasets\\stage_synthesis.jsonl",
+    "row_count": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "fine_tune": {
+    "attempted": false,
+    "dry_run": true,
+    "run_dir": null,
+    "training_file_path": null,
+    "run_manifest_path": null,
+    "job_id": null
+  },
+  "evals": {
+    "attempted": false,
+    "passed": null,
+    "report_path": null,
+    "totals": null
+  },
+  "promotion": {
+    "attempted": false,
+    "promoted": false,
+    "report_path": null,
+    "model_card_path": null,
+    "old_model_id": "deterministic:synthesis-v1",
+    "new_model_id": null
+  },
+  "pinned_model": {
+    "before": "deterministic:synthesis-v1",
+    "after": "deterministic:synthesis-v1"
+  },
+  "next_action": "Approve items in the review pack, then re-run: npm run synth:ship -- --dry_run=true --days=90",
+  "logs": [
+    {
+      "at": "2026-02-09T19:53:31.015Z",
+      "level": "info",
+      "message": "Step 1/7: generating candidate runs."
+    },
+    {
+      "at": "2026-02-09T19:53:48.216Z",
+      "level": "info",
+      "message": "Generated 90 candidate runs."
+    },
+    {
+      "at": "2026-02-09T19:53:48.216Z",
+      "level": "info",
+      "message": "Step 2/7: building review pack."
+    },
+    {
+      "at": "2026-02-09T19:53:48.621Z",
+      "level": "info",
+      "message": "Step 3/7: building approved-only synthesis dataset."
+    },
+    {
+      "at": "2026-02-09T19:53:48.943Z",
+      "level": "warn",
+      "message": "No approved synthesis rows found. Approve review items, then re-run synth:ship."
+    }
+  ],
+  "errors": []
+}

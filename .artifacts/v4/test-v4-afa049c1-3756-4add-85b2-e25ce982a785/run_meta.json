@@ -1,0 +1,16 @@
+{
+  "run_id": "test-v4-afa049c1-3756-4add-85b2-e25ce982a785",
+  "workspace_id": "test-workspace",
+  "status": "failed",
+  "started_at": "2026-02-09T19:05:39.573Z",
+  "finished_at": "2026-02-09T19:05:39.650Z",
+  "error": {
+    "stage_failed": "emyth_owner_load",
+    "reason": "Owner-load stage output failed doctrine guards.",
+    "validation_errors": [],
+    "guard_failures": [
+      "Forbidden language detected: dashboard"
+    ],
+    "next_action": "Remove tool/hiring/scaling prescriptions and rerun."
+  }
+}

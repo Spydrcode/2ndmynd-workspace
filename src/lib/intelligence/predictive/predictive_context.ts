@@ -37,10 +37,36 @@ function classifyIndustry(params: {
     }
   }
 
+  // Infer from profile text (summary/services/name/domain) before snapshot keywords
+  if (params.business_profile) {
+    const profileText = [
+      params.business_profile.name_guess ?? "",
+      params.business_profile.summary ?? "",
+      ...(params.business_profile.services ?? []),
+      params.business_profile.domain ?? "",
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    const profileTag = classifyFromText(profileText);
+    if (profileTag) {
+      return profileTag;
+    }
+  }
+
   // Infer from snapshot keywords (job types, service mentions)
   const keywords = params.snapshot_keywords ?? [];
   const keywordText = keywords.join(" ").toLowerCase();
 
+  const keywordTag = classifyFromText(keywordText);
+  if (keywordTag) {
+    return keywordTag;
+  }
+
+  return "general_local_service";
+}
+
+function classifyFromText(keywordText: string): string | null {
   if (
     keywordText.includes("hvac") ||
     keywordText.includes("air conditioning") ||
@@ -101,5 +127,5 @@ function classifyIndustry(params: {
     return "contractor";
   }
 
-  return "general_local_service";
+  return null;
 }

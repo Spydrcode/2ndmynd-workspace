@@ -1,0 +1,25 @@
+{
+  "run_id": "synth-20260209T201715Z-4d2ad6fb-8057-4d00-b1c0-f0d513ea9f83",
+  "workspace_id": "test-client-synth",
+  "stage_name": "blue_ocean",
+  "created_at": "2026-02-09T20:17:15.369Z",
+  "updated_at": "2026-02-09T20:17:15.383Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:blueocean-v1",
+    "prompt_version": "v1",
+    "schema_version": "blue_ocean_v1",
+    "temperature": 0,
+    "max_tokens": 1200,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

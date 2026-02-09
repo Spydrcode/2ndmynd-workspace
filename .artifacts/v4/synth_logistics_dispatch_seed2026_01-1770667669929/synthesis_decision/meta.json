@@ -1,0 +1,25 @@
+{
+  "run_id": "synth_logistics_dispatch_seed2026_01-1770667669929",
+  "workspace_id": "eval-fixture",
+  "stage_name": "synthesis_decision",
+  "created_at": "2026-02-09T20:07:50.130Z",
+  "updated_at": "2026-02-09T20:07:50.154Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:synthesis-v1",
+    "prompt_version": "v1",
+    "schema_version": "decision_artifact_v1",
+    "temperature": 0,
+    "max_tokens": 1600,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

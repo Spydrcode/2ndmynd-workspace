@@ -1,0 +1,9 @@
+{
+  "run_id": "eval-hvac-001-1770664075988",
+  "workspace_id": "eval-workspace",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:07:55.989Z",
+  "finished_at": "2026-02-09T19:07:56.228Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-hvac-v1"
+}

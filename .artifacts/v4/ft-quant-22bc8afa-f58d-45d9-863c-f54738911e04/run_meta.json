@@ -1,0 +1,9 @@
+{
+  "run_id": "ft-quant-22bc8afa-f58d-45d9-863c-f54738911e04",
+  "workspace_id": "ft-quant-workspace",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:55:02.695Z",
+  "finished_at": "2026-02-09T19:55:03.003Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-plumbing-v1"
+}

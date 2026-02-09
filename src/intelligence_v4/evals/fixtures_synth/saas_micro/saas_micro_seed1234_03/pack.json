@@ -1,0 +1,18 @@
+{
+  "pack_id": "saas_micro_seed1234_03",
+  "industry": "saas_micro",
+  "seed": 1042946401,
+  "window_start": "2025-11-12",
+  "window_end": "2026-02-09",
+  "notes": [
+    "Founder-led SaaS operations with support and roadmap pull.",
+    "Synthetic pack only includes bucketable operational exports."
+  ],
+  "expected_patterns": [
+    "decision_latency",
+    "support_load_proxy",
+    "cash_timing"
+  ],
+  "emyth_role": "mixed",
+  "business_name": "Micro SaaS Founder"
+}

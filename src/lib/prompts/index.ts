@@ -1,7 +1,8 @@
 /**
  * Prompts Module
  *
- * Canonical LLM prompt templates for 2ndmynd Intelligence Layer.
+ * LEGACY prompt exports for the pre-v4 stack.
+ * v4 stage prompts live under src/intelligence_v4/stages/<stage>/prompt.md.
  */
 
 export {

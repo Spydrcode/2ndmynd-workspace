@@ -1,0 +1,25 @@
+{
+  "run_id": "synth_saas_micro_seed2026_01-1770667670425",
+  "workspace_id": "eval-fixture",
+  "stage_name": "quant_signals",
+  "created_at": "2026-02-09T20:07:50.425Z",
+  "updated_at": "2026-02-09T20:07:50.448Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:quant-v1",
+    "prompt_version": "v1",
+    "schema_version": "quant_signals_v1",
+    "temperature": 0,
+    "max_tokens": 1200,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

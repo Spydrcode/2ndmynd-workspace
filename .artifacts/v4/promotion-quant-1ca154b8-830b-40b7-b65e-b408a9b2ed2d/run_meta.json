@@ -1,0 +1,9 @@
+{
+  "run_id": "promotion-quant-1ca154b8-830b-40b7-b65e-b408a9b2ed2d",
+  "workspace_id": "promotion-workspace",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:30:37.691Z",
+  "finished_at": "2026-02-09T19:30:38.804Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-plumbing-v1"
+}

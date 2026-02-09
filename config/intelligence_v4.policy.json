@@ -1,0 +1,44 @@
+{
+  "forbidden_vocabulary": [
+    "dashboard",
+    "dashboards",
+    "kpi",
+    "kpis",
+    "analytics",
+    "monitoring",
+    "bi",
+    "performance tracking",
+    "scorecard",
+    "leaderboard"
+  ],
+  "infinite_feed_phrases": [
+    "check daily",
+    "check weekly",
+    "track this metric",
+    "track over time",
+    "monitor this"
+  ],
+  "shaming_phrases": [
+    "your fault",
+    "you failed",
+    "you should have",
+    "you are bad at",
+    "owner failure",
+    "you did not do enough"
+  ],
+  "stage_drift_terms": {
+    "quant_signals": ["should", "need to", "strategy", "hire", "price"],
+    "emyth_owner_load": ["software", "tool", "hire", "scale", "marketing funnel"],
+    "competitive_lens": ["dashboard", "kpi", "track", "instrument", "monitor"],
+    "blue_ocean": ["hire", "expand territory", "new office", "daily tracking"],
+    "synthesis_decision": ["dashboard", "kpi", "monitor", "scorecard"]
+  },
+  "max_actions_30_days": 9,
+  "training_diversity": {
+    "min_total_rows": 40,
+    "min_industries": 4,
+    "max_industry_share": 0.6,
+    "max_duplicate_actions_share": 0.35,
+    "max_same_primary_constraint_prefix_share": 0.35
+  }
+}

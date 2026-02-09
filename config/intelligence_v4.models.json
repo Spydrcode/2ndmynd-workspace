@@ -1,0 +1,61 @@
+{
+  "version": "intelligence_v4.models/1",
+  "stages": {
+    "quant_signals": {
+      "model_id": "deterministic:quant-v1",
+      "temperature": 0,
+      "max_tokens": 1200,
+      "schema_version": "quant_signals_v1",
+      "prompt_version": "v1",
+      "rollout": { "strategy": "pinned", "canary_percent": 0 },
+      "fallback": { "enabled": false }
+    },
+    "emyth_owner_load": {
+      "model_id": "deterministic:emyth-v1",
+      "temperature": 0,
+      "max_tokens": 1200,
+      "schema_version": "owner_load_v1",
+      "prompt_version": "v1",
+      "rollout": { "strategy": "pinned", "canary_percent": 0 },
+      "fallback": { "enabled": false }
+    },
+    "competitive_lens": {
+      "model_id": "deterministic:competitive-v1",
+      "temperature": 0,
+      "max_tokens": 1200,
+      "schema_version": "competitive_lens_v1",
+      "prompt_version": "v1",
+      "rollout": { "strategy": "pinned", "canary_percent": 0 },
+      "fallback": { "enabled": false }
+    },
+    "blue_ocean": {
+      "model_id": "deterministic:blueocean-v1",
+      "temperature": 0,
+      "max_tokens": 1200,
+      "schema_version": "blue_ocean_v1",
+      "prompt_version": "v1",
+      "rollout": { "strategy": "pinned", "canary_percent": 0 },
+      "fallback": { "enabled": false }
+    },
+    "synthesis_decision": {
+      "model_id": "deterministic:synthesis-v1",
+      "temperature": 0,
+      "max_tokens": 1600,
+      "schema_version": "decision_artifact_v1",
+      "prompt_version": "v1",
+      "rollout": { "strategy": "pinned", "canary_percent": 0 },
+      "fallback": { "enabled": false },
+      "promotion_history": []
+    }
+  },
+  "industry_overrides": {
+    "hvac": {
+      "quant_signals": { "model_id": "deterministic:quant-hvac-v1" },
+      "synthesis_decision": { "model_id": "deterministic:synthesis-hvac-v1" }
+    },
+    "plumbing": {
+      "quant_signals": { "model_id": "deterministic:quant-plumbing-v1" },
+      "synthesis_decision": { "model_id": "deterministic:synthesis-plumbing-v1" }
+    }
+  }
+}

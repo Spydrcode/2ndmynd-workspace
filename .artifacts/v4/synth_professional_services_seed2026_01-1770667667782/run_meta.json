@@ -1,0 +1,9 @@
+{
+  "run_id": "synth_professional_services_seed2026_01-1770667667782",
+  "workspace_id": "eval-fixture",
+  "status": "succeeded",
+  "started_at": "2026-02-09T20:07:47.783Z",
+  "finished_at": "2026-02-09T20:07:48.059Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-v1"
+}

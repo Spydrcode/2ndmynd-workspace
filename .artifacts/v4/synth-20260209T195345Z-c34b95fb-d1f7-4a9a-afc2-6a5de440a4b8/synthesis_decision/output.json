@@ -1,0 +1,121 @@
+{
+  "artifact_kind": "stage_output_v1",
+  "schema_version": "decision_artifact_v1",
+  "created_at": "2026-02-09T19:53:45.435Z",
+  "payload_json": {
+    "schema_version": "decision_artifact_v1",
+    "stage_name": "synthesis_decision",
+    "model_id": "deterministic:synthesis-v1",
+    "prompt_version": "v1",
+    "confidence": "medium",
+    "evidence_refs": [
+      "bucket:revenue_concentration_top5:low",
+      "bucket:volatility:high",
+      "bucket:seasonality:strong",
+      "bucket:decision_latency:high",
+      "bucket:capacity_squeeze_proxy:high",
+      "bucket:lead_source:not_available"
+    ],
+    "data_limits": {
+      "window_mode": "last_90_days",
+      "row_limit_applied": 90,
+      "saw_quotes": true,
+      "saw_invoices": true,
+      "saw_jobs": false,
+      "saw_customers": false,
+      "notes": [
+        "Window: 2025-11-04..2026-02-01",
+        "Rows in window: 66"
+      ]
+    },
+    "primary_constraint": "Decision flow is stalled between quote acceptance and execution handoff.",
+    "why_it_feels_heavy": "Unresolved handoffs keep returning to the owner, adding repeated decision loops.",
+    "paths": {
+      "A": {
+        "title": "Stabilize Handovers First",
+        "who_it_fits": "Fits owners with high interruption load and unstable dispatch handoffs.",
+        "tradeoffs": [
+          "Short-term volume is capped while execution discipline is set.",
+          "Some low-fit work is declined to protect reliability."
+        ],
+        "first_steps": [
+          "Define one escalation threshold and route non-urgent issues to daily review.",
+          "Launch a single handoff checklist used before any owner escalation.",
+          "Freeze ad-hoc scope additions for seven days."
+        ],
+        "risks": [
+          "Team may initially escalate too much while habits reset.",
+          "Customers used to custom exceptions may push back."
+        ],
+        "guardrails": [
+          "Keep owner escalation windows time-boxed.",
+          "Do not add new service offerings during reset."
+        ]
+      },
+      "B": {
+        "title": "Reliability Promise Reset",
+        "who_it_fits": "Fits teams where decision lag and expectation mismatch drive pressure.",
+        "tradeoffs": [
+          "Promise windows become narrower and require stricter qualification.",
+          "Sales flexibility drops while communication cadence is standardized."
+        ],
+        "first_steps": [
+          "Publish two promise windows and align dispatch to those windows only.",
+          "Send one structured customer update format for every job state change.",
+          "Review delayed approvals daily and close open loops before new commitments."
+        ],
+        "risks": [
+          "Early friction from customers expecting bespoke timelines.",
+          "Internal resistance to standardized update language."
+        ],
+        "guardrails": [
+          "No same-day promise changes without owner approval.",
+          "Keep communication templates under one screen for speed."
+        ]
+      },
+      "C": {
+        "title": "Focused Offer Tightening",
+        "who_it_fits": "Fits businesses with mixed demand where only a subset of jobs stay predictable.",
+        "tradeoffs": [
+          "Revenue mix changes as lower-clarity jobs are reduced.",
+          "Some referral channels may cool during offer tightening."
+        ],
+        "first_steps": [
+          "Define high-clarity job criteria and apply them to new quotes.",
+          "Pause low-clarity quote types for two weeks.",
+          "Reframe proposal language around reliability and scope certainty."
+        ],
+        "risks": [
+          "Near-term pipeline volume may dip.",
+          "Sales team may over-qualify and miss viable jobs."
+        ],
+        "guardrails": [
+          "Review declined job reasons weekly for bias.",
+          "Keep owner review focused on edge cases only."
+        ]
+      }
+    },
+    "recommended_path": "A",
+    "first_30_days": [
+      "Week 1: lock one escalation protocol and publish it to team.",
+      "Week 1: run a handoff checklist pilot on all active jobs.",
+      "Week 2: remove one recurring interruption source from owner inbox.",
+      "Week 2: standardize customer update sequence for open work.",
+      "Week 3: audit unresolved decisions older than 48 hours and close them.",
+      "Week 4: keep only one chosen path and stop cross-path experiments."
+    ],
+    "owner_choice_prompt": "Choose A, B, or C based on which tradeoff you can hold for 30 days.",
+    "language_checks": {
+      "forbidden_terms_found": [],
+      "passed": true
+    }
+  },
+  "guard_results": {
+    "passed": true,
+    "failures": []
+  },
+  "validation_results": {
+    "ok": true,
+    "errors": []
+  }
+}

@@ -9,6 +9,8 @@
  * - Finite conclusions, max 2 paths, explicit non-actions, clean exits.
  */
 
+// LEGACY-ACTIVE: run_pipeline_v3 remains in service for current product flows.
+// v4 kernel entrypoint is src/intelligence_v4/pipeline/run_pipeline_v4.ts.
 import crypto from "node:crypto";
 import Ajv, { type ValidateFunction } from "ajv";
 import addFormats from "ajv-formats";

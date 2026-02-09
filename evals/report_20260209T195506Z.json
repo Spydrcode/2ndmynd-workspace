@@ -1,0 +1,93 @@
+{
+  "generated_at": "2026-02-09T19:55:04.309Z",
+  "mode": "pipeline",
+  "totals": {
+    "fixtures": 9,
+    "passed": 9,
+    "failed": 0
+  },
+  "results": [
+    {
+      "fixture_id": "hvac_dispatch_drag",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "plumbing_cash_timing",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "propane_safety_pressure",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "synth_agency_seed2026_01",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "synth_ecommerce_ops_seed2026_01",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "synth_home_services_generic_seed2026_01",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "synth_logistics_dispatch_seed2026_01",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "synth_professional_services_seed2026_01",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "synth_saas_micro_seed2026_01",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    }
+  ],
+  "report_path": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\evals\\report_20260209T195506Z.json"
+}

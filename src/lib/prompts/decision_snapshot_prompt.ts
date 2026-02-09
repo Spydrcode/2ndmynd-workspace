@@ -1,5 +1,7 @@
 /**
  * Decision Snapshot Prompt: Canonical LLM Template
+ * LEGACY PROMPT SURFACE: retained for pre-v4 inference and ML compatibility.
+ * New kernel prompts are in src/intelligence_v4/stages/<stage>/prompt.md.
  *
  * This prompt blends:
  * - Deterministic signals from snapshot (NEVER override these)

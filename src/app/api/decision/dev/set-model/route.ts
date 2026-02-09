@@ -1,3 +1,5 @@
+// LEGACY (DEV-ONLY): v2/v3 model registry override endpoint.
+// Superseded for kernel work by v4 model registry/config controls.
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 

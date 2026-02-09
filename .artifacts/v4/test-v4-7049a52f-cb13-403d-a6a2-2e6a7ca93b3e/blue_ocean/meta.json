@@ -1,0 +1,25 @@
+{
+  "run_id": "test-v4-7049a52f-cb13-403d-a6a2-2e6a7ca93b3e",
+  "workspace_id": "test-workspace",
+  "stage_name": "blue_ocean",
+  "created_at": "2026-02-09T19:05:39.475Z",
+  "updated_at": "2026-02-09T19:05:39.493Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:blueocean-v1",
+    "prompt_version": "v1",
+    "schema_version": "blue_ocean_v1",
+    "temperature": 0,
+    "max_tokens": 1200,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

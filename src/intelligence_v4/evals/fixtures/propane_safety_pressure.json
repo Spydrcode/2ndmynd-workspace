@@ -1,0 +1,33 @@
+{
+  "fixture_id": "propane_safety_pressure",
+  "input": {
+    "run_id": "eval-propane-001",
+    "workspace_id": "eval-workspace",
+    "business_name": "Diamondback Propane",
+    "industry": "propane",
+    "emyth_role": "technician",
+    "snapshot_window_mode": "last_90_days",
+    "pack": {
+      "version": "data_pack_v0",
+      "source_tool": "fixture",
+      "created_at": "2026-02-01T00:00:00.000Z",
+      "quotes": [
+        { "id": "q1", "status": "approved", "created_at": "2026-01-01T00:00:00.000Z", "approved_at": "2026-01-08T00:00:00.000Z", "total": 2800 },
+        { "id": "q2", "status": "approved", "created_at": "2026-01-04T00:00:00.000Z", "approved_at": "2026-01-14T00:00:00.000Z", "total": 1600 },
+        { "id": "q3", "status": "sent", "created_at": "2026-01-11T00:00:00.000Z", "total": 1200 }
+      ],
+      "invoices": [
+        { "id": "i1", "status": "paid", "issued_at": "2026-01-10T00:00:00.000Z", "paid_at": "2026-01-22T00:00:00.000Z", "total": 2800 },
+        { "id": "i2", "status": "open", "issued_at": "2026-01-17T00:00:00.000Z", "total": 1200 },
+        { "id": "i3", "status": "paid", "issued_at": "2026-01-24T00:00:00.000Z", "paid_at": "2026-01-31T00:00:00.000Z", "total": 1600 }
+      ],
+      "jobs": [
+        { "id": "j1", "status": "completed", "scheduled_at": "2026-01-09T00:00:00.000Z", "completed_at": "2026-01-10T00:00:00.000Z", "total": 2800 },
+        { "id": "j2", "status": "in_progress", "scheduled_at": "2026-01-20T00:00:00.000Z", "total": 1200 }
+      ],
+      "customers": [
+        { "id": "c1", "status": "other", "created_at": "2025-12-15T00:00:00.000Z" }
+      ]
+    }
+  }
+}

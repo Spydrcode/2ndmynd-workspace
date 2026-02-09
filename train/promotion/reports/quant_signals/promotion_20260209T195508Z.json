@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-02-09T19:55:08.754Z",
+  "stage": "quant_signals",
+  "old_model_id": "deterministic:quant-v1",
+  "new_model_id": "deterministic:quant-v2-test",
+  "dry_run": true,
+  "notes": "dry run test",
+  "dataset": {
+    "path": "C:\\Users\\dusti\\AppData\\Local\\Temp\\promotion-flow-NZmSNe\\stage_quant.jsonl",
+    "total_rows": 1,
+    "eligible_rows": 1,
+    "approved_only": true,
+    "min_rows_required": 30,
+    "forced": true,
+    "sha256": "ec402d06e806cc877f87944b237f0aaf73cc8319bd7746e08d1c57c50a8b43dc"
+  },
+  "evals": {
+    "passed": true,
+    "pipeline": {
+      "totals": {
+        "fixtures": 9,
+        "passed": 9,
+        "failed": 0
+      },
+      "report_path": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\evals\\report_20260209T195506Z.json"
+    },
+    "stage": {
+      "totals": {
+        "fixtures": 9,
+        "passed": 9,
+        "failed": 0
+      },
+      "report_path": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\evals\\report_20260209T195508Z.json"
+    }
+  }
+}

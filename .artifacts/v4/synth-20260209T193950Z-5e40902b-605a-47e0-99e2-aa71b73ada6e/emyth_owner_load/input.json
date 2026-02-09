@@ -1,0 +1,138 @@
+{
+  "artifact_kind": "stage_input_summary_v1",
+  "schema_version": "stage_input_emyth_v1",
+  "created_at": "2026-02-09T19:39:50.295Z",
+  "payload_json": {
+    "schema_version": "stage_input_emyth_v1",
+    "stage_name": "emyth_owner_load",
+    "client_id": "test-client-synth",
+    "run_id": "synth-20260209T193950Z-5e40902b-605a-47e0-99e2-aa71b73ada6e",
+    "industry": "propane",
+    "data_limits": {
+      "window_start": "2025-10-27",
+      "window_end": "2026-01-24",
+      "max_records": 90,
+      "notes": [
+        "Window: 2025-10-27..2026-01-24",
+        "Rows in window: 6"
+      ]
+    },
+    "evidence_index": {
+      "refs": [
+        "bucket:revenue_concentration_top5:high",
+        "bucket:volatility:medium",
+        "bucket:seasonality:none",
+        "bucket:decision_latency:medium",
+        "bucket:capacity_squeeze_proxy:high",
+        "bucket:lead_source:not_available"
+      ]
+    },
+    "context": {
+      "quant_summary": {
+        "signals": [
+          {
+            "id": "revenue_concentration_top5",
+            "label": "Top-5 revenue concentration",
+            "value_bucket": "high",
+            "direction": "up",
+            "confidence": "low",
+            "evidence_refs": [
+              "bucket:revenue_concentration_top5:high"
+            ]
+          },
+          {
+            "id": "volatility",
+            "label": "Workload volatility",
+            "value_bucket": "medium",
+            "direction": "flat",
+            "confidence": "low",
+            "evidence_refs": [
+              "bucket:volatility:medium"
+            ]
+          },
+          {
+            "id": "seasonality",
+            "label": "Seasonality signal",
+            "value_bucket": "none",
+            "direction": "flat",
+            "confidence": "low",
+            "evidence_refs": [
+              "bucket:seasonality:none"
+            ]
+          },
+          {
+            "id": "decision_latency",
+            "label": "Quote decision latency",
+            "value_bucket": "medium",
+            "direction": "flat",
+            "confidence": "low",
+            "evidence_refs": [
+              "bucket:decision_latency:medium"
+            ]
+          },
+          {
+            "id": "capacity_squeeze_proxy",
+            "label": "Capacity squeeze proxy",
+            "value_bucket": "high",
+            "direction": "up",
+            "confidence": "low",
+            "evidence_refs": [
+              "bucket:capacity_squeeze_proxy:high"
+            ]
+          },
+          {
+            "id": "lead_source",
+            "label": "Lead source concentration",
+            "value_bucket": "not_available",
+            "direction": "unknown",
+            "confidence": "low",
+            "evidence_refs": [
+              "bucket:lead_source:not_available"
+            ]
+          }
+        ],
+        "patterns": [
+          {
+            "id": "volatility_pattern",
+            "description": "Workload volatility is medium in the selected window.",
+            "confidence": "low",
+            "evidence_refs": [
+              "bucket:volatility:medium"
+            ]
+          },
+          {
+            "id": "decision_lag_pattern",
+            "description": "Quote decision latency is medium, shaping response pressure.",
+            "confidence": "low",
+            "evidence_refs": [
+              "bucket:decision_latency:medium"
+            ]
+          }
+        ],
+        "anomalies": [
+          {
+            "id": "capacity_squeeze_anomaly",
+            "description": "Capacity squeeze proxy is high relative to current throughput.",
+            "confidence": "low",
+            "evidence_refs": [
+              "bucket:capacity_squeeze_proxy:high"
+            ]
+          }
+        ]
+      },
+      "owner_context": {
+        "team_size_bucket": "small",
+        "owner_role_bucket": "technician",
+        "service_mix_bucket": "balanced"
+      }
+    }
+  },
+  "guard_results": {
+    "passed": true,
+    "failures": []
+  },
+  "validation_results": {
+    "ok": true,
+    "errors": []
+  }
+}

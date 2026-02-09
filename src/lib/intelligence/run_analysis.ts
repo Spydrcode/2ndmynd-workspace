@@ -32,6 +32,12 @@ import type { SnapshotV2, ConclusionV2 } from "../../../lib/decision/v2/conclusi
 import type { OwnerIntentIntake, IntentOverrides } from "../types/intent_intake";
 import type { CoherenceSnapshot, CoherenceDrift } from "../types/coherence_engine";
 import type { PresentedCoherenceArtifact } from "../present/present_coherence";
+import { assembleSecondLookV2 } from "../second_look_v2/assembly/assembler";
+import {
+  parseSecondLookIntakeV2,
+  type SecondLookIntakeV2,
+} from "../second_look_v2/contracts/second_look_intake_v2";
+import type { SecondLookArtifactV2 } from "../second_look_v2/contracts/second_look_artifact_v2";
 
 /**
  * Ingest business profile + snapshot context to RAG.
@@ -137,6 +143,7 @@ export type AnalysisResult = {
   presented_coherence_v1?: PresentedCoherenceArtifact;
   coherence_drift?: CoherenceDrift;
   intent_overrides?: IntentOverrides;
+  second_look_artifact_v2?: SecondLookArtifactV2;
   ctx?: RunContext;
 };
 
@@ -148,6 +155,7 @@ export async function runAnalysisFromPack(params: {
   workspace_id: string;
   lock_id?: string;
   intent_overrides?: IntentOverrides;
+  second_look_intake_v2?: SecondLookIntakeV2;
   ctx?: RunContext;
 }) {
   const logger = new RunLogger(params.run_id);
@@ -463,7 +471,6 @@ export async function runAnalysisFromPack(params: {
     console.warn("RAG context retrieval failed (non-blocking):", error);
     rag_context = undefined;
   }
-  void rag_context;
 
   // Infer cohort (augmentative only)
   let cohort_inference: import("../../lib/cohort_engine/types").CohortInference | null = null;
@@ -515,6 +522,23 @@ export async function runAnalysisFromPack(params: {
     decision_artifact = undefined;
   }
 
+  let second_look_artifact_v2: SecondLookArtifactV2 | undefined;
+  if (params.second_look_intake_v2) {
+    try {
+      const intake = parseSecondLookIntakeV2(params.second_look_intake_v2);
+      second_look_artifact_v2 = assembleSecondLookV2({
+        intake,
+        snapshot,
+        business_profile,
+        layer_fusion,
+        rag_context,
+      });
+    } catch (error) {
+      logger.logEvent("second_look_v2_error", { error: RunLogger.serializeError(error) });
+      second_look_artifact_v2 = undefined;
+    }
+  }
+
   const analysisResult = {
     run_id: params.run_id,
     input_hash,
@@ -540,6 +564,7 @@ export async function runAnalysisFromPack(params: {
     presented_coherence_v1,
     coherence_drift,
     intent_overrides,
+    second_look_artifact_v2,
     ctx: params.ctx,
   } satisfies AnalysisResult;
 

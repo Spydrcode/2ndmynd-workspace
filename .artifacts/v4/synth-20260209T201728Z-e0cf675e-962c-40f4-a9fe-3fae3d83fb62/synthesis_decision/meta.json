@@ -1,0 +1,25 @@
+{
+  "run_id": "synth-20260209T201728Z-e0cf675e-962c-40f4-a9fe-3fae3d83fb62",
+  "workspace_id": "test-client-synth",
+  "stage_name": "synthesis_decision",
+  "created_at": "2026-02-09T20:17:28.623Z",
+  "updated_at": "2026-02-09T20:17:28.640Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:synthesis-hvac-v1",
+    "prompt_version": "v1",
+    "schema_version": "decision_artifact_v1",
+    "temperature": 0,
+    "max_tokens": 1600,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

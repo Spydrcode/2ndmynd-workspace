@@ -1,0 +1,33 @@
+{
+  "fixture_id": "hvac_dispatch_drag",
+  "input": {
+    "run_id": "eval-hvac-001",
+    "workspace_id": "eval-workspace",
+    "business_name": "Summit HVAC",
+    "industry": "hvac",
+    "emyth_role": "mixed",
+    "snapshot_window_mode": "last_90_days",
+    "pack": {
+      "version": "data_pack_v0",
+      "source_tool": "fixture",
+      "created_at": "2026-02-01T00:00:00.000Z",
+      "quotes": [
+        { "id": "q11", "status": "approved", "created_at": "2026-01-02T00:00:00.000Z", "approved_at": "2026-01-03T00:00:00.000Z", "total": 9000 },
+        { "id": "q12", "status": "approved", "created_at": "2026-01-09T00:00:00.000Z", "approved_at": "2026-01-15T00:00:00.000Z", "total": 2400 },
+        { "id": "q13", "status": "approved", "created_at": "2026-01-18T00:00:00.000Z", "approved_at": "2026-01-27T00:00:00.000Z", "total": 1800 },
+        { "id": "q14", "status": "sent", "created_at": "2026-01-25T00:00:00.000Z", "total": 1300 }
+      ],
+      "invoices": [
+        { "id": "i11", "status": "paid", "issued_at": "2026-01-04T00:00:00.000Z", "paid_at": "2026-01-21T00:00:00.000Z", "total": 9000 },
+        { "id": "i12", "status": "paid", "issued_at": "2026-01-15T00:00:00.000Z", "paid_at": "2026-01-30T00:00:00.000Z", "total": 2400 },
+        { "id": "i13", "status": "open", "issued_at": "2026-01-28T00:00:00.000Z", "total": 1800 }
+      ],
+      "jobs": [
+        { "id": "j11", "status": "scheduled", "scheduled_at": "2026-01-05T00:00:00.000Z", "total": 9000 },
+        { "id": "j12", "status": "completed", "scheduled_at": "2026-01-12T00:00:00.000Z", "completed_at": "2026-01-18T00:00:00.000Z", "total": 2400 },
+        { "id": "j13", "status": "in_progress", "scheduled_at": "2026-01-27T00:00:00.000Z", "total": 1800 }
+      ],
+      "customers": []
+    }
+  }
+}

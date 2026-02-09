@@ -1,0 +1,79 @@
+{
+  "artifact_kind": "stage_output_v1",
+  "schema_version": "competitive_lens_v1",
+  "created_at": "2026-02-09T19:31:39.606Z",
+  "payload_json": {
+    "schema_version": "competitive_lens_v1",
+    "stage_name": "competitive_lens",
+    "model_id": "deterministic:competitive-v1",
+    "prompt_version": "v1",
+    "confidence": "medium",
+    "evidence_refs": [
+      "bucket:revenue_concentration_top5:high",
+      "bucket:volatility:medium",
+      "bucket:seasonality:none",
+      "bucket:decision_latency:medium",
+      "bucket:capacity_squeeze_proxy:medium",
+      "bucket:lead_source:not_available"
+    ],
+    "data_limits": {
+      "window_mode": "last_100_closed_estimates",
+      "row_limit_applied": 100,
+      "saw_quotes": true,
+      "saw_invoices": true,
+      "saw_jobs": false,
+      "saw_customers": false,
+      "notes": [
+        "Window: 2025-12-20..2026-01-29",
+        "Rows in window: 6"
+      ]
+    },
+    "market_pressures": [
+      {
+        "id": "response_window_pressure",
+        "pressure": "Local buyers expect quick commitment clarity and switch providers when responses stall.",
+        "confidence": "medium",
+        "evidence_refs": [
+          "bucket:revenue_concentration_top5:high",
+          "bucket:volatility:medium"
+        ]
+      },
+      {
+        "id": "reliability_pressure",
+        "pressure": "Reliability becomes a differentiator when schedules slide or updates are inconsistent.",
+        "confidence": "medium",
+        "evidence_refs": [
+          "bucket:volatility:medium",
+          "bucket:seasonality:none"
+        ]
+      },
+      {
+        "id": "trust_signal_pressure",
+        "pressure": "Trust compounds through consistent follow-through, not broad service promises.",
+        "confidence": "low",
+        "evidence_refs": [
+          "bucket:revenue_concentration_top5:high"
+        ]
+      }
+    ],
+    "strengths": [
+      "Northline Plumbing already has real demand signals in recent operating data.",
+      "Delivery knowledge is close to the work and can be codified into repeatable handoffs.",
+      "Owner pattern awareness enables faster correction once one direction is chosen."
+    ],
+    "vulnerabilities": [
+      "Decision and scheduling handoffs remain too dependent on owner interrupts.",
+      "High-volatility periods compress response quality and create promise risk.",
+      "Competing urgency channels make customer communication sequence inconsistent."
+    ],
+    "collapsed_view": "Competition is won by dependable execution cadence; fragmented handoffs make that cadence harder to sustain."
+  },
+  "guard_results": {
+    "passed": true,
+    "failures": []
+  },
+  "validation_results": {
+    "ok": true,
+    "errors": []
+  }
+}

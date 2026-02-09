@@ -1,5 +1,7 @@
 /**
  * INTERNAL ONLY - Start mock pipeline job
+ * LEGACY INTERNAL TOOLING: this route exists for local/mock regression loops.
+ * It is not part of the authoritative v4 intelligence kernel.
  * 
  * POST /api/internal/mock-run
  * Body: { industry, seed?, days?, website_url? }

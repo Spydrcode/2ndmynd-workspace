@@ -1,0 +1,27 @@
+{
+  "business_name": "Diamondback Propane",
+  "website_url": "https://diamondback.example",
+  "google_business_url": "https://maps.google.com/?cid=123",
+  "snapshot_window": {
+    "mode": "last_90_days"
+  },
+  "owner_values_top3": [
+    "safety_compliance",
+    "customer_communication",
+    "reliability_ontime"
+  ],
+  "pressure_sources_top2": [
+    "compliance_risk",
+    "tools_message_overload"
+  ],
+  "emyth_role_split": "technician",
+  "voice_note_1_text": "After-hours calls and escalation confusion are exhausting the owner.",
+  "voice_note_2_text": "I need reliability and safer handoffs before growth experiments.",
+  "optional_tags": [
+    "propane",
+    "residential"
+  ],
+  "consent_flags": {
+    "data_ok": true
+  }
+}

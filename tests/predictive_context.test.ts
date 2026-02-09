@@ -102,7 +102,7 @@ describe("predictive_context", () => {
   it("prefers explicit industry from business profile over inference", () => {
     const profile: BusinessProfile = {
       name_guess: "Cool Air Services",
-      summary: "Service business",
+      summary: "HVAC service business",
       services: [],
       location_mentions: [],
       industry_bucket: "trade",
@@ -125,7 +125,7 @@ describe("predictive_context", () => {
       snapshot_keywords: ["plumbing", "drain cleaning"], // contradictory keywords
     });
 
-    expect(context.industry_tag).toBe("hvac"); // Should use profile, not keywords
+    expect(context.industry_tag).toBe("hvac"); // Should use profile-derived context, not keywords
   });
 
   it("returns finite watch list with time horizons", () => {

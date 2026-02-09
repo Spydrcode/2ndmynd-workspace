@@ -1,0 +1,25 @@
+{
+  "run_id": "synth-20260209T195336Z-b1c986ba-9cdc-4d2a-a369-af4a001b419a",
+  "workspace_id": "test-client-synth",
+  "stage_name": "synthesis_decision",
+  "created_at": "2026-02-09T19:53:36.671Z",
+  "updated_at": "2026-02-09T19:53:36.693Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:synthesis-v1",
+    "prompt_version": "v1",
+    "schema_version": "decision_artifact_v1",
+    "temperature": 0,
+    "max_tokens": 1600,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

@@ -1,0 +1,9 @@
+{
+  "run_id": "test-v4-7049a52f-cb13-403d-a6a2-2e6a7ca93b3e",
+  "workspace_id": "test-workspace",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:05:39.300Z",
+  "finished_at": "2026-02-09T19:05:39.566Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-plumbing-v1"
+}

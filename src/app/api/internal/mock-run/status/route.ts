@@ -1,5 +1,6 @@
 /**
  * INTERNAL ONLY - Check mock pipeline job status
+ * LEGACY INTERNAL TOOLING: retained for mock v2/v3 regression loops.
  * 
  * GET /api/internal/mock-run/status?job_id=xxx
  */

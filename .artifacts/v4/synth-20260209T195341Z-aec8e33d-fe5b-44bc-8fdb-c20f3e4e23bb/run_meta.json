@@ -1,0 +1,9 @@
+{
+  "run_id": "synth-20260209T195341Z-aec8e33d-fe5b-44bc-8fdb-c20f3e4e23bb",
+  "workspace_id": "test-client-synth",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:53:41.694Z",
+  "finished_at": "2026-02-09T19:53:41.863Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-v1"
+}

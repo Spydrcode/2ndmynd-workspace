@@ -1,0 +1,81 @@
+{
+  "artifact_kind": "stage_output_v1",
+  "schema_version": "blue_ocean_v1",
+  "created_at": "2026-02-09T19:52:59.112Z",
+  "payload_json": {
+    "schema_version": "blue_ocean_v1",
+    "stage_name": "blue_ocean",
+    "model_id": "deterministic:blueocean-v1",
+    "prompt_version": "v1",
+    "confidence": "medium",
+    "evidence_refs": [
+      "bucket:revenue_concentration_top5:low",
+      "bucket:volatility:high",
+      "bucket:seasonality:strong",
+      "bucket:decision_latency:medium",
+      "bucket:capacity_squeeze_proxy:high",
+      "bucket:lead_source:not_available"
+    ],
+    "data_limits": {
+      "window_mode": "last_90_days",
+      "row_limit_applied": 90,
+      "saw_quotes": true,
+      "saw_invoices": true,
+      "saw_jobs": false,
+      "saw_customers": false,
+      "notes": [
+        "Window: 2025-11-04..2026-02-01",
+        "Rows in window: 55"
+      ]
+    },
+    "capacity_guardrail_statement": "Any strategic move must reduce owner interrupts before adding new commitments.",
+    "asymmetric_moves": [
+      {
+        "id": "promise_window_design",
+        "move": "Offer two reliability promise windows instead of open-ended timelines.",
+        "why_now": "It narrows decision churn and sets clearer customer expectations.",
+        "capacity_check": "Capacity fit: only launch if daily exception count stays below owner escalation threshold.",
+        "confidence": "medium",
+        "evidence_refs": [
+          "bucket:revenue_concentration_top5:low",
+          "bucket:volatility:high"
+        ]
+      },
+      {
+        "id": "handoff_standard",
+        "move": "Package every job handoff with one standard pre-dispatch brief.",
+        "why_now": "It lowers repeated clarifications and protects execution consistency.",
+        "capacity_check": "Load fit: keep owner handoff prep under 45 minutes per day.",
+        "confidence": "medium",
+        "evidence_refs": [
+          "bucket:volatility:high",
+          "bucket:seasonality:strong"
+        ]
+      },
+      {
+        "id": "scope_boundary_offer",
+        "move": "Narrow offerings to high-clarity work where delivery reliability is strongest.",
+        "why_now": "Focused offers reduce firefighting and improve follow-through.",
+        "capacity_check": "Capacity fit: hold weekly committed jobs within current crew completion range.",
+        "confidence": "low",
+        "evidence_refs": [
+          "bucket:seasonality:strong",
+          "bucket:decision_latency:medium"
+        ]
+      }
+    ],
+    "rejected_load_increasing_moves": [
+      "Adding new service lines before handoff reliability is stable.",
+      "Expanding territory while owner interruptions remain high.",
+      "Launching campaigns that require daily owner response triage."
+    ]
+  },
+  "guard_results": {
+    "passed": true,
+    "failures": []
+  },
+  "validation_results": {
+    "ok": true,
+    "errors": []
+  }
+}

@@ -7,6 +7,7 @@ import type { ArchetypeDetectionResult, ArchetypeWatchList } from "@/src/lib/int
 import type { PresentedCoherenceArtifact } from "@/src/lib/present/present_coherence";
 import type { CoherenceSnapshot, CoherenceDrift } from "@/src/lib/types/coherence_engine";
 import type { IntentOverrides } from "@/src/lib/types/intent_intake";
+import type { SecondLookArtifactV2 } from "@/src/lib/second_look_v2/contracts/second_look_artifact_v2";
 import { parseFlexibleTimestamp } from "./dates";
 
 export type InputHealth = {
@@ -87,6 +88,7 @@ export type RunResults = {
   presented_coherence_v1?: PresentedCoherenceArtifact | null;
   coherence_drift?: CoherenceDrift | null;
   intent_overrides?: IntentOverrides | null;
+  second_look_artifact_v2?: SecondLookArtifactV2 | null;
   artifacts?: {
     log_path?: string | null;
   } | null;
@@ -132,6 +134,7 @@ export type ResultsArtifact = {
   presented_coherence_v1?: PresentedCoherenceArtifact | null;
   coherence_drift?: CoherenceDrift | null;
   intent_overrides?: IntentOverrides | null;
+  second_look_artifact_v2?: SecondLookArtifactV2 | null;
   run_manifest?: RunManifest | null;
 };
 
@@ -292,5 +295,6 @@ export function buildResultsArtifact(run: Run): ResultsArtifact {
     presented_coherence_v1: run.results_json?.presented_coherence_v1 ?? null,
     coherence_drift: run.results_json?.coherence_drift ?? null,
     intent_overrides: run.results_json?.intent_overrides ?? null,
+    second_look_artifact_v2: run.results_json?.second_look_artifact_v2 ?? null,
   };
 }

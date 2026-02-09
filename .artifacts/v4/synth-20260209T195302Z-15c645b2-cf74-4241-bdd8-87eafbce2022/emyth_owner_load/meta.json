@@ -1,0 +1,25 @@
+{
+  "run_id": "synth-20260209T195302Z-15c645b2-cf74-4241-bdd8-87eafbce2022",
+  "workspace_id": "test-client-synth",
+  "stage_name": "emyth_owner_load",
+  "created_at": "2026-02-09T19:53:02.630Z",
+  "updated_at": "2026-02-09T19:53:02.649Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:emyth-v1",
+    "prompt_version": "v1",
+    "schema_version": "owner_load_v1",
+    "temperature": 0,
+    "max_tokens": 1200,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

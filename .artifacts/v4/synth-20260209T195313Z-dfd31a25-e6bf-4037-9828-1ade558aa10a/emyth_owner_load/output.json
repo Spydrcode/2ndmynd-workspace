@@ -1,0 +1,77 @@
+{
+  "artifact_kind": "stage_output_v1",
+  "schema_version": "owner_load_v1",
+  "created_at": "2026-02-09T19:53:13.586Z",
+  "payload_json": {
+    "schema_version": "owner_load_v1",
+    "stage_name": "emyth_owner_load",
+    "model_id": "deterministic:emyth-v1",
+    "prompt_version": "v1",
+    "confidence": "medium",
+    "evidence_refs": [
+      "bucket:revenue_concentration_top5:high",
+      "bucket:volatility:medium",
+      "bucket:seasonality:none"
+    ],
+    "data_limits": {
+      "window_mode": "last_100_closed_estimates",
+      "row_limit_applied": 100,
+      "saw_quotes": true,
+      "saw_invoices": true,
+      "saw_jobs": false,
+      "saw_customers": false,
+      "notes": [
+        "Window: 2025-12-20..2026-01-29",
+        "Rows in window: 6"
+      ]
+    },
+    "bottleneck_diagnosis": "Owner attention is fragmented across too many operating handoffs.",
+    "why_it_feels_heavy": "Pressure is structural: competing commitments force the owner to context-switch between promises, scheduling, and issue triage.",
+    "owner_load_drivers": [
+      {
+        "id": "handoff_interruptions",
+        "summary": "Handoffs are owner-dependent, so unresolved decisions return to the owner queue.",
+        "confidence": "medium",
+        "evidence_refs": [
+          "bucket:revenue_concentration_top5:high",
+          "bucket:volatility:medium"
+        ]
+      },
+      {
+        "id": "sequence_instability",
+        "summary": "Work sequencing shifts through the week, forcing reactive reprioritization.",
+        "confidence": "medium",
+        "evidence_refs": [
+          "bucket:volatility:medium",
+          "bucket:seasonality:none"
+        ]
+      },
+      {
+        "id": "role_overload",
+        "summary": "Northline Plumbing is operating with a manager role split, increasing context-switching cost.",
+        "confidence": "low",
+        "evidence_refs": [
+          "bucket:revenue_concentration_top5:high"
+        ]
+      }
+    ],
+    "relief_without_expansion": [
+      "Freeze one daily owner decision window and batch all non-urgent escalations into it.",
+      "Define one handoff checklist so team decisions land complete before reaching owner review.",
+      "Set a same-day escalation threshold to separate urgent exceptions from routine noise."
+    ],
+    "prohibitions_checked": {
+      "no_tools_prescribed": true,
+      "no_hiring_prescribed": true,
+      "no_scaling_prescribed": true
+    }
+  },
+  "guard_results": {
+    "passed": true,
+    "failures": []
+  },
+  "validation_results": {
+    "ok": true,
+    "errors": []
+  }
+}

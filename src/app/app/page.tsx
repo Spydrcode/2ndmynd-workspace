@@ -78,6 +78,12 @@ export default async function AppHomePage() {
                 Remote Assist
               </Link>
             </Button>
+            <Button asChild className="w-full justify-start" variant="outline">
+              <Link href="/second-look">
+                <ArrowRight className="mr-2 h-4 w-4" />
+                Second Look (V2)
+              </Link>
+            </Button>
           </CardContent>
         </Card>
       </div>

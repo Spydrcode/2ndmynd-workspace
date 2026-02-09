@@ -1,3 +1,5 @@
+// LEGACY: snapshot ingest flow (pre-v4) retained for existing snapshot UI routes.
+// New intelligence orchestration should use the v4 kernel path.
 import crypto from "node:crypto";
 
 import { parse } from "csv-parse/sync";

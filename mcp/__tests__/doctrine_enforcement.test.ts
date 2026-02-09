@@ -117,7 +117,7 @@ describe("Doctrine Enforcement Tests", () => {
         confidence: "medium",
       };
 
-      const artifact: any = {
+      const artifact: Record<string, unknown> = {
         artifact_version: "closure_v1",
         run_id: "test-002",
         created_at: new Date().toISOString(),
@@ -173,7 +173,7 @@ describe("Doctrine Enforcement Tests", () => {
 
   describe("Explicit Non-Actions Required", () => {
     it("should FAIL when committed but no explicit_non_actions", async () => {
-      const artifact: any = {
+      const artifact: Record<string, unknown> = {
         artifact_version: "closure_v1",
         run_id: "test-003",
         created_at: new Date().toISOString(),

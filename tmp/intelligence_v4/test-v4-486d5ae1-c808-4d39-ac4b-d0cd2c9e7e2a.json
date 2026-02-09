@@ -1,0 +1,368 @@
+{
+  "run_id": "test-v4-486d5ae1-c808-4d39-ac4b-d0cd2c9e7e2a",
+  "workspace_id": "test-workspace",
+  "pipeline_version": "intelligence_v4",
+  "status": "failed",
+  "started_at": "2026-02-09T20:07:44.216Z",
+  "stage_records": [
+    {
+      "stage_name": "quant_signals",
+      "created_at": "2026-02-09T20:07:44.216Z",
+      "updated_at": "2026-02-09T20:07:44.240Z",
+      "model_config": {
+        "model_id": "deterministic:quant-plumbing-v1",
+        "prompt_version": "v1",
+        "schema_version": "quant_signals_v1",
+        "temperature": 0,
+        "max_tokens": 1200,
+        "rollout": {
+          "strategy": "pinned",
+          "canary_percent": 0
+        },
+        "fallback": {
+          "enabled": false
+        }
+      },
+      "approved": false,
+      "notes": "",
+      "input_artifact": {
+        "artifact_kind": "stage_input_summary_v1",
+        "schema_version": "stage_input_quant_v1",
+        "created_at": "2026-02-09T20:07:44.216Z",
+        "payload_json": {
+          "schema_version": "stage_input_quant_v1",
+          "stage_name": "quant_signals",
+          "client_id": "test-workspace",
+          "run_id": "test-v4-486d5ae1-c808-4d39-ac4b-d0cd2c9e7e2a",
+          "industry": "plumbing",
+          "data_limits": {
+            "window_start": "2025-10-15",
+            "window_end": "2026-01-12",
+            "max_records": 90,
+            "notes": [
+              "Window: 2025-10-15..2026-01-12",
+              "Rows in window: 3"
+            ]
+          },
+          "evidence_index": {
+            "refs": [
+              "bucket:revenue_concentration_top5:high",
+              "bucket:volatility:unknown",
+              "bucket:seasonality:none",
+              "bucket:decision_latency:medium",
+              "bucket:capacity_squeeze_proxy:unknown",
+              "bucket:lead_source:not_available"
+            ]
+          },
+          "context": {
+            "buckets": {
+              "concentration_bucket": "high",
+              "volatility_bucket": "unknown",
+              "seasonality_bucket": "none",
+              "decision_latency_bucket": "medium",
+              "throughput_bucket": "very_low",
+              "capacity_squeeze_bucket": "unknown",
+              "lead_source_bucket": "not_available",
+              "job_type_mix_bucket": "quotes_heavy"
+            },
+            "derived_counts": {
+              "invoice_count_bucket": "very_low",
+              "estimate_count_bucket": "very_low",
+              "job_count_bucket": "none",
+              "customer_count_bucket": "none"
+            },
+            "notes": [
+              "Window: 2025-10-15..2026-01-12",
+              "Rows in window: 3"
+            ]
+          }
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "output_artifact": {
+        "artifact_kind": "stage_output_v1",
+        "schema_version": "quant_signals_v1",
+        "created_at": "2026-02-09T20:07:44.229Z",
+        "payload_json": {
+          "schema_version": "quant_signals_v1",
+          "stage_name": "quant_signals",
+          "model_id": "deterministic:quant-plumbing-v1",
+          "prompt_version": "v1",
+          "confidence": "medium",
+          "evidence_refs": [
+            "bucket:revenue_concentration_top5:high",
+            "bucket:volatility:unknown",
+            "bucket:seasonality:none",
+            "bucket:decision_latency:medium",
+            "bucket:capacity_squeeze_proxy:unknown",
+            "bucket:lead_source:not_available"
+          ],
+          "data_limits": {
+            "window_mode": "last_90_days",
+            "row_limit_applied": 90,
+            "saw_quotes": true,
+            "saw_invoices": true,
+            "saw_jobs": false,
+            "saw_customers": false,
+            "notes": [
+              "Window: 2025-10-15..2026-01-12",
+              "Rows in window: 3"
+            ]
+          },
+          "window": {
+            "start_date": "2025-10-15",
+            "end_date": "2026-01-12"
+          },
+          "data_quality": {
+            "coverage_bucket": "strong",
+            "missingness_bucket": "low",
+            "notes": [
+              "Window: 2025-10-15..2026-01-12",
+              "Rows in window: 3"
+            ]
+          },
+          "signals": [
+            {
+              "id": "revenue_concentration_top5",
+              "label": "Top-5 revenue concentration",
+              "value_bucket": "high",
+              "direction": "up",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:revenue_concentration_top5:high"
+              ]
+            },
+            {
+              "id": "volatility",
+              "label": "Workload volatility",
+              "value_bucket": "unknown",
+              "direction": "flat",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:volatility:unknown"
+              ]
+            },
+            {
+              "id": "seasonality",
+              "label": "Seasonality signal",
+              "value_bucket": "none",
+              "direction": "flat",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:seasonality:none"
+              ]
+            },
+            {
+              "id": "decision_latency",
+              "label": "Quote decision latency",
+              "value_bucket": "medium",
+              "direction": "flat",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:decision_latency:medium"
+              ]
+            },
+            {
+              "id": "capacity_squeeze_proxy",
+              "label": "Capacity squeeze proxy",
+              "value_bucket": "unknown",
+              "direction": "flat",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:capacity_squeeze_proxy:unknown"
+              ]
+            },
+            {
+              "id": "lead_source",
+              "label": "Lead source concentration",
+              "value_bucket": "not_available",
+              "direction": "unknown",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:lead_source:not_available"
+              ]
+            }
+          ],
+          "patterns": [
+            {
+              "id": "decision_lag_pattern",
+              "description": "Quote decision latency is medium, shaping response pressure.",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:decision_latency:medium"
+              ]
+            }
+          ],
+          "anomalies": []
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      }
+    },
+    {
+      "stage_name": "emyth_owner_load",
+      "created_at": "2026-02-09T20:07:44.258Z",
+      "updated_at": "2026-02-09T20:07:44.258Z",
+      "model_config": {
+        "model_id": "deterministic:emyth-v1",
+        "prompt_version": "v1",
+        "schema_version": "owner_load_v1",
+        "temperature": 0,
+        "max_tokens": 1200,
+        "rollout": {
+          "strategy": "pinned",
+          "canary_percent": 0
+        },
+        "fallback": {
+          "enabled": false
+        }
+      },
+      "approved": false,
+      "notes": "",
+      "input_artifact": {
+        "artifact_kind": "stage_input_summary_v1",
+        "schema_version": "stage_input_emyth_v1",
+        "created_at": "2026-02-09T20:07:44.247Z",
+        "payload_json": {
+          "schema_version": "stage_input_emyth_v1",
+          "stage_name": "emyth_owner_load",
+          "client_id": "test-workspace",
+          "run_id": "test-v4-486d5ae1-c808-4d39-ac4b-d0cd2c9e7e2a",
+          "industry": "plumbing",
+          "data_limits": {
+            "window_start": "2025-10-15",
+            "window_end": "2026-01-12",
+            "max_records": 90,
+            "notes": [
+              "Window: 2025-10-15..2026-01-12",
+              "Rows in window: 3"
+            ]
+          },
+          "evidence_index": {
+            "refs": [
+              "bucket:revenue_concentration_top5:high",
+              "bucket:volatility:unknown",
+              "bucket:seasonality:none",
+              "bucket:decision_latency:medium",
+              "bucket:capacity_squeeze_proxy:unknown",
+              "bucket:lead_source:not_available"
+            ]
+          },
+          "context": {
+            "quant_summary": {
+              "signals": [
+                {
+                  "id": "revenue_concentration_top5",
+                  "label": "Top-5 revenue concentration",
+                  "value_bucket": "high",
+                  "direction": "up",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:revenue_concentration_top5:high"
+                  ]
+                },
+                {
+                  "id": "volatility",
+                  "label": "Workload volatility",
+                  "value_bucket": "unknown",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:volatility:unknown"
+                  ]
+                },
+                {
+                  "id": "seasonality",
+                  "label": "Seasonality signal",
+                  "value_bucket": "none",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:seasonality:none"
+                  ]
+                },
+                {
+                  "id": "decision_latency",
+                  "label": "Quote decision latency",
+                  "value_bucket": "medium",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:decision_latency:medium"
+                  ]
+                },
+                {
+                  "id": "capacity_squeeze_proxy",
+                  "label": "Capacity squeeze proxy",
+                  "value_bucket": "unknown",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:capacity_squeeze_proxy:unknown"
+                  ]
+                },
+                {
+                  "id": "lead_source",
+                  "label": "Lead source concentration",
+                  "value_bucket": "not_available",
+                  "direction": "unknown",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:lead_source:not_available"
+                  ]
+                }
+              ],
+              "patterns": [
+                {
+                  "id": "decision_lag_pattern",
+                  "description": "Quote decision latency is medium, shaping response pressure.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:decision_latency:medium"
+                  ]
+                }
+              ],
+              "anomalies": []
+            },
+            "owner_context": {
+              "team_size_bucket": "unknown",
+              "owner_role_bucket": "mixed",
+              "service_mix_bucket": "quotes_heavy"
+            }
+          }
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      }
+    }
+  ],
+  "finished_at": "2026-02-09T20:07:44.278Z",
+  "error": {
+    "stage_failed": "emyth_owner_load",
+    "reason": "Owner-load stage output failed doctrine guards.",
+    "validation_errors": [],
+    "guard_failures": [
+      "Forbidden language detected: dashboard"
+    ],
+    "next_action": "Remove tool/hiring/scaling prescriptions and rerun."
+  }
+}

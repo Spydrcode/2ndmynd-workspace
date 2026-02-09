@@ -147,6 +147,7 @@ export async function runUploadAction(_: UploadState, formData: FormData): Promi
         presented_coherence_v1: result.presented_coherence_v1 ?? null,
         coherence_drift: result.coherence_drift ?? null,
         intent_overrides: result.intent_overrides ?? null,
+        second_look_artifact_v2: result.second_look_artifact_v2 ?? null,
       },
       business_profile_json: result.business_profile,
       error: result.validation.ok ? null : result.validation.errors.join("; "),

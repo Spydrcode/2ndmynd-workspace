@@ -1,0 +1,18 @@
+{
+  "pack_id": "professional_services_seed2026_01",
+  "industry": "professional_services",
+  "seed": 673566530,
+  "window_start": "2025-11-04",
+  "window_end": "2026-02-01",
+  "notes": [
+    "Proposal-to-delivery overlap creates fragmented attention.",
+    "Synthetic pack generated without personal identifiers."
+  ],
+  "expected_patterns": [
+    "proposal_lag",
+    "delivery_overlap",
+    "throughput_swings"
+  ],
+  "emyth_role": "manager",
+  "business_name": "Professional Services Owner"
+}

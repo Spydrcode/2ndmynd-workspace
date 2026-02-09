@@ -1,0 +1,25 @@
+{
+  "run_id": "ft-quant-50810642-e8f7-4ece-9a46-108d8134b354",
+  "workspace_id": "ft-quant-workspace",
+  "stage_name": "blue_ocean",
+  "created_at": "2026-02-09T19:29:18.834Z",
+  "updated_at": "2026-02-09T19:29:18.858Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:blueocean-v1",
+    "prompt_version": "v1",
+    "schema_version": "blue_ocean_v1",
+    "temperature": 0,
+    "max_tokens": 1200,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

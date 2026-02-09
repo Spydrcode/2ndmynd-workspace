@@ -1,3 +1,5 @@
+// LEGACY: diagnostic endpoint for v2/v3 decision model routing.
+// Keep for compatibility while v4 remains the authoritative kernel path.
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 

@@ -1,0 +1,39 @@
+{
+  "generated_at": "2026-02-09T19:29:18.986Z",
+  "mode": "pipeline",
+  "totals": {
+    "fixtures": 3,
+    "passed": 3,
+    "failed": 0
+  },
+  "results": [
+    {
+      "fixture_id": "hvac_dispatch_drag",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "plumbing_cash_timing",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    },
+    {
+      "fixture_id": "propane_safety_pressure",
+      "passed": true,
+      "schema_passed": true,
+      "doctrine_passed": true,
+      "stage_drift_passed": true,
+      "decision_passed": true,
+      "errors": []
+    }
+  ],
+  "report_path": "C:\\Users\\dusti\\git\\2ndmynd-workspace\\evals\\report_20260209T192919Z.json"
+}

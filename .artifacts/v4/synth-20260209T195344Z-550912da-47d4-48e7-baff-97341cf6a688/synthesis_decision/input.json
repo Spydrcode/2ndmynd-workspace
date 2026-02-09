@@ -1,0 +1,177 @@
+{
+  "artifact_kind": "stage_input_summary_v1",
+  "schema_version": "stage_input_synthesis_v1",
+  "created_at": "2026-02-09T19:53:44.643Z",
+  "payload_json": {
+    "schema_version": "stage_input_synthesis_v1",
+    "stage_name": "synthesis_decision",
+    "client_id": "test-client-synth",
+    "run_id": "synth-20260209T195344Z-550912da-47d4-48e7-baff-97341cf6a688",
+    "industry": "saas_micro",
+    "data_limits": {
+      "window_start": "2025-11-04",
+      "window_end": "2026-02-01",
+      "max_records": 90,
+      "notes": [
+        "Window: 2025-11-04..2026-02-01",
+        "Rows in window: 55"
+      ]
+    },
+    "evidence_index": {
+      "refs": [
+        "bucket:revenue_concentration_top5:low",
+        "bucket:volatility:high",
+        "bucket:seasonality:strong",
+        "bucket:decision_latency:medium",
+        "bucket:capacity_squeeze_proxy:high",
+        "bucket:lead_source:not_available"
+      ]
+    },
+    "context": {
+      "quant_summary": {
+        "signals": [
+          {
+            "id": "revenue_concentration_top5",
+            "label": "Top-5 revenue concentration",
+            "value_bucket": "low",
+            "direction": "down",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:revenue_concentration_top5:low"
+            ]
+          },
+          {
+            "id": "volatility",
+            "label": "Workload volatility",
+            "value_bucket": "high",
+            "direction": "up",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:volatility:high"
+            ]
+          },
+          {
+            "id": "seasonality",
+            "label": "Seasonality signal",
+            "value_bucket": "strong",
+            "direction": "up",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:seasonality:strong"
+            ]
+          },
+          {
+            "id": "decision_latency",
+            "label": "Quote decision latency",
+            "value_bucket": "medium",
+            "direction": "flat",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:decision_latency:medium"
+            ]
+          },
+          {
+            "id": "capacity_squeeze_proxy",
+            "label": "Capacity squeeze proxy",
+            "value_bucket": "high",
+            "direction": "up",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:capacity_squeeze_proxy:high"
+            ]
+          },
+          {
+            "id": "lead_source",
+            "label": "Lead source concentration",
+            "value_bucket": "not_available",
+            "direction": "unknown",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:lead_source:not_available"
+            ]
+          }
+        ],
+        "patterns": [
+          {
+            "id": "volatility_pattern",
+            "description": "Workload volatility is high in the selected window.",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:volatility:high"
+            ]
+          },
+          {
+            "id": "decision_lag_pattern",
+            "description": "Quote decision latency is medium, shaping response pressure.",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:decision_latency:medium"
+            ]
+          }
+        ],
+        "anomalies": [
+          {
+            "id": "capacity_squeeze_anomaly",
+            "description": "Capacity squeeze proxy is high relative to current throughput.",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:capacity_squeeze_proxy:high"
+            ]
+          }
+        ]
+      },
+      "owner_load_summary": {
+        "owner_bottleneck": true,
+        "pressure_sources": [
+          "handoff_interruptions",
+          "sequence_instability",
+          "role_overload"
+        ],
+        "structural_gaps": [
+          "Handoffs are owner-dependent, so unresolved decisions return to the owner queue.",
+          "Work sequencing shifts through the week, forcing reactive reprioritization.",
+          "Micro SaaS Founder is operating with a mixed role split, increasing context-switching cost."
+        ]
+      },
+      "competitive_summary": {
+        "market_pressures": [
+          "Local buyers expect quick commitment clarity and switch providers when responses stall.",
+          "Reliability becomes a differentiator when schedules slide or updates are inconsistent.",
+          "Trust compounds through consistent follow-through, not broad service promises."
+        ],
+        "strengths": [
+          "Micro SaaS Founder already has real demand signals in recent operating data.",
+          "Delivery knowledge is close to the work and can be codified into repeatable handoffs.",
+          "Owner pattern awareness enables faster correction once one direction is chosen."
+        ],
+        "vulnerabilities": [
+          "Decision and scheduling handoffs remain too dependent on owner interrupts.",
+          "High-volatility periods compress response quality and create promise risk.",
+          "Competing urgency channels make customer communication sequence inconsistent."
+        ],
+        "collapsed_view": "Competition is won by dependable execution cadence; fragmented handoffs make that cadence harder to sustain."
+      },
+      "blue_ocean_summary": {
+        "asymmetric_move_ids": [
+          "promise_window_design",
+          "handoff_standard",
+          "scope_boundary_offer"
+        ],
+        "rejected_moves": [
+          "Adding new service lines before handoff reliability is stable.",
+          "Expanding territory while owner interruptions remain high.",
+          "Launching campaigns that require daily owner response triage."
+        ],
+        "capacity_guardrail": "Any strategic move must reduce owner interrupts before adding new commitments."
+      }
+    }
+  },
+  "guard_results": {
+    "passed": true,
+    "failures": []
+  },
+  "validation_results": {
+    "ok": true,
+    "errors": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "pack_id": "ecommerce_ops_seed1234_03",
+  "industry": "ecommerce_ops",
+  "seed": 1380890231,
+  "window_start": "2025-11-12",
+  "window_end": "2026-02-09",
+  "notes": [
+    "Order spikes and fulfillment load are represented as synthetic operations rows.",
+    "No names, emails, phones, or addresses are included."
+  ],
+  "expected_patterns": [
+    "seasonality_spike",
+    "capacity_squeeze",
+    "returns_pressure_proxy"
+  ],
+  "emyth_role": "mixed",
+  "business_name": "Ecommerce Operations Owner"
+}

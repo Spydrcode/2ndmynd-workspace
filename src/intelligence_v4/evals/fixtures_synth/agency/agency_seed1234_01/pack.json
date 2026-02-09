@@ -1,0 +1,18 @@
+{
+  "pack_id": "agency_seed1234_01",
+  "industry": "agency",
+  "seed": 158386241,
+  "window_start": "2025-11-12",
+  "window_end": "2026-02-09",
+  "notes": [
+    "Retainer + project mix with approval bottlenecks.",
+    "Synthetic owner-led pack with no customer PII."
+  ],
+  "expected_patterns": [
+    "approval_lag",
+    "throughput_variability",
+    "scope_pressure"
+  ],
+  "emyth_role": "entrepreneur",
+  "business_name": "Agency Operator"
+}

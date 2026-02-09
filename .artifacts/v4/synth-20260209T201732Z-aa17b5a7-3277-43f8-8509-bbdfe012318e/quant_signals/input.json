@@ -1,0 +1,61 @@
+{
+  "artifact_kind": "stage_input_summary_v1",
+  "schema_version": "stage_input_quant_v1",
+  "created_at": "2026-02-09T20:17:32.971Z",
+  "payload_json": {
+    "schema_version": "stage_input_quant_v1",
+    "stage_name": "quant_signals",
+    "client_id": "test-client-synth",
+    "run_id": "synth-20260209T201732Z-aa17b5a7-3277-43f8-8509-bbdfe012318e",
+    "industry": "logistics_dispatch",
+    "data_limits": {
+      "window_start": "2025-11-12",
+      "window_end": "2026-02-09",
+      "max_records": 90,
+      "notes": [
+        "Window: 2025-11-12..2026-02-09",
+        "Rows in window: 77"
+      ]
+    },
+    "evidence_index": {
+      "refs": [
+        "bucket:revenue_concentration_top5:low",
+        "bucket:volatility:medium",
+        "bucket:seasonality:strong",
+        "bucket:decision_latency:medium",
+        "bucket:capacity_squeeze_proxy:low",
+        "bucket:lead_source:not_available"
+      ]
+    },
+    "context": {
+      "buckets": {
+        "concentration_bucket": "low",
+        "volatility_bucket": "medium",
+        "seasonality_bucket": "strong",
+        "decision_latency_bucket": "medium",
+        "throughput_bucket": "high",
+        "capacity_squeeze_bucket": "low",
+        "lead_source_bucket": "not_available",
+        "job_type_mix_bucket": "balanced"
+      },
+      "derived_counts": {
+        "invoice_count_bucket": "medium",
+        "estimate_count_bucket": "high",
+        "job_count_bucket": "medium",
+        "customer_count_bucket": "none"
+      },
+      "notes": [
+        "Window: 2025-11-12..2026-02-09",
+        "Rows in window: 77"
+      ]
+    }
+  },
+  "guard_results": {
+    "passed": true,
+    "failures": []
+  },
+  "validation_results": {
+    "ok": true,
+    "errors": []
+  }
+}

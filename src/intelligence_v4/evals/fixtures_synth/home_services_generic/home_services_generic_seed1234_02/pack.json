@@ -1,0 +1,18 @@
+{
+  "pack_id": "home_services_generic_seed1234_02",
+  "industry": "home_services_generic",
+  "seed": 1980812688,
+  "window_start": "2025-11-12",
+  "window_end": "2026-02-09",
+  "notes": [
+    "Generic home services pattern included to keep one trades-adjacent baseline.",
+    "Pack avoids customer records and personal identifiers."
+  ],
+  "expected_patterns": [
+    "dispatch_drag",
+    "cash_timing",
+    "reliability_pressure"
+  ],
+  "emyth_role": "technician",
+  "business_name": "Home Services Operator"
+}

@@ -1,0 +1,9 @@
+{
+  "run_id": "capture-test-0ec500b2-6e18-47aa-a083-577dd790a983",
+  "workspace_id": "workspace-training",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:55:01.974Z",
+  "finished_at": "2026-02-09T19:55:02.215Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-plumbing-v1"
+}

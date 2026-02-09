@@ -47,12 +47,14 @@ describe("Cohort Engine Contract", () => {
       expect(config.modelVersion).toBe("latest");
     });
     
-    it("should use custom model version if set", () => {
+    it("should use custom model version if unsafe override is enabled", () => {
       process.env.COHORT_ENGINE_MODEL_VERSION = "v20260205_120000";
+      process.env.ALLOW_UNSAFE_MODEL_OVERRIDE = "true";
       
       const config = getCohortEngineConfig();
       
       expect(config.modelVersion).toBe("v20260205_120000");
+      expect(config.allowUnsafeModelOverride).toBe(true);
     });
     
     it("should respect REQUIRE_PYTHON_WIRING flag", () => {

@@ -1,0 +1,1304 @@
+{
+  "run_id": "synth-20260209T193944Z-0dcbfdb0-eee4-4b18-be65-5334cfaffec5",
+  "workspace_id": "test-client-synth",
+  "pipeline_version": "intelligence_v4",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:39:44.844Z",
+  "stage_records": [
+    {
+      "stage_name": "quant_signals",
+      "created_at": "2026-02-09T19:39:44.844Z",
+      "updated_at": "2026-02-09T19:39:44.861Z",
+      "model_config": {
+        "model_id": "deterministic:quant-hvac-v1",
+        "prompt_version": "v1",
+        "schema_version": "quant_signals_v1",
+        "temperature": 0,
+        "max_tokens": 1200,
+        "rollout": {
+          "strategy": "pinned",
+          "canary_percent": 0
+        },
+        "fallback": {
+          "enabled": false
+        }
+      },
+      "approved": false,
+      "notes": "",
+      "input_artifact": {
+        "artifact_kind": "stage_input_summary_v1",
+        "schema_version": "stage_input_quant_v1",
+        "created_at": "2026-02-09T19:39:44.843Z",
+        "payload_json": {
+          "schema_version": "stage_input_quant_v1",
+          "stage_name": "quant_signals",
+          "client_id": "test-client-synth",
+          "run_id": "synth-20260209T193944Z-0dcbfdb0-eee4-4b18-be65-5334cfaffec5",
+          "industry": "hvac",
+          "data_limits": {
+            "window_start": "2025-10-31",
+            "window_end": "2026-01-28",
+            "max_records": 90,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "evidence_index": {
+            "refs": [
+              "bucket:revenue_concentration_top5:high",
+              "bucket:volatility:medium",
+              "bucket:seasonality:none",
+              "bucket:decision_latency:medium",
+              "bucket:capacity_squeeze_proxy:high",
+              "bucket:lead_source:not_available"
+            ]
+          },
+          "context": {
+            "buckets": {
+              "concentration_bucket": "high",
+              "volatility_bucket": "medium",
+              "seasonality_bucket": "none",
+              "decision_latency_bucket": "medium",
+              "throughput_bucket": "low",
+              "capacity_squeeze_bucket": "high",
+              "lead_source_bucket": "not_available",
+              "job_type_mix_bucket": "balanced"
+            },
+            "derived_counts": {
+              "invoice_count_bucket": "very_low",
+              "estimate_count_bucket": "very_low",
+              "job_count_bucket": "very_low",
+              "customer_count_bucket": "none"
+            },
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          }
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "output_artifact": {
+        "artifact_kind": "stage_output_v1",
+        "schema_version": "quant_signals_v1",
+        "created_at": "2026-02-09T19:39:44.848Z",
+        "payload_json": {
+          "schema_version": "quant_signals_v1",
+          "stage_name": "quant_signals",
+          "model_id": "deterministic:quant-hvac-v1",
+          "prompt_version": "v1",
+          "confidence": "medium",
+          "evidence_refs": [
+            "bucket:revenue_concentration_top5:high",
+            "bucket:volatility:medium",
+            "bucket:seasonality:none",
+            "bucket:decision_latency:medium",
+            "bucket:capacity_squeeze_proxy:high",
+            "bucket:lead_source:not_available"
+          ],
+          "data_limits": {
+            "window_mode": "last_90_days",
+            "row_limit_applied": 90,
+            "saw_quotes": true,
+            "saw_invoices": true,
+            "saw_jobs": true,
+            "saw_customers": false,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "window": {
+            "start_date": "2025-10-31",
+            "end_date": "2026-01-28"
+          },
+          "data_quality": {
+            "coverage_bucket": "strong",
+            "missingness_bucket": "low",
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "signals": [
+            {
+              "id": "revenue_concentration_top5",
+              "label": "Top-5 revenue concentration",
+              "value_bucket": "high",
+              "direction": "up",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:revenue_concentration_top5:high"
+              ]
+            },
+            {
+              "id": "volatility",
+              "label": "Workload volatility",
+              "value_bucket": "medium",
+              "direction": "flat",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:volatility:medium"
+              ]
+            },
+            {
+              "id": "seasonality",
+              "label": "Seasonality signal",
+              "value_bucket": "none",
+              "direction": "flat",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:seasonality:none"
+              ]
+            },
+            {
+              "id": "decision_latency",
+              "label": "Quote decision latency",
+              "value_bucket": "medium",
+              "direction": "flat",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:decision_latency:medium"
+              ]
+            },
+            {
+              "id": "capacity_squeeze_proxy",
+              "label": "Capacity squeeze proxy",
+              "value_bucket": "high",
+              "direction": "up",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:capacity_squeeze_proxy:high"
+              ]
+            },
+            {
+              "id": "lead_source",
+              "label": "Lead source concentration",
+              "value_bucket": "not_available",
+              "direction": "unknown",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:lead_source:not_available"
+              ]
+            }
+          ],
+          "patterns": [
+            {
+              "id": "volatility_pattern",
+              "description": "Workload volatility is medium in the selected window.",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:volatility:medium"
+              ]
+            },
+            {
+              "id": "decision_lag_pattern",
+              "description": "Quote decision latency is medium, shaping response pressure.",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:decision_latency:medium"
+              ]
+            }
+          ],
+          "anomalies": [
+            {
+              "id": "capacity_squeeze_anomaly",
+              "description": "Capacity squeeze proxy is high relative to current throughput.",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:capacity_squeeze_proxy:high"
+              ]
+            }
+          ]
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      }
+    },
+    {
+      "stage_name": "emyth_owner_load",
+      "created_at": "2026-02-09T19:39:44.875Z",
+      "updated_at": "2026-02-09T19:39:44.889Z",
+      "model_config": {
+        "model_id": "deterministic:emyth-v1",
+        "prompt_version": "v1",
+        "schema_version": "owner_load_v1",
+        "temperature": 0,
+        "max_tokens": 1200,
+        "rollout": {
+          "strategy": "pinned",
+          "canary_percent": 0
+        },
+        "fallback": {
+          "enabled": false
+        }
+      },
+      "approved": false,
+      "notes": "",
+      "input_artifact": {
+        "artifact_kind": "stage_input_summary_v1",
+        "schema_version": "stage_input_emyth_v1",
+        "created_at": "2026-02-09T19:39:44.864Z",
+        "payload_json": {
+          "schema_version": "stage_input_emyth_v1",
+          "stage_name": "emyth_owner_load",
+          "client_id": "test-client-synth",
+          "run_id": "synth-20260209T193944Z-0dcbfdb0-eee4-4b18-be65-5334cfaffec5",
+          "industry": "hvac",
+          "data_limits": {
+            "window_start": "2025-10-31",
+            "window_end": "2026-01-28",
+            "max_records": 90,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "evidence_index": {
+            "refs": [
+              "bucket:revenue_concentration_top5:high",
+              "bucket:volatility:medium",
+              "bucket:seasonality:none",
+              "bucket:decision_latency:medium",
+              "bucket:capacity_squeeze_proxy:high",
+              "bucket:lead_source:not_available"
+            ]
+          },
+          "context": {
+            "quant_summary": {
+              "signals": [
+                {
+                  "id": "revenue_concentration_top5",
+                  "label": "Top-5 revenue concentration",
+                  "value_bucket": "high",
+                  "direction": "up",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:revenue_concentration_top5:high"
+                  ]
+                },
+                {
+                  "id": "volatility",
+                  "label": "Workload volatility",
+                  "value_bucket": "medium",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:volatility:medium"
+                  ]
+                },
+                {
+                  "id": "seasonality",
+                  "label": "Seasonality signal",
+                  "value_bucket": "none",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:seasonality:none"
+                  ]
+                },
+                {
+                  "id": "decision_latency",
+                  "label": "Quote decision latency",
+                  "value_bucket": "medium",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:decision_latency:medium"
+                  ]
+                },
+                {
+                  "id": "capacity_squeeze_proxy",
+                  "label": "Capacity squeeze proxy",
+                  "value_bucket": "high",
+                  "direction": "up",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:capacity_squeeze_proxy:high"
+                  ]
+                },
+                {
+                  "id": "lead_source",
+                  "label": "Lead source concentration",
+                  "value_bucket": "not_available",
+                  "direction": "unknown",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:lead_source:not_available"
+                  ]
+                }
+              ],
+              "patterns": [
+                {
+                  "id": "volatility_pattern",
+                  "description": "Workload volatility is medium in the selected window.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:volatility:medium"
+                  ]
+                },
+                {
+                  "id": "decision_lag_pattern",
+                  "description": "Quote decision latency is medium, shaping response pressure.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:decision_latency:medium"
+                  ]
+                }
+              ],
+              "anomalies": [
+                {
+                  "id": "capacity_squeeze_anomaly",
+                  "description": "Capacity squeeze proxy is high relative to current throughput.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:capacity_squeeze_proxy:high"
+                  ]
+                }
+              ]
+            },
+            "owner_context": {
+              "team_size_bucket": "unknown",
+              "owner_role_bucket": "mixed",
+              "service_mix_bucket": "balanced"
+            }
+          }
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "output_artifact": {
+        "artifact_kind": "stage_output_v1",
+        "schema_version": "owner_load_v1",
+        "created_at": "2026-02-09T19:39:44.880Z",
+        "payload_json": {
+          "schema_version": "owner_load_v1",
+          "stage_name": "emyth_owner_load",
+          "model_id": "deterministic:emyth-v1",
+          "prompt_version": "v1",
+          "confidence": "medium",
+          "evidence_refs": [
+            "bucket:revenue_concentration_top5:high",
+            "bucket:volatility:medium",
+            "bucket:seasonality:none"
+          ],
+          "data_limits": {
+            "window_mode": "last_90_days",
+            "row_limit_applied": 90,
+            "saw_quotes": true,
+            "saw_invoices": true,
+            "saw_jobs": true,
+            "saw_customers": false,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "bottleneck_diagnosis": "Daily coordination load is absorbing owner attention before completion work starts.",
+          "why_it_feels_heavy": "Pressure is structural: competing commitments force the owner to context-switch between promises, scheduling, and issue triage.",
+          "owner_load_drivers": [
+            {
+              "id": "handoff_interruptions",
+              "summary": "Handoffs are owner-dependent, so unresolved decisions return to the owner queue.",
+              "confidence": "medium",
+              "evidence_refs": [
+                "bucket:revenue_concentration_top5:high",
+                "bucket:volatility:medium"
+              ]
+            },
+            {
+              "id": "sequence_instability",
+              "summary": "Work sequencing shifts through the week, forcing reactive reprioritization.",
+              "confidence": "medium",
+              "evidence_refs": [
+                "bucket:volatility:medium",
+                "bucket:seasonality:none"
+              ]
+            },
+            {
+              "id": "role_overload",
+              "summary": "Summit HVAC is operating with a mixed role split, increasing context-switching cost.",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:revenue_concentration_top5:high"
+              ]
+            }
+          ],
+          "relief_without_expansion": [
+            "Freeze one daily owner decision window and batch all non-urgent escalations into it.",
+            "Define one handoff checklist so team decisions land complete before reaching owner review.",
+            "Set a same-day escalation threshold to separate urgent exceptions from routine noise."
+          ],
+          "prohibitions_checked": {
+            "no_tools_prescribed": true,
+            "no_hiring_prescribed": true,
+            "no_scaling_prescribed": true
+          }
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      }
+    },
+    {
+      "stage_name": "competitive_lens",
+      "created_at": "2026-02-09T19:39:44.903Z",
+      "updated_at": "2026-02-09T19:39:44.920Z",
+      "model_config": {
+        "model_id": "deterministic:competitive-v1",
+        "prompt_version": "v1",
+        "schema_version": "competitive_lens_v1",
+        "temperature": 0,
+        "max_tokens": 1200,
+        "rollout": {
+          "strategy": "pinned",
+          "canary_percent": 0
+        },
+        "fallback": {
+          "enabled": false
+        }
+      },
+      "approved": false,
+      "notes": "",
+      "input_artifact": {
+        "artifact_kind": "stage_input_summary_v1",
+        "schema_version": "stage_input_competitive_v1",
+        "created_at": "2026-02-09T19:39:44.893Z",
+        "payload_json": {
+          "schema_version": "stage_input_competitive_v1",
+          "stage_name": "competitive_lens",
+          "client_id": "test-client-synth",
+          "run_id": "synth-20260209T193944Z-0dcbfdb0-eee4-4b18-be65-5334cfaffec5",
+          "industry": "hvac",
+          "data_limits": {
+            "window_start": "2025-10-31",
+            "window_end": "2026-01-28",
+            "max_records": 90,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "evidence_index": {
+            "refs": [
+              "bucket:revenue_concentration_top5:high",
+              "bucket:volatility:medium",
+              "bucket:seasonality:none",
+              "bucket:decision_latency:medium",
+              "bucket:capacity_squeeze_proxy:high",
+              "bucket:lead_source:not_available"
+            ]
+          },
+          "context": {
+            "quant_summary": {
+              "signals": [
+                {
+                  "id": "revenue_concentration_top5",
+                  "label": "Top-5 revenue concentration",
+                  "value_bucket": "high",
+                  "direction": "up",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:revenue_concentration_top5:high"
+                  ]
+                },
+                {
+                  "id": "volatility",
+                  "label": "Workload volatility",
+                  "value_bucket": "medium",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:volatility:medium"
+                  ]
+                },
+                {
+                  "id": "seasonality",
+                  "label": "Seasonality signal",
+                  "value_bucket": "none",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:seasonality:none"
+                  ]
+                },
+                {
+                  "id": "decision_latency",
+                  "label": "Quote decision latency",
+                  "value_bucket": "medium",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:decision_latency:medium"
+                  ]
+                },
+                {
+                  "id": "capacity_squeeze_proxy",
+                  "label": "Capacity squeeze proxy",
+                  "value_bucket": "high",
+                  "direction": "up",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:capacity_squeeze_proxy:high"
+                  ]
+                },
+                {
+                  "id": "lead_source",
+                  "label": "Lead source concentration",
+                  "value_bucket": "not_available",
+                  "direction": "unknown",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:lead_source:not_available"
+                  ]
+                }
+              ],
+              "patterns": [
+                {
+                  "id": "volatility_pattern",
+                  "description": "Workload volatility is medium in the selected window.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:volatility:medium"
+                  ]
+                },
+                {
+                  "id": "decision_lag_pattern",
+                  "description": "Quote decision latency is medium, shaping response pressure.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:decision_latency:medium"
+                  ]
+                }
+              ],
+              "anomalies": [
+                {
+                  "id": "capacity_squeeze_anomaly",
+                  "description": "Capacity squeeze proxy is high relative to current throughput.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:capacity_squeeze_proxy:high"
+                  ]
+                }
+              ]
+            },
+            "owner_load_summary": {
+              "owner_bottleneck": true,
+              "pressure_sources": [
+                "handoff_interruptions",
+                "sequence_instability",
+                "role_overload"
+              ],
+              "structural_gaps": [
+                "Handoffs are owner-dependent, so unresolved decisions return to the owner queue.",
+                "Work sequencing shifts through the week, forcing reactive reprioritization.",
+                "Summit HVAC is operating with a mixed role split, increasing context-switching cost."
+              ]
+            },
+            "market_context": {
+              "region_bucket": "unknown",
+              "primary_services": [
+                "hvac"
+              ],
+              "competitor_set_refs": []
+            }
+          }
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "output_artifact": {
+        "artifact_kind": "stage_output_v1",
+        "schema_version": "competitive_lens_v1",
+        "created_at": "2026-02-09T19:39:44.906Z",
+        "payload_json": {
+          "schema_version": "competitive_lens_v1",
+          "stage_name": "competitive_lens",
+          "model_id": "deterministic:competitive-v1",
+          "prompt_version": "v1",
+          "confidence": "medium",
+          "evidence_refs": [
+            "bucket:revenue_concentration_top5:high",
+            "bucket:volatility:medium",
+            "bucket:seasonality:none",
+            "bucket:decision_latency:medium",
+            "bucket:capacity_squeeze_proxy:high",
+            "bucket:lead_source:not_available"
+          ],
+          "data_limits": {
+            "window_mode": "last_90_days",
+            "row_limit_applied": 90,
+            "saw_quotes": true,
+            "saw_invoices": true,
+            "saw_jobs": true,
+            "saw_customers": false,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "market_pressures": [
+            {
+              "id": "response_window_pressure",
+              "pressure": "Local buyers expect quick commitment clarity and switch providers when responses stall.",
+              "confidence": "medium",
+              "evidence_refs": [
+                "bucket:revenue_concentration_top5:high",
+                "bucket:volatility:medium"
+              ]
+            },
+            {
+              "id": "reliability_pressure",
+              "pressure": "Reliability becomes a differentiator when schedules slide or updates are inconsistent.",
+              "confidence": "medium",
+              "evidence_refs": [
+                "bucket:volatility:medium",
+                "bucket:seasonality:none"
+              ]
+            },
+            {
+              "id": "trust_signal_pressure",
+              "pressure": "Trust compounds through consistent follow-through, not broad service promises.",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:revenue_concentration_top5:high"
+              ]
+            }
+          ],
+          "strengths": [
+            "Summit HVAC already has real demand signals in recent operating data.",
+            "Delivery knowledge is close to the work and can be codified into repeatable handoffs.",
+            "Owner pattern awareness enables faster correction once one direction is chosen."
+          ],
+          "vulnerabilities": [
+            "Decision and scheduling handoffs remain too dependent on owner interrupts.",
+            "High-volatility periods compress response quality and create promise risk.",
+            "Competing urgency channels make customer communication sequence inconsistent."
+          ],
+          "collapsed_view": "Competition is won by dependable execution cadence; fragmented handoffs make that cadence harder to sustain."
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      }
+    },
+    {
+      "stage_name": "blue_ocean",
+      "created_at": "2026-02-09T19:39:44.938Z",
+      "updated_at": "2026-02-09T19:39:44.954Z",
+      "model_config": {
+        "model_id": "deterministic:blueocean-v1",
+        "prompt_version": "v1",
+        "schema_version": "blue_ocean_v1",
+        "temperature": 0,
+        "max_tokens": 1200,
+        "rollout": {
+          "strategy": "pinned",
+          "canary_percent": 0
+        },
+        "fallback": {
+          "enabled": false
+        }
+      },
+      "approved": false,
+      "notes": "",
+      "input_artifact": {
+        "artifact_kind": "stage_input_summary_v1",
+        "schema_version": "stage_input_blue_ocean_v1",
+        "created_at": "2026-02-09T19:39:44.923Z",
+        "payload_json": {
+          "schema_version": "stage_input_blue_ocean_v1",
+          "stage_name": "blue_ocean",
+          "client_id": "test-client-synth",
+          "run_id": "synth-20260209T193944Z-0dcbfdb0-eee4-4b18-be65-5334cfaffec5",
+          "industry": "hvac",
+          "data_limits": {
+            "window_start": "2025-10-31",
+            "window_end": "2026-01-28",
+            "max_records": 90,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "evidence_index": {
+            "refs": [
+              "bucket:revenue_concentration_top5:high",
+              "bucket:volatility:medium",
+              "bucket:seasonality:none",
+              "bucket:decision_latency:medium",
+              "bucket:capacity_squeeze_proxy:high",
+              "bucket:lead_source:not_available"
+            ]
+          },
+          "context": {
+            "primary_constraint_candidate": "Daily coordination load is absorbing owner attention before completion work starts.",
+            "capacity_bounds": {
+              "hours_bucket": "unknown",
+              "crew_count_bucket": "unknown",
+              "schedule_fill_bucket": "high"
+            },
+            "competitive_pressure_summary": [
+              "Local buyers expect quick commitment clarity and switch providers when responses stall.",
+              "Reliability becomes a differentiator when schedules slide or updates are inconsistent.",
+              "Trust compounds through consistent follow-through, not broad service promises."
+            ]
+          }
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "output_artifact": {
+        "artifact_kind": "stage_output_v1",
+        "schema_version": "blue_ocean_v1",
+        "created_at": "2026-02-09T19:39:44.942Z",
+        "payload_json": {
+          "schema_version": "blue_ocean_v1",
+          "stage_name": "blue_ocean",
+          "model_id": "deterministic:blueocean-v1",
+          "prompt_version": "v1",
+          "confidence": "medium",
+          "evidence_refs": [
+            "bucket:revenue_concentration_top5:high",
+            "bucket:volatility:medium",
+            "bucket:seasonality:none",
+            "bucket:decision_latency:medium",
+            "bucket:capacity_squeeze_proxy:high",
+            "bucket:lead_source:not_available"
+          ],
+          "data_limits": {
+            "window_mode": "last_90_days",
+            "row_limit_applied": 90,
+            "saw_quotes": true,
+            "saw_invoices": true,
+            "saw_jobs": true,
+            "saw_customers": false,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "capacity_guardrail_statement": "Any strategic move must reduce owner interrupts before adding new commitments.",
+          "asymmetric_moves": [
+            {
+              "id": "promise_window_design",
+              "move": "Offer two reliability promise windows instead of open-ended timelines.",
+              "why_now": "It narrows decision churn and sets clearer customer expectations.",
+              "capacity_check": "Capacity fit: only launch if daily exception count stays below owner escalation threshold.",
+              "confidence": "medium",
+              "evidence_refs": [
+                "bucket:revenue_concentration_top5:high",
+                "bucket:volatility:medium"
+              ]
+            },
+            {
+              "id": "handoff_standard",
+              "move": "Package every job handoff with one standard pre-dispatch brief.",
+              "why_now": "It lowers repeated clarifications and protects execution consistency.",
+              "capacity_check": "Load fit: keep owner handoff prep under 45 minutes per day.",
+              "confidence": "medium",
+              "evidence_refs": [
+                "bucket:volatility:medium",
+                "bucket:seasonality:none"
+              ]
+            },
+            {
+              "id": "scope_boundary_offer",
+              "move": "Narrow offerings to high-clarity work where delivery reliability is strongest.",
+              "why_now": "Focused offers reduce firefighting and improve follow-through.",
+              "capacity_check": "Capacity fit: hold weekly committed jobs within current crew completion range.",
+              "confidence": "low",
+              "evidence_refs": [
+                "bucket:seasonality:none",
+                "bucket:decision_latency:medium"
+              ]
+            }
+          ],
+          "rejected_load_increasing_moves": [
+            "Adding new service lines before handoff reliability is stable.",
+            "Expanding territory while owner interruptions remain high.",
+            "Launching campaigns that require daily owner response triage."
+          ]
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      }
+    },
+    {
+      "stage_name": "synthesis_decision",
+      "created_at": "2026-02-09T19:39:44.973Z",
+      "updated_at": "2026-02-09T19:39:44.989Z",
+      "model_config": {
+        "model_id": "deterministic:synthesis-hvac-v1",
+        "prompt_version": "v1",
+        "schema_version": "decision_artifact_v1",
+        "temperature": 0,
+        "max_tokens": 1600,
+        "rollout": {
+          "strategy": "pinned",
+          "canary_percent": 0
+        },
+        "fallback": {
+          "enabled": false
+        }
+      },
+      "approved": false,
+      "notes": "",
+      "input_artifact": {
+        "artifact_kind": "stage_input_summary_v1",
+        "schema_version": "stage_input_synthesis_v1",
+        "created_at": "2026-02-09T19:39:44.956Z",
+        "payload_json": {
+          "schema_version": "stage_input_synthesis_v1",
+          "stage_name": "synthesis_decision",
+          "client_id": "test-client-synth",
+          "run_id": "synth-20260209T193944Z-0dcbfdb0-eee4-4b18-be65-5334cfaffec5",
+          "industry": "hvac",
+          "data_limits": {
+            "window_start": "2025-10-31",
+            "window_end": "2026-01-28",
+            "max_records": 90,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "evidence_index": {
+            "refs": [
+              "bucket:revenue_concentration_top5:high",
+              "bucket:volatility:medium",
+              "bucket:seasonality:none",
+              "bucket:decision_latency:medium",
+              "bucket:capacity_squeeze_proxy:high",
+              "bucket:lead_source:not_available"
+            ]
+          },
+          "context": {
+            "quant_summary": {
+              "signals": [
+                {
+                  "id": "revenue_concentration_top5",
+                  "label": "Top-5 revenue concentration",
+                  "value_bucket": "high",
+                  "direction": "up",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:revenue_concentration_top5:high"
+                  ]
+                },
+                {
+                  "id": "volatility",
+                  "label": "Workload volatility",
+                  "value_bucket": "medium",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:volatility:medium"
+                  ]
+                },
+                {
+                  "id": "seasonality",
+                  "label": "Seasonality signal",
+                  "value_bucket": "none",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:seasonality:none"
+                  ]
+                },
+                {
+                  "id": "decision_latency",
+                  "label": "Quote decision latency",
+                  "value_bucket": "medium",
+                  "direction": "flat",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:decision_latency:medium"
+                  ]
+                },
+                {
+                  "id": "capacity_squeeze_proxy",
+                  "label": "Capacity squeeze proxy",
+                  "value_bucket": "high",
+                  "direction": "up",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:capacity_squeeze_proxy:high"
+                  ]
+                },
+                {
+                  "id": "lead_source",
+                  "label": "Lead source concentration",
+                  "value_bucket": "not_available",
+                  "direction": "unknown",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:lead_source:not_available"
+                  ]
+                }
+              ],
+              "patterns": [
+                {
+                  "id": "volatility_pattern",
+                  "description": "Workload volatility is medium in the selected window.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:volatility:medium"
+                  ]
+                },
+                {
+                  "id": "decision_lag_pattern",
+                  "description": "Quote decision latency is medium, shaping response pressure.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:decision_latency:medium"
+                  ]
+                }
+              ],
+              "anomalies": [
+                {
+                  "id": "capacity_squeeze_anomaly",
+                  "description": "Capacity squeeze proxy is high relative to current throughput.",
+                  "confidence": "low",
+                  "evidence_refs": [
+                    "bucket:capacity_squeeze_proxy:high"
+                  ]
+                }
+              ]
+            },
+            "owner_load_summary": {
+              "owner_bottleneck": true,
+              "pressure_sources": [
+                "handoff_interruptions",
+                "sequence_instability",
+                "role_overload"
+              ],
+              "structural_gaps": [
+                "Handoffs are owner-dependent, so unresolved decisions return to the owner queue.",
+                "Work sequencing shifts through the week, forcing reactive reprioritization.",
+                "Summit HVAC is operating with a mixed role split, increasing context-switching cost."
+              ]
+            },
+            "competitive_summary": {
+              "market_pressures": [
+                "Local buyers expect quick commitment clarity and switch providers when responses stall.",
+                "Reliability becomes a differentiator when schedules slide or updates are inconsistent.",
+                "Trust compounds through consistent follow-through, not broad service promises."
+              ],
+              "strengths": [
+                "Summit HVAC already has real demand signals in recent operating data.",
+                "Delivery knowledge is close to the work and can be codified into repeatable handoffs.",
+                "Owner pattern awareness enables faster correction once one direction is chosen."
+              ],
+              "vulnerabilities": [
+                "Decision and scheduling handoffs remain too dependent on owner interrupts.",
+                "High-volatility periods compress response quality and create promise risk.",
+                "Competing urgency channels make customer communication sequence inconsistent."
+              ],
+              "collapsed_view": "Competition is won by dependable execution cadence; fragmented handoffs make that cadence harder to sustain."
+            },
+            "blue_ocean_summary": {
+              "asymmetric_move_ids": [
+                "promise_window_design",
+                "handoff_standard",
+                "scope_boundary_offer"
+              ],
+              "rejected_moves": [
+                "Adding new service lines before handoff reliability is stable.",
+                "Expanding territory while owner interruptions remain high.",
+                "Launching campaigns that require daily owner response triage."
+              ],
+              "capacity_guardrail": "Any strategic move must reduce owner interrupts before adding new commitments."
+            }
+          }
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      },
+      "output_artifact": {
+        "artifact_kind": "stage_output_v1",
+        "schema_version": "decision_artifact_v1",
+        "created_at": "2026-02-09T19:39:44.978Z",
+        "payload_json": {
+          "schema_version": "decision_artifact_v1",
+          "stage_name": "synthesis_decision",
+          "model_id": "deterministic:synthesis-hvac-v1",
+          "prompt_version": "v1",
+          "confidence": "medium",
+          "evidence_refs": [
+            "bucket:revenue_concentration_top5:high",
+            "bucket:volatility:medium",
+            "bucket:seasonality:none",
+            "bucket:decision_latency:medium",
+            "bucket:capacity_squeeze_proxy:high",
+            "bucket:lead_source:not_available"
+          ],
+          "data_limits": {
+            "window_mode": "last_90_days",
+            "row_limit_applied": 90,
+            "saw_quotes": true,
+            "saw_invoices": true,
+            "saw_jobs": true,
+            "saw_customers": false,
+            "notes": [
+              "Window: 2025-10-31..2026-01-28",
+              "Rows in window: 7"
+            ]
+          },
+          "primary_constraint": "Daily coordination load is absorbing owner attention before completion work starts.",
+          "why_it_feels_heavy": "Unresolved handoffs keep returning to the owner, adding repeated decision loops.",
+          "paths": {
+            "A": {
+              "title": "Stabilize Handovers First",
+              "who_it_fits": "Fits owners with high interruption load and unstable dispatch handoffs.",
+              "tradeoffs": [
+                "Short-term volume is capped while execution discipline is set.",
+                "Some low-fit work is declined to protect reliability."
+              ],
+              "first_steps": [
+                "Define one escalation threshold and route non-urgent issues to daily review.",
+                "Launch a single handoff checklist used before any owner escalation.",
+                "Freeze ad-hoc scope additions for seven days."
+              ],
+              "risks": [
+                "Team may initially escalate too much while habits reset.",
+                "Customers used to custom exceptions may push back."
+              ],
+              "guardrails": [
+                "Keep owner escalation windows time-boxed.",
+                "Do not add new service offerings during reset."
+              ]
+            },
+            "B": {
+              "title": "Reliability Promise Reset",
+              "who_it_fits": "Fits teams where decision lag and expectation mismatch drive pressure.",
+              "tradeoffs": [
+                "Promise windows become narrower and require stricter qualification.",
+                "Sales flexibility drops while communication cadence is standardized."
+              ],
+              "first_steps": [
+                "Publish two promise windows and align dispatch to those windows only.",
+                "Send one structured customer update format for every job state change.",
+                "Review delayed approvals daily and close open loops before new commitments."
+              ],
+              "risks": [
+                "Early friction from customers expecting bespoke timelines.",
+                "Internal resistance to standardized update language."
+              ],
+              "guardrails": [
+                "No same-day promise changes without owner approval.",
+                "Keep communication templates under one screen for speed."
+              ]
+            },
+            "C": {
+              "title": "Focused Offer Tightening",
+              "who_it_fits": "Fits businesses with mixed demand where only a subset of jobs stay predictable.",
+              "tradeoffs": [
+                "Revenue mix changes as lower-clarity jobs are reduced.",
+                "Some referral channels may cool during offer tightening."
+              ],
+              "first_steps": [
+                "Define high-clarity job criteria and apply them to new quotes.",
+                "Pause low-clarity quote types for two weeks.",
+                "Reframe proposal language around reliability and scope certainty."
+              ],
+              "risks": [
+                "Near-term pipeline volume may dip.",
+                "Sales team may over-qualify and miss viable jobs."
+              ],
+              "guardrails": [
+                "Review declined job reasons weekly for bias.",
+                "Keep owner review focused on edge cases only."
+              ]
+            }
+          },
+          "recommended_path": "A",
+          "first_30_days": [
+            "Week 1: lock one escalation protocol and publish it to team.",
+            "Week 1: run a handoff checklist pilot on all active jobs.",
+            "Week 2: remove one recurring interruption source from owner inbox.",
+            "Week 2: standardize customer update sequence for open work.",
+            "Week 3: audit unresolved decisions older than 48 hours and close them.",
+            "Week 4: keep only one chosen path and stop cross-path experiments."
+          ],
+          "owner_choice_prompt": "Choose A, B, or C based on which tradeoff you can hold for 30 days.",
+          "language_checks": {
+            "forbidden_terms_found": [],
+            "passed": true
+          }
+        },
+        "guard_results": {
+          "passed": true,
+          "failures": []
+        },
+        "validation_results": {
+          "ok": true,
+          "errors": []
+        }
+      }
+    }
+  ],
+  "finished_at": "2026-02-09T19:39:45.008Z",
+  "final_artifact": {
+    "schema_version": "decision_artifact_v1",
+    "stage_name": "synthesis_decision",
+    "model_id": "deterministic:synthesis-hvac-v1",
+    "prompt_version": "v1",
+    "confidence": "medium",
+    "evidence_refs": [
+      "bucket:revenue_concentration_top5:high",
+      "bucket:volatility:medium",
+      "bucket:seasonality:none",
+      "bucket:decision_latency:medium",
+      "bucket:capacity_squeeze_proxy:high",
+      "bucket:lead_source:not_available"
+    ],
+    "data_limits": {
+      "window_mode": "last_90_days",
+      "row_limit_applied": 90,
+      "saw_quotes": true,
+      "saw_invoices": true,
+      "saw_jobs": true,
+      "saw_customers": false,
+      "notes": [
+        "Window: 2025-10-31..2026-01-28",
+        "Rows in window: 7"
+      ]
+    },
+    "primary_constraint": "Daily coordination load is absorbing owner attention before completion work starts.",
+    "why_it_feels_heavy": "Unresolved handoffs keep returning to the owner, adding repeated decision loops.",
+    "paths": {
+      "A": {
+        "title": "Stabilize Handovers First",
+        "who_it_fits": "Fits owners with high interruption load and unstable dispatch handoffs.",
+        "tradeoffs": [
+          "Short-term volume is capped while execution discipline is set.",
+          "Some low-fit work is declined to protect reliability."
+        ],
+        "first_steps": [
+          "Define one escalation threshold and route non-urgent issues to daily review.",
+          "Launch a single handoff checklist used before any owner escalation.",
+          "Freeze ad-hoc scope additions for seven days."
+        ],
+        "risks": [
+          "Team may initially escalate too much while habits reset.",
+          "Customers used to custom exceptions may push back."
+        ],
+        "guardrails": [
+          "Keep owner escalation windows time-boxed.",
+          "Do not add new service offerings during reset."
+        ]
+      },
+      "B": {
+        "title": "Reliability Promise Reset",
+        "who_it_fits": "Fits teams where decision lag and expectation mismatch drive pressure.",
+        "tradeoffs": [
+          "Promise windows become narrower and require stricter qualification.",
+          "Sales flexibility drops while communication cadence is standardized."
+        ],
+        "first_steps": [
+          "Publish two promise windows and align dispatch to those windows only.",
+          "Send one structured customer update format for every job state change.",
+          "Review delayed approvals daily and close open loops before new commitments."
+        ],
+        "risks": [
+          "Early friction from customers expecting bespoke timelines.",
+          "Internal resistance to standardized update language."
+        ],
+        "guardrails": [
+          "No same-day promise changes without owner approval.",
+          "Keep communication templates under one screen for speed."
+        ]
+      },
+      "C": {
+        "title": "Focused Offer Tightening",
+        "who_it_fits": "Fits businesses with mixed demand where only a subset of jobs stay predictable.",
+        "tradeoffs": [
+          "Revenue mix changes as lower-clarity jobs are reduced.",
+          "Some referral channels may cool during offer tightening."
+        ],
+        "first_steps": [
+          "Define high-clarity job criteria and apply them to new quotes.",
+          "Pause low-clarity quote types for two weeks.",
+          "Reframe proposal language around reliability and scope certainty."
+        ],
+        "risks": [
+          "Near-term pipeline volume may dip.",
+          "Sales team may over-qualify and miss viable jobs."
+        ],
+        "guardrails": [
+          "Review declined job reasons weekly for bias.",
+          "Keep owner review focused on edge cases only."
+        ]
+      }
+    },
+    "recommended_path": "A",
+    "first_30_days": [
+      "Week 1: lock one escalation protocol and publish it to team.",
+      "Week 1: run a handoff checklist pilot on all active jobs.",
+      "Week 2: remove one recurring interruption source from owner inbox.",
+      "Week 2: standardize customer update sequence for open work.",
+      "Week 3: audit unresolved decisions older than 48 hours and close them.",
+      "Week 4: keep only one chosen path and stop cross-path experiments."
+    ],
+    "owner_choice_prompt": "Choose A, B, or C based on which tradeoff you can hold for 30 days.",
+    "language_checks": {
+      "forbidden_terms_found": [],
+      "passed": true
+    }
+  }
+}

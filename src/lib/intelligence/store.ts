@@ -25,6 +25,7 @@ export type RunRecord = {
   pack_id: string;
   status: string;
   mode: string;
+  created_at?: string | null;
   input_hash?: string | null;
   website_url?: string | null;
   results_json?: unknown | null;

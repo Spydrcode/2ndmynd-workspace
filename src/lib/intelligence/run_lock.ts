@@ -21,10 +21,14 @@ function hasSupabaseConfig() {
   return Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
 }
 
+function getSqliteDbPath() {
+  return process.env.INTELLIGENCE_DB_PATH || path.resolve("tmp", "intelligence.db");
+}
+
 function getSqlite() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const Database = require("better-sqlite3");
-  const dbPath = path.resolve("tmp", "intelligence.db");
+  const dbPath = getSqliteDbPath();
   fs.mkdirSync(path.dirname(dbPath), { recursive: true });
   const db = new Database(dbPath);
   db.exec(`

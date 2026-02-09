@@ -1,0 +1,9 @@
+{
+  "run_id": "synth-20260209T195311Z-56172f17-0f1a-4ced-80bf-1aa78a2c4015",
+  "workspace_id": "test-client-synth",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:53:11.819Z",
+  "finished_at": "2026-02-09T19:53:11.989Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-plumbing-v1"
+}

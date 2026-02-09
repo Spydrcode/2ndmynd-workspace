@@ -1,0 +1,25 @@
+{
+  "run_id": "synth-20260209T195338Z-83b0821e-c860-4cf2-8b8c-8ba3b97175f6",
+  "workspace_id": "test-client-synth",
+  "stage_name": "quant_signals",
+  "created_at": "2026-02-09T19:53:38.614Z",
+  "updated_at": "2026-02-09T19:53:38.638Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:quant-v1",
+    "prompt_version": "v1",
+    "schema_version": "quant_signals_v1",
+    "temperature": 0,
+    "max_tokens": 1200,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

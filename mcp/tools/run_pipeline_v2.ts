@@ -1,3 +1,4 @@
+// LEGACY: v2 pipeline bridge retained for backward compatibility and controlled fallback paths.
 import crypto from "node:crypto";
 
 import { inferDecisionV2 } from "../../lib/decision/v2/decision_infer_v2";

@@ -1,0 +1,52 @@
+{
+  "artifact_kind": "stage_input_summary_v1",
+  "schema_version": "stage_input_blue_ocean_v1",
+  "created_at": "2026-02-09T20:17:15.356Z",
+  "payload_json": {
+    "schema_version": "stage_input_blue_ocean_v1",
+    "stage_name": "blue_ocean",
+    "client_id": "test-client-synth",
+    "run_id": "synth-20260209T201715Z-4d2ad6fb-8057-4d00-b1c0-f0d513ea9f83",
+    "industry": "plumbing",
+    "data_limits": {
+      "window_start": "2025-12-20",
+      "window_end": "2026-01-29",
+      "max_records": 100,
+      "notes": [
+        "Window: 2025-12-20..2026-01-29",
+        "Rows in window: 6"
+      ]
+    },
+    "evidence_index": {
+      "refs": [
+        "bucket:revenue_concentration_top5:high",
+        "bucket:volatility:medium",
+        "bucket:seasonality:none",
+        "bucket:decision_latency:medium",
+        "bucket:capacity_squeeze_proxy:medium",
+        "bucket:lead_source:not_available"
+      ]
+    },
+    "context": {
+      "primary_constraint_candidate": "Owner attention is fragmented across too many operating handoffs.",
+      "capacity_bounds": {
+        "hours_bucket": "unknown",
+        "crew_count_bucket": "unknown",
+        "schedule_fill_bucket": "medium"
+      },
+      "competitive_pressure_summary": [
+        "Local buyers expect quick commitment clarity and switch providers when responses stall.",
+        "Reliability becomes a differentiator when schedules slide or updates are inconsistent.",
+        "Trust compounds through consistent follow-through, not broad service promises."
+      ]
+    }
+  },
+  "guard_results": {
+    "passed": true,
+    "failures": []
+  },
+  "validation_results": {
+    "ok": true,
+    "errors": []
+  }
+}

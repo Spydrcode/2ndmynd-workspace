@@ -1,0 +1,9 @@
+{
+  "fixture_id": "propane_safety_pressure",
+  "expect": {
+    "paths": ["A", "B", "C"],
+    "min_first_30_days": 5,
+    "max_first_30_days": 9,
+    "forbidden_terms": []
+  }
+}

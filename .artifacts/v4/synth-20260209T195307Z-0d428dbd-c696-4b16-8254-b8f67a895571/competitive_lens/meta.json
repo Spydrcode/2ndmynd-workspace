@@ -1,0 +1,25 @@
+{
+  "run_id": "synth-20260209T195307Z-0d428dbd-c696-4b16-8254-b8f67a895571",
+  "workspace_id": "test-client-synth",
+  "stage_name": "competitive_lens",
+  "created_at": "2026-02-09T19:53:07.313Z",
+  "updated_at": "2026-02-09T19:53:07.333Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:competitive-v1",
+    "prompt_version": "v1",
+    "schema_version": "competitive_lens_v1",
+    "temperature": 0,
+    "max_tokens": 1200,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}

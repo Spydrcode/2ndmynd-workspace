@@ -1,0 +1,30 @@
+{
+  "fixture_id": "plumbing_cash_timing",
+  "input": {
+    "run_id": "eval-plumbing-001",
+    "workspace_id": "eval-workspace",
+    "business_name": "Northline Plumbing",
+    "industry": "plumbing",
+    "emyth_role": "manager",
+    "snapshot_window_mode": "last_100_closed_estimates",
+    "pack": {
+      "version": "data_pack_v0",
+      "source_tool": "fixture",
+      "created_at": "2026-02-01T00:00:00.000Z",
+      "quotes": [
+        { "id": "q21", "status": "approved", "created_at": "2025-12-12T00:00:00.000Z", "approved_at": "2025-12-20T00:00:00.000Z", "total": 2100 },
+        { "id": "q22", "status": "approved", "created_at": "2026-01-03T00:00:00.000Z", "approved_at": "2026-01-12T00:00:00.000Z", "total": 3200 },
+        { "id": "q23", "status": "approved", "created_at": "2026-01-08T00:00:00.000Z", "approved_at": "2026-01-18T00:00:00.000Z", "total": 1100 },
+        { "id": "q24", "status": "approved", "created_at": "2026-01-15T00:00:00.000Z", "approved_at": "2026-01-29T00:00:00.000Z", "total": 4400 }
+      ],
+      "invoices": [
+        { "id": "i21", "status": "paid", "issued_at": "2025-12-22T00:00:00.000Z", "paid_at": "2026-01-15T00:00:00.000Z", "total": 2100 },
+        { "id": "i22", "status": "paid", "issued_at": "2026-01-14T00:00:00.000Z", "paid_at": "2026-01-31T00:00:00.000Z", "total": 3200 },
+        { "id": "i23", "status": "overdue", "issued_at": "2026-01-20T00:00:00.000Z", "total": 1100 },
+        { "id": "i24", "status": "open", "issued_at": "2026-01-30T00:00:00.000Z", "total": 4400 }
+      ],
+      "jobs": [],
+      "customers": []
+    }
+  }
+}

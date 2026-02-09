@@ -1,3 +1,5 @@
+// LEGACY: snapshot compute flow (pre-v4) retained for historical snapshot pages.
+// New intelligence kernel work should target src/intelligence_v4 instead.
 import { NextResponse } from "next/server";
 
 import { loadBaseline } from "@/lib/snapshot/baseline";

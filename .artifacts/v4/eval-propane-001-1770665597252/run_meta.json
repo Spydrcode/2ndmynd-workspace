@@ -1,0 +1,9 @@
+{
+  "run_id": "eval-propane-001-1770665597252",
+  "workspace_id": "eval-workspace",
+  "status": "succeeded",
+  "started_at": "2026-02-09T19:33:17.253Z",
+  "finished_at": "2026-02-09T19:33:17.498Z",
+  "final_artifact_schema_version": "decision_artifact_v1",
+  "final_artifact_model_id": "deterministic:synthesis-v1"
+}

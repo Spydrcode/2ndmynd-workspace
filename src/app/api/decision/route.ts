@@ -1,3 +1,5 @@
+// LEGACY: v2/v3 decision inference endpoint retained for current UI compatibility.
+// Superseded by intelligence_v4 kernel entrypoint at src/intelligence_v4/pipeline/run_pipeline_v4.ts.
 import { NextResponse } from "next/server";
 
 import { getDecisionConclusion } from "@/lib/decisionModel";

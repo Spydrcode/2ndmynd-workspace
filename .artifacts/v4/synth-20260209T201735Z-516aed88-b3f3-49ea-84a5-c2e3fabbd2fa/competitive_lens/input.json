@@ -1,0 +1,144 @@
+{
+  "artifact_kind": "stage_input_summary_v1",
+  "schema_version": "stage_input_competitive_v1",
+  "created_at": "2026-02-09T20:17:35.150Z",
+  "payload_json": {
+    "schema_version": "stage_input_competitive_v1",
+    "stage_name": "competitive_lens",
+    "client_id": "test-client-synth",
+    "run_id": "synth-20260209T201735Z-516aed88-b3f3-49ea-84a5-c2e3fabbd2fa",
+    "industry": "saas_micro",
+    "data_limits": {
+      "window_start": "2025-11-12",
+      "window_end": "2026-02-09",
+      "max_records": 90,
+      "notes": [
+        "Window: 2025-11-12..2026-02-09",
+        "Rows in window: 54"
+      ]
+    },
+    "evidence_index": {
+      "refs": [
+        "bucket:revenue_concentration_top5:low",
+        "bucket:volatility:medium",
+        "bucket:seasonality:strong",
+        "bucket:decision_latency:medium",
+        "bucket:capacity_squeeze_proxy:medium",
+        "bucket:lead_source:not_available"
+      ]
+    },
+    "context": {
+      "quant_summary": {
+        "signals": [
+          {
+            "id": "revenue_concentration_top5",
+            "label": "Top-5 revenue concentration",
+            "value_bucket": "low",
+            "direction": "down",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:revenue_concentration_top5:low"
+            ]
+          },
+          {
+            "id": "volatility",
+            "label": "Workload volatility",
+            "value_bucket": "medium",
+            "direction": "flat",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:volatility:medium"
+            ]
+          },
+          {
+            "id": "seasonality",
+            "label": "Seasonality signal",
+            "value_bucket": "strong",
+            "direction": "up",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:seasonality:strong"
+            ]
+          },
+          {
+            "id": "decision_latency",
+            "label": "Quote decision latency",
+            "value_bucket": "medium",
+            "direction": "flat",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:decision_latency:medium"
+            ]
+          },
+          {
+            "id": "capacity_squeeze_proxy",
+            "label": "Capacity squeeze proxy",
+            "value_bucket": "medium",
+            "direction": "flat",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:capacity_squeeze_proxy:medium"
+            ]
+          },
+          {
+            "id": "lead_source",
+            "label": "Lead source concentration",
+            "value_bucket": "not_available",
+            "direction": "unknown",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:lead_source:not_available"
+            ]
+          }
+        ],
+        "patterns": [
+          {
+            "id": "volatility_pattern",
+            "description": "Workload volatility is medium in the selected window.",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:volatility:medium"
+            ]
+          },
+          {
+            "id": "decision_lag_pattern",
+            "description": "Quote decision latency is medium, shaping response pressure.",
+            "confidence": "medium",
+            "evidence_refs": [
+              "bucket:decision_latency:medium"
+            ]
+          }
+        ],
+        "anomalies": []
+      },
+      "owner_load_summary": {
+        "owner_bottleneck": true,
+        "pressure_sources": [
+          "handoff_interruptions",
+          "sequence_instability",
+          "role_overload"
+        ],
+        "structural_gaps": [
+          "Handoffs are owner-dependent, so unresolved decisions return to the owner queue.",
+          "Work sequencing shifts through the week, forcing reactive reprioritization.",
+          "Micro SaaS Founder is operating with a mixed role split, increasing context-switching cost."
+        ]
+      },
+      "market_context": {
+        "region_bucket": "unknown",
+        "primary_services": [
+          "saas_micro"
+        ],
+        "competitor_set_refs": []
+      }
+    }
+  },
+  "guard_results": {
+    "passed": true,
+    "failures": []
+  },
+  "validation_results": {
+    "ok": true,
+    "errors": []
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "run_id": "ft-quant-22bc8afa-f58d-45d9-863c-f54738911e04",
+  "workspace_id": "ft-quant-workspace",
+  "stage_name": "quant_signals",
+  "created_at": "2026-02-09T19:55:02.695Z",
+  "updated_at": "2026-02-09T19:55:02.725Z",
+  "approved": false,
+  "notes": "",
+  "model_config": {
+    "model_id": "deterministic:quant-plumbing-v1",
+    "prompt_version": "v1",
+    "schema_version": "quant_signals_v1",
+    "temperature": 0,
+    "max_tokens": 1200,
+    "rollout": {
+      "strategy": "pinned",
+      "canary_percent": 0
+    },
+    "fallback": {
+      "enabled": false
+    }
+  },
+  "grades": null,
+  "pipeline_status": "running"
+}
